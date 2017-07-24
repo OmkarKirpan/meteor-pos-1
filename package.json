@@ -1,0 +1,48 @@
+{
+  "name": "pos",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "antd": "^2.12.0",
+    "apollo": "^0.2.2",
+    "apollo-client": "^1.8.0",
+    "babel-runtime": "^6.20.0",
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "graphql": "^0.10.3",
+    "graphql-server-express": "^1.0.0",
+    "graphql-subscriptions": "^0.4.4",
+    "graphql-tools": "^1.1.0",
+    "history": "^4.6.3",
+    "indexof": "0.0.1",
+    "lodash": "^4.17.4",
+    "merge-graphql-schemas": "^1.1.0",
+    "meteor-node-stubs": "~0.2.4",
+    "moment": "^2.18.1",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-addons-pure-render-mixin": "^15.6.0",
+    "react-addons-update": "^15.6.0",
+    "react-apollo": "^1.4.3",
+    "react-dom": "^15.6.1",
+    "react-grid-layout": "^0.14.6",
+    "react-localize-redux": "^2.2.0",
+    "react-number-format": "^2.0.0-alpha5",
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.1",
+    "react-router-redux": "^5.0.0-alpha.6",
+    "redux": "^3.7.1",
+    "redux-form": "^7.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "styled-components": "^2.1.1",
+    "subscriptions-transport-ws": "^0.8.1",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-decorators-legacy": "^1.3.4"
+  }
+}

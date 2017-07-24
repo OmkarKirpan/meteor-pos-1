@@ -1,0 +1,55 @@
+_locale: en-US
+create: Create,
+update: Update
+cancel: Cancel
+status: Status
+no-data: No Data
+customer-add: Add Customer
+customer-update: Update Customer
+customer-name: Name
+customer-address: Address
+customer-phone-number: Phone
+customer-name-placeholder: Customer name
+customer-address-placeholder: Customer address
+customer-phone-number-placeholder: Customer phone
+customer-required-field-name: Customer name is required
+customer-required-field-address: Customer address is required
+customer-required-field-phone-number: Customer phone number is required
+customer-isnumeric-field-phone-number: Customer phone number must be numeric only
+customer-search: Search customer
+supplier-add: Add Supplier
+supplier-update: Update Supplier
+supplier-name: Name
+supplier-address: Address
+supplier-phone-number: Phone
+supplier-name-placeholder: Supplier name
+supplier-address-placeholder: Supplier address
+supplier-phone-number-placeholder: Supplier phone
+supplier-required-field-name: Supplier name is required
+supplier-required-field-address: Supplier address is required
+supplier-required-field-phone-number: Supplier phone number is required
+supplier-isnumeric-field-phone-number: Supplier phone number must be numeric only
+supplier-search: Search supplier
+invoice-add: Add Invoice
+invoice-update: Update Invoice
+inventory-add: Add Item
+inventory-update: Update Item
+inventory-name: Name
+inventory-price: Price
+inventory-unit: Unit
+inventory-stock: Stock
+inventory-multiplier: Multiplier
+inventory-category: Category
+inventory-name-placeholder: Item name
+inventory-price-placeholder: Item price
+inventory-unit-placeholder: Item unit
+inventory-stock-placeholder: Item stock
+inventory-multiplier-placeholder: Item stock multiplier
+inventory-category-placeholder: Item category multiplier
+inventory-required-field-name: Item name is required
+inventory-required-field-price: Item price is required
+inventory-required-field-unit: Item unit is required
+inventory-required-field-stock: Item stock is required
+inventory-required-field-multiplier: Item multiplier is required
+inventory-required-field-category: Item category is required
+inventory-search: Search inventory
