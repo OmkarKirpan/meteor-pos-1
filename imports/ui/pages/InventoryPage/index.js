@@ -8,11 +8,10 @@ import {
     changeInventoriesPage,
     changeInventoryForm,
     closeInventoryForm,
-    deleteInventory,
     editInventoryForm,
     newInventoryForm,
-    searchCategories,
-    searchInventories
+    searchInventories,
+    searchInventoryCategories
 } from "../../actions";
 import { compose, withApollo } from "react-apollo";
 
@@ -32,11 +31,10 @@ const mapDispatchToProps = dispatch => {
             {
                 changeInventoriesPage,
                 closeInventoryForm,
-                deleteInventory,
                 editInventoryForm,
                 newInventoryForm,
                 searchInventories,
-                searchCategories,
+                searchInventoryCategories,
                 changeInventoryForm
             },
             dispatch
@@ -65,9 +63,8 @@ class InventoryPage extends Component {
             changeInventoriesPage,
             closeInventoryForm,
             searchInventories,
-            deleteInventory,
             editInventoryForm,
-            searchCategories,
+            searchInventoryCategories,
             changeInventoryForm
         } = this.props.actions;
 
@@ -85,7 +82,6 @@ class InventoryPage extends Component {
             total,
             changeInventoriesPage,
             editInventoryForm,
-            deleteInventory,
             filter
         };
 
@@ -95,7 +91,7 @@ class InventoryPage extends Component {
             isNew,
             closeInventoryForm,
             editingInventory,
-            searchCategories,
+            searchInventoryCategories,
             changeInventoryForm
         };
 

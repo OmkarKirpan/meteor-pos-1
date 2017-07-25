@@ -1,5 +1,11 @@
+import {
+    InventoryCategory,
+    InventoryPrice
+} from "../../../domain/Inventory/valueObjects";
+
 import Inventories from "../../../domain/Inventory/repository";
 import { RecordStatus } from "../../../constants";
+import categoryEvents from "../../../domain/Category/events";
 import commands from "../../../domain/Inventory/commands";
 import events from "../../../domain/Inventory/events";
 import { extend } from "lodash";
@@ -27,12 +33,15 @@ const {
     InventoryInactivated
 } = events;
 
+const { CategoryActivated, CategoryInactivated } = categoryEvents;
+
 const queryResolver = {
     Query: {
         inventories(_, { filter, skip, pageSize }, context) {
             let { name } = filter || {};
             let queryFilter = {};
-            if (name) queryFilter["name"] = name;
+            if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            queryFilter["category.status"] = RecordStatus.ACTIVE;
             return Inventories.find(queryFilter, {
                 skip,
                 limit: pageSize,
@@ -45,6 +54,7 @@ const queryResolver = {
             let { name } = filter || {};
             let queryFilter = {};
             if (name) queryFilter["name"] = name;
+            queryFilter["category.status"] = RecordStatus.ACTIVE;
             return Inventories.find(queryFilter).count();
         },
         inventory(_, { _id }, context) {
@@ -56,15 +66,21 @@ const queryResolver = {
 const mutationResolver = {
     Mutation: {
         createInventory(_, { inventory }, context) {
-            let { name, basePrice, baseUnit, prices } = inventory;
+            let { name, basePrice, baseUnit, prices, categoryId } = inventory;
             let _id = uuid.v4();
+            let priceVOs = (prices || [])
+                .map(
+                    ({ unit, price, multiplier }) =>
+                        new InventoryPrice({ unit, price, multiplier })
+                );
             let createInventoryCommand = new CreateInventory({
                 targetId: _id,
                 _id,
+                categoryId,
                 name,
                 basePrice,
                 baseUnit,
-                prices: prices || [],
+                prices: priceVOs,
                 createdAt: new Date(),
                 updatedAt: new Date()
             });
@@ -72,14 +88,27 @@ const mutationResolver = {
             return _id;
         },
         updateInventory(_, { inventory }, context) {
-            let { _id, name, basePrice, baseUnit, prices } = inventory;
-            let updateInventoryCommand = new UpdateInventory({
-                targetId: _id,
+            let {
                 _id,
+                categoryId,
                 name,
                 basePrice,
                 baseUnit,
-                prices,
+                prices
+            } = inventory;
+            let priceVOs = (prices || [])
+                .map(
+                    ({ unit, price, multiplier }) =>
+                        new InventoryPrice({ unit, price, multiplier })
+                );
+            let updateInventoryCommand = new UpdateInventory({
+                targetId: _id,
+                _id,
+                categoryId,
+                name,
+                basePrice,
+                baseUnit,
+                prices: priceVOs,
                 updatedAt: new Date()
             });
             InventoryApi.send(updateInventoryCommand);
@@ -113,7 +142,9 @@ const subscriptionResolver = {
                         [InventoryCreated],
                         [InventoryUpdated],
                         [InventoryActivated],
-                        [InventoryInactivated]
+                        [InventoryInactivated],
+                        [CategoryActivated],
+                        [CategoryInactivated]
                     ]),
                 (payload, variables) => {
                     let { inventoryIds } = variables;
@@ -136,6 +167,11 @@ const subscriptionResolver = {
                     data[[InventoryActivated]] = payload;
                 else if (payload instanceof InventoryInactivated)
                     data[[InventoryInactivated]] = payload;
+                else if (
+                    payload instanceof CategoryActivated ||
+                    payload instanceof CategoryInactivated
+                )
+                    data["CategoryStatusChanged"] = payload;
                 return data;
             }
         }

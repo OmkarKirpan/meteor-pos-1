@@ -55,7 +55,7 @@ class InventoryForm extends Component {
     }
 
     onOk() {
-        const {
+        let {
             form,
             client,
             createInventory,
@@ -63,12 +63,12 @@ class InventoryForm extends Component {
             isNew,
             closeInventoryForm
         } = this.props;
-        const { getFieldValue } = form;
+        let { getFieldValue } = form;
         form.validateFields((errors, inventory) => {
             if (!errors) {
-                const pricesData = getFieldValue("prices");
-                const priceIds = pricesData.map(price => price._id);
-                const prices = priceIds.map(priceId => {
+                let pricesData = getFieldValue("prices");
+                let priceIds = pricesData.map(price => price._id);
+                let prices = priceIds.map(priceId => {
                     return {
                         _id: priceId.indexOf("NEW") > -1 ? undefined : priceId,
                         unit: inventory[`unit-${priceId}`],
@@ -77,9 +77,14 @@ class InventoryForm extends Component {
                     };
                 });
 
-                delete inventory.newPriceCount;
-                delete inventory.categoryId;
-                delete inventory.stock;
+                let inventoryData = {
+                    _id: inventory._id,
+                    categoryId: inventory.categoryId,
+                    name: inventory.name,
+                    basePrice: inventory.basePrice,
+                    baseUnit: inventory.baseUnit,
+                    prices
+                };
 
                 let mutation = isNew
                     ? props => {
@@ -90,10 +95,7 @@ class InventoryForm extends Component {
                       };
                 mutation({
                     variables: {
-                        inventory: {
-                            ...inventory,
-                            prices
-                        }
+                        inventory: inventoryData
                     }
                 }).then(() => closeInventoryForm());
             }
@@ -101,11 +103,11 @@ class InventoryForm extends Component {
     }
 
     onSearchCategories(searchText) {
-        const { searchCategories, client } = this.props;
+        const { searchInventoryCategories, client } = this.props;
         const filter = {
             name: searchText
         };
-        searchCategories({ client, filter });
+        searchInventoryCategories({ client, filter });
     }
 
     render() {
@@ -401,7 +403,8 @@ class InventoryForm extends Component {
                             onClick={this.addPrice}
                             style={{ width: "60%" }}
                         >
-                            <Icon type="plus" /> Add field
+                            <Icon type="plus" />
+                            {i18n.__("inventory-add-item-price")}
                         </Button>
                     </Form.Item>
                 </Form>
@@ -415,29 +418,37 @@ InventoryForm.propTypes = {
 };
 
 const mapPropsToFields = ({ editingInventory }) => {
-    const {
+    let {
         _id,
+        categoryId,
         name,
         basePrice,
         baseUnit,
         stock,
         prices,
-        categoryId,
         newPriceCount
     } = editingInventory;
 
-    let pricesData = {};
+    let priceCount = newPriceCount || 0;
+
+    let pricesData = [];
+    let pricesLayoutData = {};
     if (prices) {
         prices.forEach(inventoryPrice => {
-            const { _id, unit, price, multiplier } = inventoryPrice;
-            pricesData[`_id-${_id}`] = { value: _id };
-            pricesData[`unit-${_id}`] = {
+            priceCount += 1;
+
+            let { unit, price, multiplier } = inventoryPrice;
+            let _id = `NEW${priceCount}`;
+
+            pricesData.push({ _id, unit, price, multiplier });
+            pricesLayoutData[`_id-${_id}`] = { value: _id };
+            pricesLayoutData[`unit-${_id}`] = {
                 value: editingInventory[`unit-${_id}`] || unit
             };
-            pricesData[`price-${_id}`] = {
+            pricesLayoutData[`price-${_id}`] = {
                 value: editingInventory[`price-${_id}`] || price
             };
-            pricesData[`multiplier-${_id}`] = {
+            pricesLayoutData[`multiplier-${_id}`] = {
                 value: editingInventory[`multiplier-${_id}`] || multiplier
             };
         });
@@ -446,6 +457,9 @@ const mapPropsToFields = ({ editingInventory }) => {
     return {
         _id: {
             value: _id
+        },
+        categoryId: {
+            value: categoryId
         },
         name: {
             value: name
@@ -460,15 +474,12 @@ const mapPropsToFields = ({ editingInventory }) => {
             value: stock
         },
         prices: {
-            value: prices || []
+            value: pricesData || []
         },
         newPriceCount: {
-            value: newPriceCount
+            value: priceCount
         },
-        categoryId: {
-            value: categoryId
-        },
-        ...pricesData
+        ...pricesLayoutData
     };
 };
 

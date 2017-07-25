@@ -16,8 +16,9 @@ export {
     editInventoryForm,
     newInventoryForm,
     searchInventories,
-    searchCategories,
-    changeInventoryForm
+    changeInventoryForm,
+    searchInventoryCategories,
+    getInventoryCategory
 } from "./InventoryActions";
 export {
     changeSuppliersPage,
@@ -41,3 +42,11 @@ export {
     searchInvoices,
     updateInvoice
 } from "./InvoiceActions";
+export {
+    changeCategoriesPage,
+    changeCategoryForm,
+    closeCategoryForm,
+    editCategoryForm,
+    newCategoryForm,
+    searchCategories
+} from "./CategoryActions";

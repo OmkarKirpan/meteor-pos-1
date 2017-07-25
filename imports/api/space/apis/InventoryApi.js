@@ -1,4 +1,3 @@
-import Inventories from "../../../domain/Inventory/repository";
 import commands from "../../../domain/Inventory/commands";
 
 const {

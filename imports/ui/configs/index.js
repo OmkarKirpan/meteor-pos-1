@@ -34,9 +34,9 @@ const MENUS = [
         exact: false,
         subMenus: [
             {
-                name: "Inventory Category",
+                name: "Category",
                 icon: "database",
-                path: "/inventoryCategories",
+                path: "/categories",
                 exact: true
             },
             {

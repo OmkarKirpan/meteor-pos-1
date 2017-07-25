@@ -1,4 +1,5 @@
 import { default as app } from "./AppReducer";
+import { default as category } from "./CategoryReducer";
 import { client } from "../graphql";
 import { combineReducers } from "redux";
 import { default as customer } from "./CustomerReducer";
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     customer,
     inventory,
     supplier,
-    invoice
+    invoice,
+    category
 });
 
 export { rootReducer };

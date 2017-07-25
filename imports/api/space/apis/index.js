@@ -1,2 +1,2 @@
 export { default as InventoryApi } from "./InventoryApi";
-export { default as InventoryCategoryApi } from "./InventoryCategoryApi";
+export { default as CategoryApi } from "./CategoryApi";

@@ -1,5 +1,8 @@
-import { InventoryPrice } from "../valueObjects";
+import { InventoryCategory, InventoryPrice } from "../valueObjects";
+
+import Categories from "../../Category/repository";
 import { RecordStatus } from "../../../constants";
+import categoryEvents from "../../Category/events";
 import commands from "../commands/";
 import events from "../events";
 
@@ -17,9 +20,13 @@ const {
     InventoryInactivated
 } = events;
 
+const { CategoryActivated, CategoryInactivated } = categoryEvents;
+
 const Inventory = Space.eventSourcing.Aggregate.extend("Inventory", {
     fields: {
         _id: String,
+        categoryId: String,
+        category: InventoryCategory,
         name: String,
         stock: Number,
         basePrice: Number,
@@ -44,27 +51,43 @@ const Inventory = Space.eventSourcing.Aggregate.extend("Inventory", {
             [InventoryCreated]: this._onInventoryCreated,
             [InventoryUpdated]: this._onInventoryUpdated,
             [InventoryActivated]: this._onInventoryActivated,
-            [InventoryInactivated]: this._onInventoryInactivated
+            [InventoryInactivated]: this._onInventoryInactivated,
+            [CategoryActivated]: this._onCategoryActivated,
+            [CategoryInactivated]: this._onCategoryInactivated
         };
     },
 
     // ============= COMMAND HANDLERS =============
 
     _createInventory(command) {
+        let { categoryId } = command;
+        let categoryData = Categories.findOne({ _id: categoryId });
+        let category = new InventoryCategory({
+            name: categoryData.name,
+            status: categoryData.status
+        });
         this.record(
             new InventoryCreated({
                 ...this._eventPropsFromCommand(command),
                 createdAt: new Date(),
-                updatedAt: new Date()
+                updatedAt: new Date(),
+                category
             })
         );
     },
 
     _updateInventory(command) {
+        let { categoryId } = command;
+        let categoryData = Categories.findOne({ _id: categoryId });
+        let category = new InventoryCategory({
+            name: categoryData.name,
+            status: categoryData.status
+        });
         this.record(
             new InventoryUpdated({
                 ...this._eventPropsFromCommand(command),
-                updatedAt: new Date()
+                updatedAt: new Date(),
+                category
             })
         );
     },
@@ -107,6 +130,18 @@ const Inventory = Space.eventSourcing.Aggregate.extend("Inventory", {
     _onInventoryInactivated(event) {
         this._assignFields(event);
         this.status = RecordStatus.INACTIVE;
+    },
+
+    _onCategoryActivated(event) {
+        if (this.categoryId === event._id && this.category) {
+            this.category.status = RecordStatus.ACTIVE;
+        }
+    },
+
+    _onCategoryInactivated(event) {
+        if (this.categoryId === event._id && this.category) {
+            this.category.status = RecordStatus.INACTIVE;
+        }
     }
 });
 

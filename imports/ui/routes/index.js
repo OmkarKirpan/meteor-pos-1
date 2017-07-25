@@ -1,8 +1,8 @@
 import {
     App,
+    CategoryPage,
     CustomerPage,
     DashboardPage,
-    InventoryCategoryPage,
     InventoryPage,
     InvoicePage,
     LoginPage,
@@ -31,9 +31,9 @@ const appRoutes = [
         exact: true
     },
     {
-        path: "/inventoryCategories",
-        name: "Inventory Categories",
-        component: InventoryCategoryPage,
+        path: "/categories",
+        name: "Categories",
+        component: CategoryPage,
         exact: true
     },
     {

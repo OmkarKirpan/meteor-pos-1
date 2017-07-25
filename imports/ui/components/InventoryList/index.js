@@ -69,10 +69,11 @@ class InventoryList extends Component {
                         InventoryCreated,
                         InventoryUpdated,
                         InventoryActivated,
-                        InventoryInactivated
+                        InventoryInactivated,
+                        CategoryStatusChanged
                     } = inventoryEvent;
 
-                    if (InventoryCreated) {
+                    if (InventoryCreated || CategoryStatusChanged) {
                         newProps.refetch();
                     } else if (InventoryUpdated) {
                         newResult.inventories.forEach(inventory => {
@@ -223,7 +224,6 @@ class InventoryList extends Component {
                         onChange={() => {
                             const { _id } = inventory;
                             updateInventoryStatus({
-                                name: "UPDATEINVENTORYSTATUS",
                                 variables: {
                                     _id,
                                     newStatus:

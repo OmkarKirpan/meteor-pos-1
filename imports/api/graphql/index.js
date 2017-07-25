@@ -1,7 +1,7 @@
 import {
-    resolver as inventoryCategoryResolver,
-    typeDefs as inventoryCategoryTypeDefs
-} from "./InventoryCategory";
+    resolver as categoryResolver,
+    typeDefs as categoryTypeDefs
+} from "./Category";
 import {
     resolver as inventoryResolver,
     typeDefs as inventoryTypeDefs
@@ -10,12 +10,6 @@ import { mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 
 import { extend } from "lodash";
 
-export const typeDefs = mergeTypes([
-    inventoryTypeDefs,
-    inventoryCategoryTypeDefs
-]);
+export const typeDefs = mergeTypes([inventoryTypeDefs, categoryTypeDefs]);
 
-export const resolvers = mergeResolvers([
-    inventoryResolver,
-    inventoryCategoryResolver
-]);
+export const resolvers = mergeResolvers([inventoryResolver, categoryResolver]);

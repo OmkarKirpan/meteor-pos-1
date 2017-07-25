@@ -8,6 +8,10 @@ const GETINVENTORIES = gql`
     ) {
         inventories(skip: $skip, pageSize: $pageSize, filter: $filter) {
             _id
+            categoryId
+            category {
+                name
+            }
             name
             basePrice
             baseUnit
@@ -27,6 +31,10 @@ const GETINVENTORY = gql`
     query inventory($_id: String!) {
         inventory(_id: $_id) {
             _id
+            categoryId
+            category {
+                name
+            }
             name
             basePrice
             baseUnit

@@ -1,6 +1,6 @@
-import { GETINVENTORIES, GETINVENTORY } from "../../graphql/queries/inventory";
+import { GETCATEGORIES, GETCATEGORY } from "../../graphql/queries/category";
 
-import { GETINVENTORYCATEGORIES } from "../../graphql/queries/inventoryCategory";
+import { GETINVENTORY } from "../../graphql/queries/inventory";
 import { INVENTORY } from "../../constants";
 import { gql } from "react-apollo";
 
@@ -22,22 +22,46 @@ const searchInventories = ({ client, filter }) => dispatch => {
     });
 };
 
-const searchCategories = ({ client, filter }) => dispatch => {
+const searchInventoryCategories = ({ client, filter }) => dispatch => {
     client
         .query({
-            query: GETINVENTORYCATEGORIES,
+            query: GETCATEGORIES,
             fetchPolicy: "network-only",
             variables: {
-                limit: 10,
-                filter
+                pageSize: 10,
+                filter,
+                skip: 0
             }
         })
         .then(response => {
             const { data } = response;
-            const { inventoryCategories } = data;
+            const { categories } = data;
             dispatch({
                 type: INVENTORY.REFRESH_CATEGORIES,
-                payload: { categories: inventoryCategories }
+                payload: { categories: categories }
+            });
+        })
+        .catch(error =>
+            dispatch({
+                type: INVENTORY.REFRESH_CATEGORIES_FAILED
+            })
+        );
+};
+
+const getInventoryCategory = ({ client, categoryId }) => dispatch => {
+    client
+        .query({
+            query: GETCATEGORY,
+            variables: {
+                _id: categoryId
+            }
+        })
+        .then(response => {
+            const { data } = response;
+            const { category } = data;
+            dispatch({
+                type: INVENTORY.REFRESH_CATEGORIES,
+                payload: { categories: [category] }
             });
         })
         .catch(error =>
@@ -68,7 +92,12 @@ const editInventoryForm = ({ client, _id }) => dispatch => {
         .then(response => {
             const { data } = response;
             const { inventory } = data;
-            dispatch(searchCategories({ client }));
+            dispatch(
+                getInventoryCategory({
+                    client,
+                    categoryId: inventory.categoryId
+                })
+            );
             dispatch({
                 type: INVENTORY.INVENTORY_FORM_OPEN,
                 payload: {
@@ -99,6 +128,7 @@ export {
     closeInventoryForm,
     searchInventories,
     editInventoryForm,
-    searchCategories,
-    changeInventoryForm
+    searchInventoryCategories,
+    changeInventoryForm,
+    getInventoryCategory
 };

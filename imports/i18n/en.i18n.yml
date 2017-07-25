@@ -4,6 +4,7 @@ update: Update
 cancel: Cancel
 status: Status
 no-data: No Data
+
 customer-add: Add Customer
 customer-update: Update Customer
 customer-name: Name
@@ -17,6 +18,7 @@ customer-required-field-address: Customer address is required
 customer-required-field-phone-number: Customer phone number is required
 customer-isnumeric-field-phone-number: Customer phone number must be numeric only
 customer-search: Search customer
+
 supplier-add: Add Supplier
 supplier-update: Update Supplier
 supplier-name: Name
@@ -30,26 +32,36 @@ supplier-required-field-address: Supplier address is required
 supplier-required-field-phone-number: Supplier phone number is required
 supplier-isnumeric-field-phone-number: Supplier phone number must be numeric only
 supplier-search: Search supplier
+
 invoice-add: Add Invoice
 invoice-update: Update Invoice
-inventory-add: Add Item
-inventory-update: Update Item
+
+inventory-add: Add Inventory
+inventory-update: Update Inventory
 inventory-name: Name
 inventory-price: Price
 inventory-unit: Unit
 inventory-stock: Stock
 inventory-multiplier: Multiplier
 inventory-category: Category
-inventory-name-placeholder: Item name
-inventory-price-placeholder: Item price
-inventory-unit-placeholder: Item unit
-inventory-stock-placeholder: Item stock
-inventory-multiplier-placeholder: Item stock multiplier
-inventory-category-placeholder: Item category multiplier
-inventory-required-field-name: Item name is required
-inventory-required-field-price: Item price is required
-inventory-required-field-unit: Item unit is required
-inventory-required-field-stock: Item stock is required
-inventory-required-field-multiplier: Item multiplier is required
-inventory-required-field-category: Item category is required
+inventory-add-item-price: Add price
+inventory-name-placeholder: Inventory name
+inventory-price-placeholder: Inventory price
+inventory-unit-placeholder: Inventory unit
+inventory-stock-placeholder: Inventory stock
+inventory-multiplier-placeholder: Inventory stock multiplier
+inventory-category-placeholder: Inventory category 
+inventory-required-field-name: Inventory name is required
+inventory-required-field-price: Inventory price is required
+inventory-required-field-unit: Inventory unit is required
+inventory-required-field-stock: Inventory stock is required
+inventory-required-field-multiplier: Inventory multiplier is required
+inventory-required-field-category: Inventory category is required
 inventory-search: Search inventory
+
+category-add: Add Category
+category-update: Update Category
+category-name: Name
+category-name-placeholder: Category name
+category-required-field-name: Category name is required
+category-search: Search category

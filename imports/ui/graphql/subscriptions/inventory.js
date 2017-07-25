@@ -35,6 +35,9 @@ const INVENTORYEVENTSUBSCRIPTION = gql`
                 _id
                 status
             }
+            CategoryStatusChanged {
+                _id
+            }
         }
     }
 `;

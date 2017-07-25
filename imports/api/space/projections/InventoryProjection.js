@@ -1,4 +1,5 @@
 import { RecordStatus } from "../../../constants";
+import categoryEvents from "../../../domain/Category/events";
 import events from "../../../domain/Inventory/events";
 import pubsub from "../../graphql/pubsub";
 
@@ -8,6 +9,8 @@ const {
     InventoryActivated,
     InventoryInactivated
 } = events;
+
+const { CategoryActivated, CategoryInactivated } = categoryEvents;
 
 const InventoryProjection = Space.eventSourcing.Projection.extend(
     "InventoryProjection",
@@ -22,7 +25,9 @@ const InventoryProjection = Space.eventSourcing.Projection.extend(
                     [InventoryCreated]: this._onInventoryCreated,
                     [InventoryUpdated]: this._onInventoryUpdated,
                     [InventoryActivated]: this._onInventoryActivated,
-                    [InventoryInactivated]: this._onInventoryInactivated
+                    [InventoryInactivated]: this._onInventoryInactivated,
+                    [CategoryActivated]: this._onCategoryActivated,
+                    [CategoryInactivated]: this._onCategoryInactivated
                 }
             ];
         },
@@ -33,6 +38,8 @@ const InventoryProjection = Space.eventSourcing.Projection.extend(
             let {
                 _id,
                 name,
+                categoryId,
+                category,
                 basePrice,
                 baseUnit,
                 prices,
@@ -44,10 +51,21 @@ const InventoryProjection = Space.eventSourcing.Projection.extend(
             this.inventories.insert({
                 _id,
                 name,
+                categoryId,
+                category: {
+                    name: category.name,
+                    status: category.status
+                },
                 stock,
                 basePrice,
                 baseUnit,
-                prices,
+                prices: prices.map(priceData => {
+                    return {
+                        unit: priceData.unit,
+                        price: priceData.price,
+                        multiplier: priceData.multiplier
+                    };
+                }),
                 status,
                 createdAt,
                 updatedAt
@@ -56,12 +74,32 @@ const InventoryProjection = Space.eventSourcing.Projection.extend(
         },
 
         _onInventoryUpdated(event) {
-            let { _id, name, basePrice, baseUnit, prices, updatedAt } = event;
-            let updatedFields = {
+            let {
+                _id,
                 name,
+                categoryId,
+                category,
                 basePrice,
                 baseUnit,
                 prices,
+                updatedAt
+            } = event;
+            let updatedFields = {
+                name,
+                categoryId,
+                category: {
+                    name: category.name,
+                    status: category.status
+                },
+                basePrice,
+                baseUnit,
+                prices: prices.map(priceData => {
+                    return {
+                        unit: priceData.unit,
+                        price: priceData.price,
+                        multiplier: priceData.multiplier
+                    };
+                }),
                 updatedAt
             };
             this.inventories.update(_id, { $set: { ...updatedFields } });
@@ -69,17 +107,43 @@ const InventoryProjection = Space.eventSourcing.Projection.extend(
         },
 
         _onInventoryActivated(event) {
-            let { _id, updatedAt } = event;
-            let updatedFields = { updatedAt, status: RecordStatus.ACTIVE };
+            event.status = RecordStatus.ACTIVE;
+            let { _id, updatedAt, status } = event;
+            let updatedFields = { updatedAt, status };
             this.inventories.update(_id, { $set: { ...updatedFields } });
             pubsub.publish("InventoryActivated", event);
         },
 
         _onInventoryInactivated(event) {
-            let { _id, updatedAt } = event;
-            let updatedFields = { updatedAt, status: RecordStatus.INACTIVE };
+            event.status = RecordStatus.INACTIVE;
+            let { _id, updatedAt, status } = event;
+            let updatedFields = { updatedAt, status };
             this.inventories.update(_id, { $set: { ...updatedFields } });
             pubsub.publish("InventoryInactivated", event);
+        },
+
+        _onCategoryActivated(event) {
+            let { _id } = event;
+            this.inventories.update(
+                { categoryId: _id },
+                {
+                    $set: {
+                        "category.status": RecordStatus.ACTIVE
+                    }
+                }
+            );
+        },
+
+        _onCategoryInactivated(event) {
+            let { _id } = event;
+            this.inventories.update(
+                { categoryId: _id },
+                {
+                    $set: {
+                        "category.status": RecordStatus.INACTIVE
+                    }
+                }
+            );
         }
     }
 );

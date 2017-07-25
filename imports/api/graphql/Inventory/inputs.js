@@ -11,6 +11,7 @@ export default `
 
     input CreateInventoryInput {
         name: String
+        categoryId: String
         basePrice: Float
         baseUnit: String
         prices: [InventoryPriceInput]
@@ -19,6 +20,7 @@ export default `
     input UpdateInventoryInput {
         _id: String
         name: String
+        categoryId: String
         basePrice: Float
         baseUnit: String
         prices: [InventoryPriceInput]

@@ -5,9 +5,16 @@ export default `
         multiplier: Int
     }
 
+    type InventoryCategory {
+        name: String
+        status: Int
+    }
+
     type Inventory {
         _id: String
         name: String
+        categoryId: String
+        category: InventoryCategory
         basePrice: Float
         baseUnit: String
         stock: Int
@@ -20,5 +27,6 @@ export default `
         InventoryUpdated: Inventory
         InventoryActivated: Inventory
         InventoryInactivated: Inventory
+        CategoryStatusChanged: InventoryCategory
     }
 `;

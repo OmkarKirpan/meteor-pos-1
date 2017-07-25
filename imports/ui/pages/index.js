@@ -5,4 +5,4 @@ export { default as InventoryPage } from "./InventoryPage";
 export { default as CustomerPage } from "./CustomerPage";
 export { default as InvoicePage } from "./InvoicePage";
 export { default as SupplierPage } from "./SupplierPage";
-export { default as InventoryCategoryPage } from "./InventoryCategoryPage";
+export { default as CategoryPage } from "./CategoryPage";
