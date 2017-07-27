@@ -21,15 +21,12 @@ export {
     getInventoryCategory
 } from "./InventoryActions";
 export {
+    changeSupplierForm,
     changeSuppliersPage,
     closeSupplierForm,
-    createSupplier,
-    deleteSupplier,
     editSupplierForm,
-    fetchSuppliers,
     newSupplierForm,
-    searchSuppliers,
-    updateSupplier
+    searchSuppliers
 } from "./SupplierActions";
 export {
     changeInvoicesPage,

@@ -1,9 +1,29 @@
-import { Form, Input, Modal } from "antd";
+import {
+    Button,
+    Form,
+    Icon,
+    Input,
+    InputNumber,
+    Modal,
+    Select,
+    Table
+} from "antd";
+import {
+    CREATESUPPLIER,
+    UPDATESUPPLIER
+} from "../../graphql/mutations/supplier";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
+import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
+import i18n from "meteor/universe:i18n";
 
+@graphql(CREATESUPPLIER, {
+    name: "createSupplier"
+})
+@graphql(UPDATESUPPLIER, {
+    name: "updateSupplier"
+})
 @compose(withApollo)
 class SupplierForm extends Component {
     constructor() {
@@ -12,48 +32,63 @@ class SupplierForm extends Component {
     }
 
     onOk() {
-        const { form, client, onOk } = this.props;
+        const {
+            form,
+            createSupplier,
+            updateSupplier,
+            isNew,
+            closeSupplierForm
+        } = this.props;
+        const { getFieldValue } = form;
+
         form.validateFields((errors, supplier) => {
             if (!errors) {
-                onOk({
-                    client,
-                    supplier
-                });
+                let mutation = isNew
+                    ? props => {
+                          return createSupplier(props);
+                      }
+                    : props => {
+                          return updateSupplier(props);
+                      };
+                mutation({
+                    variables: {
+                        supplier: {
+                            ...supplier
+                        }
+                    }
+                }).then(() => closeSupplierForm());
             }
         });
     }
 
     render() {
-        const {
-            form,
-            title,
-            visible,
-            onCancel,
-            okText,
-            cancelText
-        } = this.props;
-        const { getFieldDecorator } = form;
+        const { form, visible, closeSupplierForm, isNew } = this.props;
+        const { getFieldDecorator, getFieldValue } = form;
 
         const modalProps = {
-            title,
+            title: i18n.__(isNew ? "supplier-add" : "supplier-update"),
             visible,
-            onCancel,
-            okText,
-            cancelText,
+            onCancel: closeSupplierForm,
+            okText: i18n.__(isNew ? "create" : "update"),
+            cancelText: i18n.__("cancel"),
             onOk: this.onOk,
-            width: 300,
+            width: 400,
             maskClosable: false
         };
 
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item>
+                    <Form.Item className="inventory-form-inventory">
                         {getFieldDecorator("_id")(
                             <Input style={{ display: "none" }} />
                         )}
                     </Form.Item>
-                    <Form.Item label={i18n.__("supplier-name")} hasFeedback>
+                    <Form.Item
+                        className="inventory-form-inventory"
+                        label={i18n.__("supplier-name")}
+                        hasFeedback
+                    >
                         {getFieldDecorator("name", {
                             rules: [
                                 {
@@ -71,7 +106,11 @@ class SupplierForm extends Component {
                             />
                         )}
                     </Form.Item>
-                    <Form.Item label={i18n.__("supplier-address")} hasFeedback>
+                    <Form.Item
+                        className="inventory-form-inventory"
+                        label={i18n.__("supplier-address")}
+                        hasFeedback
+                    >
                         {getFieldDecorator("address", {
                             rules: [
                                 {
@@ -90,7 +129,8 @@ class SupplierForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        label={i18n.__("supplier-phone-number")}
+                        className="inventory-form-inventory"
+                        label={i18n.__("supplier-phoneNumber")}
                         hasFeedback
                     >
                         {getFieldDecorator("phoneNumber", {
@@ -98,21 +138,14 @@ class SupplierForm extends Component {
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "supplier-required-field-phone-number"
-                                    )
-                                },
-                                {
-                                    required: false,
-                                    pattern: /[0-9]/,
-                                    message: i18n.__(
-                                        "supplier-isnumeric-field-phone-number"
+                                        "supplier-required-field-phoneNumber"
                                     )
                                 }
                             ]
                         })(
                             <Input
                                 placeholder={i18n.__(
-                                    "supplier-phone-number-placeholder"
+                                    "supplier-phoneNumber-placeholder"
                                 )}
                             />
                         )}
@@ -124,14 +157,12 @@ class SupplierForm extends Component {
 }
 
 SupplierForm.propTypes = {
-    visible: PropTypes.bool.isRequired,
-    title: PropTypes.any.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onOk: PropTypes.func.isRequired
+    visible: PropTypes.bool.isRequired
 };
 
 const mapPropsToFields = ({ editingSupplier }) => {
-    const { _id, name, address, phoneNumber, status } = editingSupplier;
+    const { _id, name, address, phoneNumber } = editingSupplier;
+
     return {
         _id: {
             value: _id
@@ -144,11 +175,13 @@ const mapPropsToFields = ({ editingSupplier }) => {
         },
         phoneNumber: {
             value: phoneNumber
-        },
-        status: {
-            value: status
         }
     };
 };
 
-export default Form.create({ mapPropsToFields })(SupplierForm);
+const onValuesChange = (props, supplier) => {
+    const { changeSupplierForm } = props;
+    changeSupplierForm({ supplier });
+};
+
+export default Form.create({ mapPropsToFields, onValuesChange })(SupplierForm);

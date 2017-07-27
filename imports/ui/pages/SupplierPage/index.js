@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import { SupplierForm, SupplierHeader, SupplierList } from "../../components";
 import {
+    changeSupplierForm,
     changeSuppliersPage,
     closeSupplierForm,
-    createSupplier,
-    deleteSupplier,
     editSupplierForm,
-    fetchSuppliers,
     newSupplierForm,
-    searchSuppliers,
-    updateSupplier
+    searchSuppliers
 } from "../../actions";
 import { compose, withApollo } from "react-apollo";
 
@@ -19,8 +16,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import i18n from "meteor/universe:i18n";
 
-const mapStateToProps = ({ supplier }) => {
-    return { supplier };
+const mapStateToProps = ({ customer, supplier }) => {
+    return { customer, supplier };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -29,13 +26,10 @@ const mapDispatchToProps = dispatch => {
             {
                 changeSuppliersPage,
                 closeSupplierForm,
-                createSupplier,
-                deleteSupplier,
                 editSupplierForm,
-                fetchSuppliers,
                 newSupplierForm,
                 searchSuppliers,
-                updateSupplier
+                changeSupplierForm
             },
             dispatch
         )
@@ -45,12 +39,6 @@ const mapDispatchToProps = dispatch => {
 @compose(withApollo)
 @connect(mapStateToProps, mapDispatchToProps)
 class SupplierPage extends Component {
-    componentWillMount() {
-        const { client } = this.props;
-        const { searchSuppliers } = this.props.actions;
-        searchSuppliers({ client });
-    }
-
     render() {
         const { supplier, client } = this.props;
         const { supplierList, supplierForm } = supplier;
@@ -60,25 +48,22 @@ class SupplierPage extends Component {
             suppliers,
             current,
             pageSize,
-            total
+            total,
+            filter
         } = supplierList;
         const { visible, editingSupplier, isNew } = supplierForm;
         const {
             newSupplierForm,
             changeSuppliersPage,
-            createSupplier,
             closeSupplierForm,
             searchSuppliers,
-            deleteSupplier,
             editSupplierForm,
-            updateSupplier
+            changeSupplierForm
         } = this.props.actions;
 
         const supplierHeaderProps = {
-            createSupplier,
             newSupplierForm,
-            searchSuppliers,
-            deleteSupplier
+            searchSuppliers
         };
 
         const supplierListProps = {
@@ -90,18 +75,15 @@ class SupplierPage extends Component {
             total,
             changeSuppliersPage,
             editSupplierForm,
-            deleteSupplier
+            filter
         };
 
         const supplierFormProps = {
             visible,
-            client,
-            title: i18n.__(isNew ? "supplier-add" : "supplier-update"),
-            onOk: isNew ? createSupplier : updateSupplier,
-            onCancel: closeSupplierForm,
-            okText: i18n.__(isNew ? "create" : "update"),
-            cancelText: i18n.__("cancel"),
-            editingSupplier
+            isNew,
+            closeSupplierForm,
+            editingSupplier,
+            changeSupplierForm
         };
 
         return (

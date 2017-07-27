@@ -23,14 +23,13 @@ supplier-add: Add Supplier
 supplier-update: Update Supplier
 supplier-name: Name
 supplier-address: Address
-supplier-phone-number: Phone
+supplier-phoneNumber: Phone
 supplier-name-placeholder: Supplier name
 supplier-address-placeholder: Supplier address
-supplier-phone-number-placeholder: Supplier phone
+supplier-phoneNumber-placeholder: Supplier phone
 supplier-required-field-name: Supplier name is required
 supplier-required-field-address: Supplier address is required
-supplier-required-field-phone-number: Supplier phone number is required
-supplier-isnumeric-field-phone-number: Supplier phone number must be numeric only
+supplier-required-field-phoneNumber: Supplier phone number is required
 supplier-search: Search supplier
 
 invoice-add: Add Invoice

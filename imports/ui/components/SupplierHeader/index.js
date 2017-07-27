@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { compose, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
+import i18n from "meteor/universe:i18n";
 
 @compose(withApollo)
 class SupplierHeader extends Component {
@@ -14,7 +15,7 @@ class SupplierHeader extends Component {
                 <Col span={4}>
                     <Button
                         className="add-supplier-button"
-                        onClick={newSupplierForm}
+                        onClick={() => newSupplierForm({ client })}
                     >
                         {i18n.__("supplier-add")}
                     </Button>
