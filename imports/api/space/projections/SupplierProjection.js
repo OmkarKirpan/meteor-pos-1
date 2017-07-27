@@ -21,7 +21,14 @@ const SupplierProjection = Space.eventSourcing.Projection.extend(
         },
 
         _onSupplierCreated(event) {
-            let { _id, name, createdAt, updatedAt } = event;
+            let {
+                _id,
+                name,
+                address,
+                phoneNumber,
+                createdAt,
+                updatedAt
+            } = event;
             this.suppliers.insert({
                 _id,
                 name,
@@ -34,7 +41,7 @@ const SupplierProjection = Space.eventSourcing.Projection.extend(
         },
 
         _onSupplierUpdated(event) {
-            let { _id, name, updatedAt } = event;
+            let { _id, name, address, phoneNumber, updatedAt } = event;
             let updatedFields = {
                 name,
                 address,

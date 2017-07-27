@@ -30,13 +30,13 @@ const queryResolver = {
                 }
             }).fetch();
         },
-        SupplierCount(_, { filter }, context) {
+        supplierCount(_, { filter }, context) {
             let { name } = filter || {};
             let queryFilter = {};
             if (name) queryFilter["name"] = name;
             return Suppliers.find(queryFilter).count();
         },
-        Supplier(_, { _id }, context) {
+        supplier(_, { _id }, context) {
             return Suppliers.findOne({ _id });
         }
     }
@@ -77,7 +77,7 @@ const mutationResolver = {
 
 const subscriptionResolver = {
     Subscription: {
-        SupplierEvent: {
+        supplierEvent: {
             subscribe: withFilter(
                 () =>
                     pubsub.asyncIterator([
