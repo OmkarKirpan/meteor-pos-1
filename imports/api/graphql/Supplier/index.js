@@ -1,3 +1,4 @@
+import { RecordStatus } from "../../../constants";
 import Suppliers from "../../../domain/Supplier/repository";
 import commands from "../../../domain/Supplier/commands";
 import events from "../../../domain/Supplier/events";
@@ -12,9 +13,19 @@ import types from "./types";
 import uuid from "uuid";
 import { withFilter } from "graphql-subscriptions";
 
-const { CreateSupplier, UpdateSupplier } = commands;
+const {
+    CreateSupplier,
+    UpdateSupplier,
+    ActivateSupplier,
+    InactivateSupplier
+} = commands;
 
-const { SupplierCreated, SupplierUpdated } = events;
+const {
+    SupplierCreated,
+    SupplierUpdated,
+    SupplierActivated,
+    SupplierInactivated
+} = events;
 
 const queryResolver = {
     Query: {
@@ -71,6 +82,22 @@ const mutationResolver = {
             });
             SupplierApi.send(updateSupplierCommand);
             return _id;
+        },
+        updateSupplierStatus(_, { _id, newStatus }) {
+            let updateStatusCommand =
+                newStatus === RecordStatus.ACTIVE
+                    ? new ActivateSupplier({
+                          targetId: _id,
+                          _id,
+                          updatedAt: new Date()
+                      })
+                    : new InactivateSupplier({
+                          targetId: _id,
+                          _id,
+                          updatedAt: new Date()
+                      });
+            SupplierApi.send(updateStatusCommand);
+            return _id;
         }
     }
 };
@@ -82,11 +109,17 @@ const subscriptionResolver = {
                 () =>
                     pubsub.asyncIterator([
                         [SupplierCreated],
-                        [SupplierUpdated]
+                        [SupplierUpdated],
+                        [SupplierActivated],
+                        [SupplierInactivated]
                     ]),
                 (payload, variables) => {
                     let { supplierIds } = variables;
-                    if (payload instanceof SupplierUpdated)
+                    if (
+                        payload instanceof SupplierUpdated ||
+                        payload instanceof SupplierActivated ||
+                        payload instanceof SupplierInactivated
+                    )
                         return supplierIds.indexOf(payload._id) > -1;
                     return true;
                 }
@@ -97,6 +130,10 @@ const subscriptionResolver = {
                     data[[SupplierCreated]] = payload;
                 else if (payload instanceof SupplierUpdated)
                     data[[SupplierUpdated]] = payload;
+                else if (payload instanceof SupplierActivated)
+                    data[[SupplierActivated]] = payload;
+                else if (payload instanceof SupplierInactivated)
+                    data[[SupplierInactivated]] = payload;
                 return data;
             }
         }

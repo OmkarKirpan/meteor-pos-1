@@ -15,6 +15,14 @@ const SUPPLIEREVENTSUBSCRIPTION = gql`
                 address
                 phoneNumber
             }
+            SupplierActivated {
+                _id
+                status
+            }
+            SupplierInactivated {
+                _id
+                status
+            }
         }
     }
 `;

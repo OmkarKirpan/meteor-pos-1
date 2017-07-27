@@ -1,6 +1,11 @@
 import commands from "../../../domain/Supplier/commands";
 
-const { CreateSupplier, UpdateSupplier } = commands;
+const {
+    CreateSupplier,
+    UpdateSupplier,
+    ActivateSupplier,
+    InactivateSupplier
+} = commands;
 
 const SupplierApi = Space.messaging.Api.extend("SupplierApi", {
     dependencies: {
@@ -12,7 +17,9 @@ const SupplierApi = Space.messaging.Api.extend("SupplierApi", {
         return [
             {
                 [CreateSupplier]: this._createSupplier,
-                [UpdateSupplier]: this._updateSupplier
+                [UpdateSupplier]: this._updateSupplier,
+                [ActivateSupplier]: this._activateSupplier,
+                [InactivateSupplier]: this._inactivateSupplier
             }
         ];
     },
@@ -22,6 +29,14 @@ const SupplierApi = Space.messaging.Api.extend("SupplierApi", {
     },
 
     _updateSupplier(context, command) {
+        this.commandBus.send(command);
+    },
+
+    _activateSupplier(context, command) {
+        this.commandBus.send(command);
+    },
+
+    _inactivateSupplier(context, command) {
         this.commandBus.send(command);
     }
 });

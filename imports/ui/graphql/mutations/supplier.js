@@ -11,5 +11,9 @@ const UPDATESUPPLIER = gql`
         updateSupplier(supplier: $supplier)
     }
 `;
-
-export { CREATESUPPLIER, UPDATESUPPLIER };
+const UPDATESUPPLIERSTATUS = gql`
+    mutation updateSupplierStatus($_id: String!, $newStatus: Int!) {
+        updateSupplierStatus(_id: $_id, newStatus: $newStatus)
+    }
+`;
+export { CREATESUPPLIER, UPDATESUPPLIER, UPDATESUPPLIERSTATUS };

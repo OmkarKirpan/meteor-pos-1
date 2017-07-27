@@ -6,6 +6,7 @@ import { GETSUPPLIERS } from "../../graphql/queries/supplier";
 import PropTypes from "prop-types";
 import { RECORDSTATUS } from "../../constants";
 import { SUPPLIEREVENTSUBSCRIPTION } from "../../graphql/subscriptions/supplier";
+import { UPDATESUPPLIERSTATUS } from "../../graphql/mutations/supplier";
 import { cloneDeep } from "lodash";
 import i18n from "meteor/universe:i18n";
 
@@ -38,6 +39,9 @@ import i18n from "meteor/universe:i18n";
         };
     }
 })
+@graphql(UPDATESUPPLIERSTATUS, {
+    name: "updateSupplierStatus"
+})
 @compose(withApollo)
 class SupplierList extends Component {
     componentWillReceiveProps(newProps) {
@@ -60,7 +64,12 @@ class SupplierList extends Component {
 
                     let { data } = subscriptionData;
                     let { supplierEvent } = data;
-                    let { SupplierCreated, SupplierUpdated } = supplierEvent;
+                    let {
+                        SupplierCreated,
+                        SupplierUpdated,
+                        SupplierActivated,
+                        SupplierInactivated
+                    } = supplierEvent;
 
                     if (SupplierCreated) {
                         newProps.refetch();
@@ -71,6 +80,20 @@ class SupplierList extends Component {
                                 supplier.address = SupplierUpdated.address;
                                 supplier.phoneNumber =
                                     SupplierUpdated.phoneNumber;
+                                return;
+                            }
+                        });
+                    } else if (SupplierActivated) {
+                        newResult.suppliers.forEach(supplier => {
+                            if (supplier._id === SupplierActivated._id) {
+                                supplier.status = RECORDSTATUS.ACTIVE;
+                                return;
+                            }
+                        });
+                    } else if (SupplierInactivated) {
+                        newResult.suppliers.forEach(supplier => {
+                            if (supplier._id === SupplierInactivated._id) {
+                                supplier.status = RECORDSTATUS.INACTIVE;
                                 return;
                             }
                         });
@@ -99,7 +122,8 @@ class SupplierList extends Component {
             current,
             pageSize,
             changeInventoriesPage,
-            editSupplierForm
+            editSupplierForm,
+            updateSupplierStatus
         } = this.props;
 
         const columns = [
@@ -107,24 +131,28 @@ class SupplierList extends Component {
                 title: i18n.__("supplier-name"),
                 key: "name",
                 dataIndex: "name",
-                width: "33%",
+                width: "30%",
                 render: (name, supplier) =>
-                    <a
-                        onClick={() => {
-                            const { _id } = supplier;
-                            editSupplierForm({ client, _id });
-                        }}
-                    >
-                        <strong>
-                            {name}
-                        </strong>
-                    </a>
+                    supplier.status === RECORDSTATUS.ACTIVE
+                        ? <a
+                              onClick={() => {
+                                  const { _id } = supplier;
+                                  editSupplierForm({ client, _id });
+                              }}
+                          >
+                              <strong>
+                                  {name}
+                              </strong>
+                          </a>
+                        : <strong>
+                              {name}
+                          </strong>
             },
             {
                 title: i18n.__("supplier-address"),
                 key: "address",
                 dataIndex: "address",
-                width: "33%",
+                width: "30%",
                 render: address =>
                     <strong>
                         {address}
@@ -134,11 +162,39 @@ class SupplierList extends Component {
                 title: i18n.__("supplier-phoneNumber"),
                 key: "phoneNumber",
                 dataIndex: "phoneNumber",
-                width: "33%",
+                width: "30%",
                 render: phoneNumber =>
                     <strong>
                         {phoneNumber}
                     </strong>
+            },
+            {
+                title: i18n.__("status"),
+                key: "status",
+                dataIndex: "status",
+                width: "10%",
+                render: (status, supplier) =>
+                    <Switch
+                        className={
+                            "supplier-status-" +
+                            (status === RECORDSTATUS.ACTIVE
+                                ? "active"
+                                : "inactive")
+                        }
+                        checked={status === RECORDSTATUS.ACTIVE}
+                        onChange={() => {
+                            const { _id } = supplier;
+                            updateSupplierStatus({
+                                variables: {
+                                    _id,
+                                    newStatus:
+                                        status === RECORDSTATUS.ACTIVE
+                                            ? RECORDSTATUS.INACTIVE
+                                            : RECORDSTATUS.ACTIVE
+                                }
+                            });
+                        }}
+                    />
             }
         ];
 

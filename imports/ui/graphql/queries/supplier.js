@@ -11,6 +11,7 @@ const GETSUPPLIERS = gql`
             name
             address
             phoneNumber
+            status
         }
     }
 `;
@@ -22,6 +23,7 @@ const GETSUPPLIER = gql`
             name
             address
             phoneNumber
+            status
         }
     }
 `;
