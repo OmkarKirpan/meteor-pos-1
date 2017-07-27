@@ -16,8 +16,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import i18n from "meteor/universe:i18n";
 
-const mapStateToProps = ({ customer, supplier }) => {
-    return { customer, supplier };
+const mapStateToProps = ({ supplier }) => {
+    return { supplier };
 };
 
 const mapDispatchToProps = dispatch => {

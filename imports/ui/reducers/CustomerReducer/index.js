@@ -3,9 +3,6 @@ import update from "react-addons-update";
 
 const initialState = {
     customerList: {
-        customers: [],
-        error: false,
-        loading: false,
         current: 1,
         pageSize: 10,
         total: 0,
@@ -19,49 +16,22 @@ const initialState = {
     }
 };
 
-const CustomerReducer = (state = initialState, { type, payload }) => {
+const CustomerReducer = (state = initialState, { type, payload = {} }) => {
+    const { current, total, filter, isNew, customer } = payload;
     switch (type) {
-        case CUSTOMER.CHANGE_CUSTOMERS_PAGE:
-            const { current } = payload;
+        case CUSTOMER.CHANGE_CUSTOMER_PAGE:
             return update(state, {
                 customerList: {
                     current: { $set: current }
                 }
             });
-        case CUSTOMER.REFRESH_CUSTOMER_LIST_BEGIN:
-            return update(state, {
-                customerList: {
-                    error: { $set: false },
-                    loading: { $set: true }
-                }
-            });
-        case CUSTOMER.REFRESH_CUSTOMER_LIST_FINISHED:
-            const { data, total } = payload;
-            return update(state, {
-                customerList: {
-                    error: { $set: false },
-                    loading: { $set: false },
-                    customers: { $set: data },
-                    total: { $set: total }
-                }
-            });
-        case CUSTOMER.REFRESH_CUSTOMER_LIST_FAILED:
-            return update(state, {
-                customerList: {
-                    error: { $set: true },
-                    loading: { $set: false },
-                    customers: { $set: [] }
-                }
-            });
         case CUSTOMER.SEARCH_CUSTOMERS:
-            const { filter } = payload;
             return update(state, {
                 customerList: {
                     filter: { $set: filter }
                 }
             });
         case CUSTOMER.CUSTOMER_FORM_OPEN:
-            const { customer, isNew } = payload;
             return update(state, {
                 customerForm: {
                     isNew: { $set: isNew },
@@ -74,6 +44,12 @@ const CustomerReducer = (state = initialState, { type, payload }) => {
                 customerForm: {
                     visible: { $set: false },
                     editingCustomer: { $set: {} }
+                }
+            });
+        case CUSTOMER.CUSTOMER_FORM_CHANGED:
+            return update(state, {
+                customerForm: {
+                    editingCustomer: { $merge: customer }
                 }
             });
         default:

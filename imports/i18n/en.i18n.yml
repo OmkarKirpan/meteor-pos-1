@@ -9,14 +9,13 @@ customer-add: Add Customer
 customer-update: Update Customer
 customer-name: Name
 customer-address: Address
-customer-phone-number: Phone
+customer-phoneNumber: Phone
 customer-name-placeholder: Customer name
 customer-address-placeholder: Customer address
-customer-phone-number-placeholder: Customer phone
+customer-phoneNumber-placeholder: Customer phone
 customer-required-field-name: Customer name is required
 customer-required-field-address: Customer address is required
-customer-required-field-phone-number: Customer phone number is required
-customer-isnumeric-field-phone-number: Customer phone number must be numeric only
+customer-required-field-phoneNumber: Customer phone number is required
 customer-search: Search customer
 
 supplier-add: Add Supplier

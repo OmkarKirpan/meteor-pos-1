@@ -1,15 +1,12 @@
 import { CustomerForm, CustomerHeader, CustomerList } from "../../components";
 import React, { Component } from "react";
 import {
+    changeCustomerForm,
     changeCustomersPage,
     closeCustomerForm,
-    createCustomer,
-    deleteCustomer,
     editCustomerForm,
-    fetchCustomers,
     newCustomerForm,
-    searchCustomers,
-    updateCustomer
+    searchCustomers
 } from "../../actions";
 import { compose, withApollo } from "react-apollo";
 
@@ -29,13 +26,10 @@ const mapDispatchToProps = dispatch => {
             {
                 changeCustomersPage,
                 closeCustomerForm,
-                createCustomer,
-                deleteCustomer,
                 editCustomerForm,
-                fetchCustomers,
                 newCustomerForm,
                 searchCustomers,
-                updateCustomer
+                changeCustomerForm
             },
             dispatch
         )
@@ -45,12 +39,6 @@ const mapDispatchToProps = dispatch => {
 @compose(withApollo)
 @connect(mapStateToProps, mapDispatchToProps)
 class CustomerPage extends Component {
-    componentWillMount() {
-        const { client } = this.props;
-        const { searchCustomers } = this.props.actions;
-        searchCustomers({ client });
-    }
-
     render() {
         const { customer, client } = this.props;
         const { customerList, customerForm } = customer;
@@ -60,25 +48,22 @@ class CustomerPage extends Component {
             customers,
             current,
             pageSize,
-            total
+            total,
+            filter
         } = customerList;
         const { visible, editingCustomer, isNew } = customerForm;
         const {
             newCustomerForm,
             changeCustomersPage,
-            createCustomer,
             closeCustomerForm,
             searchCustomers,
-            deleteCustomer,
             editCustomerForm,
-            updateCustomer
+            changeCustomerForm
         } = this.props.actions;
 
         const customerHeaderProps = {
-            createCustomer,
             newCustomerForm,
-            searchCustomers,
-            deleteCustomer
+            searchCustomers
         };
 
         const customerListProps = {
@@ -90,18 +75,15 @@ class CustomerPage extends Component {
             total,
             changeCustomersPage,
             editCustomerForm,
-            deleteCustomer
+            filter
         };
 
         const customerFormProps = {
             visible,
-            client,
-            title: i18n.__(isNew ? "customer-add" : "customer-update"),
-            onOk: isNew ? createCustomer : updateCustomer,
-            onCancel: closeCustomerForm,
-            okText: i18n.__(isNew ? "create" : "update"),
-            cancelText: i18n.__("cancel"),
-            editingCustomer
+            isNew,
+            closeCustomerForm,
+            editingCustomer,
+            changeCustomerForm
         };
 
         return (

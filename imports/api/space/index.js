@@ -1,16 +1,19 @@
-import { CategoryApi, InventoryApi, SupplierApi } from "./apis";
+import { CategoryApi, CustomerApi, InventoryApi, SupplierApi } from "./apis";
 import {
     CategoryHandler,
+    CustomerHandler,
     InventoryHandler,
     SupplierHandler
 } from "./commandHandlers";
 import {
     CategoryProjection,
+    CustomerProjection,
     InventoryProjection,
     SupplierProjection
 } from "./projections";
 
 import Categories from "../../domain/Category/repository";
+import Customers from "../../domain/Customer/repository";
 import Inventories from "../../domain/Inventory/repository";
 import Suppliers from "../../domain/Supplier/repository";
 
@@ -36,7 +39,10 @@ const ServerApp = Space.Application.extend("Application", {
         CategoryApi,
         SupplierHandler,
         SupplierApi,
-        SupplierProjection
+        SupplierProjection,
+        CustomerHandler,
+        CustomerApi,
+        CustomerProjection
     ],
 
     onInitialize() {
@@ -46,12 +52,14 @@ const ServerApp = Space.Application.extend("Application", {
         this.injector.map("Inventories").to(Inventories);
         this.injector.map("Categories").to(Categories);
         this.injector.map("Suppliers").to(Suppliers);
+        this.injector.map("Customers").to(Customers);
     },
 
     onReset() {
         this.injector.get("Inventories").remove({});
         this.injector.get("Categories").remove({});
         this.injector.get("Suppliers").remove({});
+        this.injector.get("Customers").remove({});
     },
 
     onStart() {
@@ -60,7 +68,8 @@ const ServerApp = Space.Application.extend("Application", {
             .rebuild([
                 InventoryProjection,
                 CategoryProjection,
-                SupplierProjection
+                SupplierProjection,
+                CustomerProjection
             ]);
     }
 });

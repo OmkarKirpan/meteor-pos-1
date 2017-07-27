@@ -1,14 +1,11 @@
 export { toggleSidebar, toggleUserMenu, selectMenu } from "./AppActions";
 export {
+    changeCustomerForm,
     changeCustomersPage,
     closeCustomerForm,
-    createCustomer,
-    deleteCustomer,
     editCustomerForm,
-    fetchCustomers,
     newCustomerForm,
-    searchCustomers,
-    updateCustomer
+    searchCustomers
 } from "./CustomerActions";
 export {
     changeInventoriesPage,

@@ -1,10 +1,29 @@
-import { Form, Input, Modal } from "antd";
+import {
+    Button,
+    Form,
+    Icon,
+    Input,
+    InputNumber,
+    Modal,
+    Select,
+    Table
+} from "antd";
+import {
+    CREATECUSTOMER,
+    UPDATECUSTOMER
+} from "../../graphql/mutations/customer";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
+import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
+@graphql(CREATECUSTOMER, {
+    name: "createCustomer"
+})
+@graphql(UPDATECUSTOMER, {
+    name: "updateCustomer"
+})
 @compose(withApollo)
 class CustomerForm extends Component {
     constructor() {
@@ -13,48 +32,63 @@ class CustomerForm extends Component {
     }
 
     onOk() {
-        const { form, client, onOk } = this.props;
+        const {
+            form,
+            createCustomer,
+            updateCustomer,
+            isNew,
+            closeCustomerForm
+        } = this.props;
+        const { getFieldValue } = form;
+
         form.validateFields((errors, customer) => {
             if (!errors) {
-                onOk({
-                    client,
-                    customer
-                });
+                let mutation = isNew
+                    ? props => {
+                          return createCustomer(props);
+                      }
+                    : props => {
+                          return updateCustomer(props);
+                      };
+                mutation({
+                    variables: {
+                        customer: {
+                            ...customer
+                        }
+                    }
+                }).then(() => closeCustomerForm());
             }
         });
     }
 
     render() {
-        const {
-            form,
-            title,
-            visible,
-            onCancel,
-            okText,
-            cancelText
-        } = this.props;
-        const { getFieldDecorator } = form;
+        const { form, visible, closeCustomerForm, isNew } = this.props;
+        const { getFieldDecorator, getFieldValue } = form;
 
         const modalProps = {
-            title,
+            title: i18n.__(isNew ? "customer-add" : "customer-update"),
             visible,
-            onCancel,
-            okText,
-            cancelText,
+            onCancel: closeCustomerForm,
+            okText: i18n.__(isNew ? "create" : "update"),
+            cancelText: i18n.__("cancel"),
             onOk: this.onOk,
-            width: 300,
+            width: 400,
             maskClosable: false
         };
 
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item>
+                    <Form.Item className="inventory-form-inventory">
                         {getFieldDecorator("_id")(
                             <Input style={{ display: "none" }} />
                         )}
                     </Form.Item>
-                    <Form.Item label={i18n.__("customer-name")} hasFeedback>
+                    <Form.Item
+                        className="inventory-form-inventory"
+                        label={i18n.__("customer-name")}
+                        hasFeedback
+                    >
                         {getFieldDecorator("name", {
                             rules: [
                                 {
@@ -72,7 +106,11 @@ class CustomerForm extends Component {
                             />
                         )}
                     </Form.Item>
-                    <Form.Item label={i18n.__("customer-address")} hasFeedback>
+                    <Form.Item
+                        className="inventory-form-inventory"
+                        label={i18n.__("customer-address")}
+                        hasFeedback
+                    >
                         {getFieldDecorator("address", {
                             rules: [
                                 {
@@ -91,7 +129,8 @@ class CustomerForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        label={i18n.__("customer-phone-number")}
+                        className="inventory-form-inventory"
+                        label={i18n.__("customer-phoneNumber")}
                         hasFeedback
                     >
                         {getFieldDecorator("phoneNumber", {
@@ -99,21 +138,14 @@ class CustomerForm extends Component {
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "customer-required-field-phone-number"
-                                    )
-                                },
-                                {
-                                    required: false,
-                                    pattern: /[0-9]/,
-                                    message: i18n.__(
-                                        "customer-isnumeric-field-phone-number"
+                                        "customer-required-field-phoneNumber"
                                     )
                                 }
                             ]
                         })(
                             <Input
                                 placeholder={i18n.__(
-                                    "customer-phone-number-placeholder"
+                                    "customer-phoneNumber-placeholder"
                                 )}
                             />
                         )}
@@ -125,14 +157,12 @@ class CustomerForm extends Component {
 }
 
 CustomerForm.propTypes = {
-    visible: PropTypes.bool.isRequired,
-    title: PropTypes.any.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onOk: PropTypes.func.isRequired
+    visible: PropTypes.bool.isRequired
 };
 
 const mapPropsToFields = ({ editingCustomer }) => {
-    const { _id, name, address, phoneNumber, status } = editingCustomer;
+    const { _id, name, address, phoneNumber } = editingCustomer;
+
     return {
         _id: {
             value: _id
@@ -145,11 +175,13 @@ const mapPropsToFields = ({ editingCustomer }) => {
         },
         phoneNumber: {
             value: phoneNumber
-        },
-        status: {
-            value: status
         }
     };
 };
 
-export default Form.create({ mapPropsToFields })(CustomerForm);
+const onValuesChange = (props, customer) => {
+    const { changeCustomerForm } = props;
+    changeCustomerForm({ customer });
+};
+
+export default Form.create({ mapPropsToFields, onValuesChange })(CustomerForm);

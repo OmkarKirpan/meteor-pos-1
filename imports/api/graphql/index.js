@@ -3,6 +3,10 @@ import {
     typeDefs as categoryTypeDefs
 } from "./Category";
 import {
+    resolver as customerResolver,
+    typeDefs as customerTypeDefs
+} from "./Customer";
+import {
     resolver as inventoryResolver,
     typeDefs as inventoryTypeDefs
 } from "./Inventory";
@@ -17,11 +21,13 @@ import { extend } from "lodash";
 export const typeDefs = mergeTypes([
     inventoryTypeDefs,
     categoryTypeDefs,
-    supplierTypeDefs
+    supplierTypeDefs,
+    customerTypeDefs
 ]);
 
 export const resolvers = mergeResolvers([
     inventoryResolver,
     categoryResolver,
-    supplierResolver
+    supplierResolver,
+    customerResolver
 ]);
