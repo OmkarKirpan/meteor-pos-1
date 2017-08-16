@@ -4,7 +4,7 @@ const {
     CreateSupplier,
     UpdateSupplier,
     ActivateSupplier,
-    InactivateSupplier
+    DeactivateSupplier
 } = commands;
 
 const SupplierApi = Space.messaging.Api.extend("SupplierApi", {
@@ -19,7 +19,7 @@ const SupplierApi = Space.messaging.Api.extend("SupplierApi", {
                 [CreateSupplier]: this._createSupplier,
                 [UpdateSupplier]: this._updateSupplier,
                 [ActivateSupplier]: this._activateSupplier,
-                [InactivateSupplier]: this._inactivateSupplier
+                [DeactivateSupplier]: this._deactivateSupplier
             }
         ];
     },
@@ -36,7 +36,7 @@ const SupplierApi = Space.messaging.Api.extend("SupplierApi", {
         this.commandBus.send(command);
     },
 
-    _inactivateSupplier(context, command) {
+    _deactivateSupplier(context, command) {
         this.commandBus.send(command);
     }
 });

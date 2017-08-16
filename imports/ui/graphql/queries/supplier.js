@@ -11,7 +11,8 @@ const GETSUPPLIERS = gql`
             name
             address
             phoneNumber
-            status
+            cellphoneNumber
+            entityStatus
         }
     }
 `;
@@ -23,7 +24,8 @@ const GETSUPPLIER = gql`
             name
             address
             phoneNumber
-            status
+            cellphoneNumber
+            entityStatus
         }
     }
 `;

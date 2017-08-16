@@ -4,7 +4,7 @@ const {
     CreateCategory,
     UpdateCategory,
     ActivateCategory,
-    InactivateCategory
+    DeactivateCategory
 } = commands;
 
 const CategoryApi = Space.messaging.Api.extend("CategoryApi", {
@@ -19,7 +19,7 @@ const CategoryApi = Space.messaging.Api.extend("CategoryApi", {
                 [CreateCategory]: this._createCategory,
                 [UpdateCategory]: this._updateCategory,
                 [ActivateCategory]: this._activateCategory,
-                [InactivateCategory]: this._inactivateCategory
+                [DeactivateCategory]: this._deactivateCategory
             }
         ];
     },
@@ -36,7 +36,7 @@ const CategoryApi = Space.messaging.Api.extend("CategoryApi", {
         this.commandBus.send(command);
     },
 
-    _inactivateCategory(context, command) {
+    _deactivateCategory(context, command) {
         this.commandBus.send(command);
     }
 });

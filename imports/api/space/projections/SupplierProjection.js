@@ -1,4 +1,4 @@
-import { RecordStatus } from "../../../constants";
+import { ENTITYSTATUS } from "../../../constants";
 import events from "../../../domain/Supplier/events";
 import pubsub from "../../graphql/pubsub";
 
@@ -6,7 +6,7 @@ const {
     SupplierCreated,
     SupplierUpdated,
     SupplierActivated,
-    SupplierInactivated
+    SupplierDeactivated
 } = events;
 
 const SupplierProjection = Space.eventSourcing.Projection.extend(
@@ -22,40 +22,53 @@ const SupplierProjection = Space.eventSourcing.Projection.extend(
                     [SupplierCreated]: this._onSupplierCreated,
                     [SupplierUpdated]: this._onSupplierUpdated,
                     [SupplierActivated]: this._onSupplierActivated,
-                    [SupplierInactivated]: this._onSupplierInactivated
+                    [SupplierDeactivated]: this._onSupplierDeactivated
                 }
             ];
         },
 
         _onSupplierCreated(event) {
-            event.status = RecordStatus.ACTIVE;
-            let {
+            event.entityStatus = ENTITYSTATUS.ACTIVE;
+            const {
                 _id,
                 name,
                 address,
                 phoneNumber,
+                cellphoneNumber,
+
                 createdAt,
                 updatedAt,
-                status
+                entityStatus
             } = event;
             this.suppliers.insert({
                 _id,
                 name,
                 address,
                 phoneNumber,
+                cellphoneNumber,
+
                 createdAt,
                 updatedAt,
-                status
+                entityStatus
             });
             pubsub.publish("SupplierCreated", event);
         },
 
         _onSupplierUpdated(event) {
-            let { _id, name, address, phoneNumber, updatedAt } = event;
-            let updatedFields = {
+            const {
+                _id,
                 name,
                 address,
                 phoneNumber,
+                cellphoneNumber,
+                updatedAt
+            } = event;
+            const updatedFields = {
+                name,
+                address,
+                phoneNumber,
+                cellphoneNumber,
+
                 updatedAt
             };
             this.suppliers.update(_id, {
@@ -65,19 +78,19 @@ const SupplierProjection = Space.eventSourcing.Projection.extend(
         },
 
         _onSupplierActivated(event) {
-            event.status = RecordStatus.ACTIVE;
-            let { _id, updatedAt, status } = event;
-            let updatedFields = { updatedAt, status };
+            event.entityStatus = ENTITYSTATUS.ACTIVE;
+            const { _id, updatedAt, entityStatus } = event;
+            const updatedFields = { updatedAt, entityStatus };
             this.suppliers.update(_id, { $set: { ...updatedFields } });
             pubsub.publish("SupplierActivated", event);
         },
 
-        _onSupplierInactivated(event) {
-            event.status = RecordStatus.INACTIVE;
-            let { _id, updatedAt, status } = event;
-            let updatedFields = { updatedAt, status };
+        _onSupplierDeactivated(event) {
+            event.entityStatus = ENTITYSTATUS.INACTIVE;
+            const { _id, updatedAt, entityStatus } = event;
+            const updatedFields = { updatedAt, entityStatus };
             this.suppliers.update(_id, { $set: { ...updatedFields } });
-            pubsub.publish("SupplierInactivated", event);
+            pubsub.publish("SupplierDeactivated", event);
         }
     }
 );

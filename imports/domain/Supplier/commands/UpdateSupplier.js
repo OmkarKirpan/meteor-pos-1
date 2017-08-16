@@ -3,5 +3,6 @@ export default {
     name: String,
     address: String,
     phoneNumber: String,
+    cellphoneNumber: String,
     updatedAt: Date
 };

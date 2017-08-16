@@ -1,10 +1,11 @@
 import { default as app } from "./AppReducer";
+import { default as brand } from "./BrandReducer";
 import { default as category } from "./CategoryReducer";
 import { client } from "../graphql";
 import { combineReducers } from "redux";
 import { default as customer } from "./CustomerReducer";
-import { default as inventory } from "./InventoryReducer";
-import { default as invoice } from "./InvoiceReducer";
+import { default as item } from "./ItemReducer";
+import { default as order } from "./OrderReducer";
 import { reducer as reduxForm } from "redux-form";
 import { routerReducer } from "react-router-redux";
 import { default as supplier } from "./SupplierReducer";
@@ -15,10 +16,12 @@ const rootReducer = combineReducers({
     apollo: client.reducer(),
     app,
     customer,
-    inventory,
+    item,
     supplier,
-    invoice,
-    category
+    order,
+    category,
+    brand,
+    order
 });
 
 export { rootReducer };

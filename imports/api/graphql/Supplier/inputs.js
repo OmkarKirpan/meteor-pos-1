@@ -7,6 +7,7 @@ export default `
         name: String
         address: String
         phoneNumber: String
+        cellphoneNumber: String
     }
 
     input UpdateSupplierInput {
@@ -14,5 +15,6 @@ export default `
         name: String
         address: String
         phoneNumber: String
+        cellphoneNumber: String
     }
 `;

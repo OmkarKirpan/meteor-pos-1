@@ -43,7 +43,7 @@ class SupplierForm extends Component {
 
         form.validateFields((errors, supplier) => {
             if (!errors) {
-                let mutation = isNew
+                const mutation = isNew
                     ? props => {
                           return createSupplier(props);
                       }
@@ -79,13 +79,13 @@ class SupplierForm extends Component {
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item className="inventory-form-inventory">
+                    <Form.Item className="item-form-item">
                         {getFieldDecorator("_id")(
                             <Input style={{ display: "none" }} />
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="inventory-form-inventory"
+                        className="item-form-item"
                         label={i18n.__("supplier-name")}
                         hasFeedback
                     >
@@ -107,7 +107,7 @@ class SupplierForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="inventory-form-inventory"
+                        className="item-form-item"
                         label={i18n.__("supplier-address")}
                         hasFeedback
                     >
@@ -129,7 +129,7 @@ class SupplierForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="inventory-form-inventory"
+                        className="item-form-item"
                         label={i18n.__("supplier-phoneNumber")}
                         hasFeedback
                     >
@@ -150,6 +150,28 @@ class SupplierForm extends Component {
                             />
                         )}
                     </Form.Item>
+                    <Form.Item
+                        className="item-form-item"
+                        label={i18n.__("supplier-cellphoneNumber")}
+                        hasFeedback
+                    >
+                        {getFieldDecorator("cellphoneNumber", {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: i18n.__(
+                                        "supplier-required-field-cellphoneNumber"
+                                    )
+                                }
+                            ]
+                        })(
+                            <Input
+                                placeholder={i18n.__(
+                                    "supplier-cellphoneNumber-placeholder"
+                                )}
+                            />
+                        )}
+                    </Form.Item>
                 </Form>
             </Modal>
         );
@@ -161,7 +183,13 @@ SupplierForm.propTypes = {
 };
 
 const mapPropsToFields = ({ editingSupplier }) => {
-    const { _id, name, address, phoneNumber } = editingSupplier;
+    const {
+        _id,
+        name,
+        address,
+        phoneNumber,
+        cellphoneNumber
+    } = editingSupplier;
 
     return {
         _id: {
@@ -175,7 +203,8 @@ const mapPropsToFields = ({ editingSupplier }) => {
         },
         phoneNumber: {
             value: phoneNumber
-        }
+        },
+        cellphoneNumber: { value: cellphoneNumber }
     };
 };
 

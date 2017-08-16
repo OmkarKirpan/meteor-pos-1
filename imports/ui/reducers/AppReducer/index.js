@@ -1,4 +1,4 @@
-import { APP } from "../../constants";
+import { APP } from "../../actions/actionTypes";
 import update from "react-addons-update";
 
 const initialState = {

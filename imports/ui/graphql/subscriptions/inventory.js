@@ -1,45 +1,42 @@
 import { gql } from "react-apollo";
 
-const INVENTORYEVENTSUBSCRIPTION = gql`
-    subscription inventoryEvent($inventoryIds: [String]) {
-        inventoryEvent(inventoryIds: $inventoryIds) {
-            InventoryCreated {
+const ITEMEVENTSUBSCRIPTION = gql`
+    subscription itemEvent($itemIds: [String]) {
+        itemEvent(itemIds: $itemIds) {
+            ItemCreated {
+                _id
+            }
+            ItemUpdated {
                 _id
                 name
                 basePrice
                 baseUnit
-                stock
-                prices {
+                itemPrices {
                     unit
                     price
                     multiplier
                 }
-                status
-            }
-            InventoryUpdated {
-                _id
-                name
-                basePrice
-                baseUnit
-                prices {
-                    unit
-                    price
-                    multiplier
+                categoryId
+                category {
+                    _id
+                    name
+                }
+                brandId
+                brand {
+                    _id
+                    name
                 }
             }
-            InventoryActivated {
+            ItemActivated {
                 _id
-                status
+                entityStatus
             }
-            InventoryInactivated {
+            ItemDeactivated {
                 _id
-                status
-            }
-            CategoryStatusChanged {
-                _id
+                entityStatus
             }
         }
     }
 `;
 
-export { INVENTORYEVENTSUBSCRIPTION };
+export { ITEMEVENTSUBSCRIPTION };

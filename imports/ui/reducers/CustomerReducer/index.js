@@ -1,4 +1,4 @@
-import { CUSTOMER } from "../../constants";
+import { CUSTOMER } from "../../actions/actionTypes";
 import update from "react-addons-update";
 
 const initialState = {
@@ -17,25 +17,24 @@ const initialState = {
 };
 
 const CustomerReducer = (state = initialState, { type, payload = {} }) => {
-    const { current, total, filter, isNew, customer } = payload;
     switch (type) {
         case CUSTOMER.CHANGE_CUSTOMER_PAGE:
             return update(state, {
                 customerList: {
-                    current: { $set: current }
+                    current: { $set: payload.current }
                 }
             });
         case CUSTOMER.SEARCH_CUSTOMERS:
             return update(state, {
                 customerList: {
-                    filter: { $set: filter }
+                    filter: { $merge: payload.filter }
                 }
             });
         case CUSTOMER.CUSTOMER_FORM_OPEN:
             return update(state, {
                 customerForm: {
-                    isNew: { $set: isNew },
-                    editingCustomer: { $set: customer },
+                    isNew: { $set: payload.isNew },
+                    editingCustomer: { $set: payload.customer },
                     visible: { $set: true }
                 }
             });
@@ -49,7 +48,7 @@ const CustomerReducer = (state = initialState, { type, payload = {} }) => {
         case CUSTOMER.CUSTOMER_FORM_CHANGED:
             return update(state, {
                 customerForm: {
-                    editingCustomer: { $merge: customer }
+                    editingCustomer: { $merge: payload.customer }
                 }
             });
         default:

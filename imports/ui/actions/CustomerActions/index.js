@@ -1,6 +1,6 @@
 import { GETCUSTOMER, GETCUSTOMERS } from "../../graphql/queries/customer";
 
-import { CUSTOMER } from "../../constants";
+import { CUSTOMER } from "../actionTypes";
 import { gql } from "react-apollo";
 
 const changeCustomersPage = ({ client, current }) => (dispatch, getState) => {
@@ -35,6 +35,7 @@ const editCustomerForm = ({ client, _id }) => dispatch => {
     client
         .query({
             query: GETCUSTOMER,
+            fetchPolicy: "network-only",
             variables: {
                 _id
             }
@@ -50,7 +51,7 @@ const editCustomerForm = ({ client, _id }) => dispatch => {
                 }
             });
         })
-        .catch(error => console.dir(error));
+        .catch(error => console.error(error));
 };
 
 const closeCustomerForm = () => dispatch => {

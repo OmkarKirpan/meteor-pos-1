@@ -1,20 +1,33 @@
-import { CategoryApi, CustomerApi, InventoryApi, SupplierApi } from "./apis";
 import {
+    BrandApi,
+    CategoryApi,
+    CustomerApi,
+    ItemApi,
+    OrderApi,
+    SupplierApi
+} from "./apis";
+import {
+    BrandHandler,
     CategoryHandler,
     CustomerHandler,
-    InventoryHandler,
+    ItemHandler,
+    OrderHandler,
     SupplierHandler
 } from "./commandHandlers";
 import {
+    BrandProjection,
     CategoryProjection,
     CustomerProjection,
-    InventoryProjection,
+    ItemProjection,
+    OrderProjection,
     SupplierProjection
 } from "./projections";
 
+import Brands from "../../domain/Brand/repository";
 import Categories from "../../domain/Category/repository";
 import Customers from "../../domain/Customer/repository";
-import Inventories from "../../domain/Inventory/repository";
+import Items from "../../domain/Item/repository";
+import Orders from "../../domain/Order/repository";
 import Suppliers from "../../domain/Supplier/repository";
 
 const ServerApp = Space.Application.extend("Application", {
@@ -31,9 +44,9 @@ const ServerApp = Space.Application.extend("Application", {
     requiredModules: ["Space.messaging", "Space.eventSourcing"],
 
     singletons: [
-        InventoryHandler,
-        InventoryProjection,
-        InventoryApi,
+        ItemHandler,
+        ItemProjection,
+        ItemApi,
         CategoryHandler,
         CategoryProjection,
         CategoryApi,
@@ -42,34 +55,46 @@ const ServerApp = Space.Application.extend("Application", {
         SupplierProjection,
         CustomerHandler,
         CustomerApi,
-        CustomerProjection
+        CustomerProjection,
+        BrandHandler,
+        BrandApi,
+        BrandProjection,
+        OrderHandler,
+        OrderApi,
+        OrderProjection
     ],
 
     onInitialize() {
         this.injector
             .map("ProjectionBuilder")
             .to(Space.eventSourcing.ProjectionRebuilder.create());
-        this.injector.map("Inventories").to(Inventories);
+        this.injector.map("Items").to(Items);
         this.injector.map("Categories").to(Categories);
         this.injector.map("Suppliers").to(Suppliers);
         this.injector.map("Customers").to(Customers);
+        this.injector.map("Brands").to(Brands);
+        this.injector.map("Orders").to(Orders);
     },
 
     onReset() {
-        this.injector.get("Inventories").remove({});
+        this.injector.get("Items").remove({});
         this.injector.get("Categories").remove({});
         this.injector.get("Suppliers").remove({});
         this.injector.get("Customers").remove({});
+        this.injector.get("Brands").remove({});
+        this.injector.get("Orders").remove({});
     },
 
     onStart() {
         this.injector
             .get("ProjectionBuilder")
             .rebuild([
-                InventoryProjection,
+                ItemProjection,
                 CategoryProjection,
                 SupplierProjection,
-                CustomerProjection
+                CustomerProjection,
+                BrandProjection,
+                OrderProjection
             ]);
     }
 });

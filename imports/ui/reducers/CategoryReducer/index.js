@@ -1,4 +1,4 @@
-import { CATEGORY } from "../../constants";
+import { CATEGORY } from "../../actions/actionTypes";
 import update from "react-addons-update";
 
 const initialState = {
@@ -17,25 +17,24 @@ const initialState = {
 };
 
 const CategoryReducer = (state = initialState, { type, payload = {} }) => {
-    const { current, total, filter, isNew, category } = payload;
     switch (type) {
         case CATEGORY.CHANGE_CATEGORY_PAGE:
             return update(state, {
                 categoryList: {
-                    current: { $set: current }
+                    current: { $set: payload.current }
                 }
             });
         case CATEGORY.SEARCH_CATEGORIES:
             return update(state, {
                 categoryList: {
-                    filter: { $set: filter }
+                    filter: { $merge: payload.filter }
                 }
             });
         case CATEGORY.CATEGORY_FORM_OPEN:
             return update(state, {
                 categoryForm: {
-                    isNew: { $set: isNew },
-                    editingCategory: { $set: category },
+                    isNew: { $set: payload.isNew },
+                    editingCategory: { $set: payload.category },
                     visible: { $set: true }
                 }
             });
@@ -49,7 +48,7 @@ const CategoryReducer = (state = initialState, { type, payload = {} }) => {
         case CATEGORY.CATEGORY_FORM_CHANGED:
             return update(state, {
                 categoryForm: {
-                    editingCategory: { $merge: category }
+                    editingCategory: { $merge: payload.category }
                 }
             });
         default:

@@ -1,4 +1,4 @@
-import { SUPPLIER } from "../../constants";
+import { SUPPLIER } from "../../actions/actionTypes";
 import update from "react-addons-update";
 
 const initialState = {
@@ -17,25 +17,24 @@ const initialState = {
 };
 
 const SupplierReducer = (state = initialState, { type, payload = {} }) => {
-    const { current, total, filter, isNew, supplier } = payload;
     switch (type) {
         case SUPPLIER.CHANGE_SUPPLIER_PAGE:
             return update(state, {
                 supplierList: {
-                    current: { $set: current }
+                    current: { $set: payload.current }
                 }
             });
         case SUPPLIER.SEARCH_SUPPLIERS:
             return update(state, {
                 supplierList: {
-                    filter: { $set: filter }
+                    filter: { $merge: payload.filter }
                 }
             });
         case SUPPLIER.SUPPLIER_FORM_OPEN:
             return update(state, {
                 supplierForm: {
-                    isNew: { $set: isNew },
-                    editingSupplier: { $set: supplier },
+                    isNew: { $set: payload.isNew },
+                    editingSupplier: { $set: payload.supplier },
                     visible: { $set: true }
                 }
             });
@@ -49,7 +48,7 @@ const SupplierReducer = (state = initialState, { type, payload = {} }) => {
         case SUPPLIER.SUPPLIER_FORM_CHANGED:
             return update(state, {
                 supplierForm: {
-                    editingSupplier: { $merge: supplier }
+                    editingSupplier: { $merge: payload.supplier }
                 }
             });
         default:

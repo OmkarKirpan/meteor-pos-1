@@ -43,7 +43,7 @@ class CategoryForm extends Component {
 
         form.validateFields((errors, category) => {
             if (!errors) {
-                let mutation = isNew
+                const mutation = isNew
                     ? props => {
                           return createCategory(props);
                       }
@@ -79,13 +79,13 @@ class CategoryForm extends Component {
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item className="inventory-form-inventory">
+                    <Form.Item className="item-form-item">
                         {getFieldDecorator("_id")(
                             <Input style={{ display: "none" }} />
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="inventory-form-inventory"
+                        className="item-form-item"
                         label={i18n.__("category-name")}
                         hasFeedback
                     >

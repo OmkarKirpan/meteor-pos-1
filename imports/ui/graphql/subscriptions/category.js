@@ -5,8 +5,6 @@ const CATEGORYEVENTSUBSCRIPTION = gql`
         categoryEvent(categoryIds: $categoryIds) {
             CategoryCreated {
                 _id
-                name
-                status
             }
             CategoryUpdated {
                 _id
@@ -14,11 +12,11 @@ const CATEGORYEVENTSUBSCRIPTION = gql`
             }
             CategoryActivated {
                 _id
-                status
+                entityStatus
             }
-            CategoryInactivated {
+            CategoryDeactivated {
                 _id
-                status
+                entityStatus
             }
         }
     }

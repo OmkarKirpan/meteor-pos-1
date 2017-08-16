@@ -3,16 +3,16 @@ import React, { Component } from "react";
 import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { CATEGORYEVENTSUBSCRIPTION } from "../../graphql/subscriptions/category";
+import { ENTITYSTATUS } from "../../../constants";
 import { GETCATEGORIES } from "../../graphql/queries/category";
 import PropTypes from "prop-types";
-import { RECORDSTATUS } from "../../constants";
 import { UPDATECATEGORYSTATUS } from "../../graphql/mutations/category";
 import { cloneDeep } from "lodash";
 import i18n from "meteor/universe:i18n";
 
 @graphql(GETCATEGORIES, {
     props: ({ data }) => {
-        let {
+        const {
             categories,
             categoryCount,
             loading,
@@ -54,52 +54,28 @@ class CategoryList extends Component {
                 }
             }
 
-            let categoryIds = newProps.categories.map(({ _id }) => _id);
+            const categoryIds = newProps.categories.map(({ _id }) => _id);
 
             this.unsubscribe = newProps.subscribeToMore({
                 document: CATEGORYEVENTSUBSCRIPTION,
                 variables: { categoryIds },
                 updateQuery: (previousResult, { subscriptionData }) => {
-                    let newResult = cloneDeep(previousResult);
-
-                    let { data } = subscriptionData;
-                    let { categoryEvent } = data;
-                    let {
-                        CategoryCreated,
-                        CategoryUpdated,
-                        CategoryActivated,
-                        CategoryInactivated
-                    } = categoryEvent;
+                    const { data } = subscriptionData;
+                    const { categoryEvent } = data;
+                    const { CategoryCreated } = categoryEvent;
 
                     if (CategoryCreated) {
-                        newProps.refetch();
-                    } else if (CategoryUpdated) {
-                        newResult.categories.forEach(category => {
-                            if (category._id === CategoryUpdated._id) {
-                                category.name = CategoryUpdated.name;
-                                category.basePrice = CategoryUpdated.basePrice;
-                                category.baseUnit = CategoryUpdated.baseUnit;
-                                category.prices = CategoryUpdated.prices;
-                                return;
-                            }
-                        });
-                    } else if (CategoryActivated) {
-                        newResult.categories.forEach(category => {
-                            if (category._id === CategoryActivated._id) {
-                                category.status = RECORDSTATUS.ACTIVE;
-                                return;
-                            }
-                        });
-                    } else if (CategoryInactivated) {
-                        newResult.categories.forEach(category => {
-                            if (category._id === CategoryInactivated._id) {
-                                category.status = RECORDSTATUS.INACTIVE;
-                                return;
+                        newProps.refetch({
+                            variables: {
+                                skip:
+                                    (newProps.current - 1) * newProps.pageSize,
+                                pageSize: newProps.pageSize,
+                                filter: newProps.filter || {}
                             }
                         });
                     }
 
-                    return newResult;
+                    return previousResult;
                 },
                 onError: err => console.error(err)
             });
@@ -121,7 +97,7 @@ class CategoryList extends Component {
             client,
             current,
             pageSize,
-            changeInventoriesPage,
+            changeItemsPage,
             editCategoryForm,
             updateCategoryStatus
         } = this.props;
@@ -133,7 +109,7 @@ class CategoryList extends Component {
                 dataIndex: "name",
                 width: "40%",
                 render: (name, category) =>
-                    category.status === RECORDSTATUS.ACTIVE
+                    category.entityStatus === ENTITYSTATUS.ACTIVE
                         ? <a
                               onClick={() => {
                                   const { _id } = category;
@@ -149,28 +125,28 @@ class CategoryList extends Component {
                           </strong>
             },
             {
-                title: i18n.__("status"),
-                key: "status",
-                dataIndex: "status",
+                title: i18n.__("entityStatus"),
+                key: "entityStatus",
+                dataIndex: "entityStatus",
                 width: "10%",
-                render: (status, category) =>
+                render: (entityStatus, category) =>
                     <Switch
                         className={
-                            "category-status-" +
-                            (status === RECORDSTATUS.ACTIVE
+                            "category-entityStatus-" +
+                            (entityStatus === ENTITYSTATUS.ACTIVE
                                 ? "active"
                                 : "inactive")
                         }
-                        checked={status === RECORDSTATUS.ACTIVE}
+                        checked={entityStatus === ENTITYSTATUS.ACTIVE}
                         onChange={() => {
                             const { _id } = category;
                             updateCategoryStatus({
                                 variables: {
                                     _id,
                                     newStatus:
-                                        status === RECORDSTATUS.ACTIVE
-                                            ? RECORDSTATUS.INACTIVE
-                                            : RECORDSTATUS.ACTIVE
+                                        entityStatus === ENTITYSTATUS.ACTIVE
+                                            ? ENTITYSTATUS.INACTIVE
+                                            : ENTITYSTATUS.ACTIVE
                                 }
                             });
                         }}
@@ -191,7 +167,7 @@ class CategoryList extends Component {
                 total,
                 pageSize,
                 onChange: page => {
-                    changeInventoriesPage({ client, current: page });
+                    changeItemsPage({ client, current: page });
                 }
             },
             locale: {

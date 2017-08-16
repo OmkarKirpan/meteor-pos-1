@@ -1,5 +1,5 @@
 import Customers from "../../Category/repository";
-import { RecordStatus } from "../../../constants";
+import { ENTITYSTATUS } from "../../../constants";
 import commands from "../commands/";
 import events from "../events";
 
@@ -7,14 +7,14 @@ const {
     CreateCustomer,
     UpdateCustomer,
     ActivateCustomer,
-    InactivateCustomer
+    DeactivateCustomer
 } = commands;
 
 const {
     CustomerCreated,
     CustomerUpdated,
     CustomerActivated,
-    CustomerInactivated
+    CustomerDeactivated
 } = events;
 
 const Customer = Space.eventSourcing.Aggregate.extend("Customer", {
@@ -23,7 +23,8 @@ const Customer = Space.eventSourcing.Aggregate.extend("Customer", {
         name: String,
         address: String,
         phoneNumber: String,
-        status: Number,
+        cellphoneNumber: String,
+        entityStatus: Number,
         createdAt: Date,
         updatedAt: Date
     },
@@ -33,7 +34,7 @@ const Customer = Space.eventSourcing.Aggregate.extend("Customer", {
             [CreateCustomer]: this._createCustomer,
             [UpdateCustomer]: this._updateCustomer,
             [ActivateCustomer]: this._activateCustomer,
-            [InactivateCustomer]: this._inactivateCustomer
+            [DeactivateCustomer]: this._deactivateCustomer
         };
     },
 
@@ -42,7 +43,7 @@ const Customer = Space.eventSourcing.Aggregate.extend("Customer", {
             [CustomerCreated]: this._onCustomerCreated,
             [CustomerUpdated]: this._onCustomerUpdated,
             [CustomerActivated]: this._onCustomerActivated,
-            [CustomerInactivated]: this._onCustomerInactivated
+            [CustomerDeactivated]: this._onCustomerDeactivated
         };
     },
 
@@ -76,9 +77,9 @@ const Customer = Space.eventSourcing.Aggregate.extend("Customer", {
         );
     },
 
-    _inactivateCustomer(command) {
+    _deactivateCustomer(command) {
         this.record(
-            new CustomerInactivated({
+            new CustomerDeactivated({
                 ...this._eventPropsFromCommand(command),
                 updatedAt: new Date()
             })
@@ -89,7 +90,7 @@ const Customer = Space.eventSourcing.Aggregate.extend("Customer", {
 
     _onCustomerCreated(event) {
         this._assignFields(event);
-        this.status = RecordStatus.ACTIVE;
+        this.entityStatus = ENTITYSTATUS.ACTIVE;
     },
 
     _onCustomerUpdated(event) {
@@ -98,12 +99,12 @@ const Customer = Space.eventSourcing.Aggregate.extend("Customer", {
 
     _onCustomerActivated(event) {
         this._assignFields(event);
-        this.status = RecordStatus.ACTIVE;
+        this.entityStatus = ENTITYSTATUS.ACTIVE;
     },
 
-    _onCustomerInactivated(event) {
+    _onCustomerDeactivated(event) {
         this._assignFields(event);
-        this.status = RecordStatus.INACTIVE;
+        this.entityStatus = ENTITYSTATUS.INACTIVE;
     }
 });
 

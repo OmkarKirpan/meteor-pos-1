@@ -9,7 +9,7 @@ const GETCATEGORIES = gql`
         categories(skip: $skip, pageSize: $pageSize, filter: $filter) {
             _id
             name
-            status
+            entityStatus
         }
     }
 `;
@@ -19,7 +19,7 @@ const GETCATEGORY = gql`
         category(_id: $_id) {
             _id
             name
-            status
+            entityStatus
         }
     }
 `;

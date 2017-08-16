@@ -1,6 +1,6 @@
 import { GETCATEGORIES, GETCATEGORY } from "../../graphql/queries/category";
 
-import { CATEGORY } from "../../constants";
+import { CATEGORY } from "../actionTypes";
 import { gql } from "react-apollo";
 
 const changeCategoriesPage = ({ client, current }) => (dispatch, getState) => {
@@ -35,6 +35,7 @@ const editCategoryForm = ({ client, _id }) => dispatch => {
     client
         .query({
             query: GETCATEGORY,
+            fetchPolicy: "network-only",
             variables: {
                 _id
             }
@@ -50,7 +51,7 @@ const editCategoryForm = ({ client, _id }) => dispatch => {
                 }
             });
         })
-        .catch(error => console.dir(error));
+        .catch(error => console.error(error));
 };
 
 const closeCategoryForm = () => dispatch => {

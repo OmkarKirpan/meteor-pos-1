@@ -4,7 +4,7 @@ const {
     CreateCustomer,
     UpdateCustomer,
     ActivateCustomer,
-    InactivateCustomer
+    DeactivateCustomer
 } = commands;
 
 const CustomerApi = Space.messaging.Api.extend("CustomerApi", {
@@ -19,7 +19,7 @@ const CustomerApi = Space.messaging.Api.extend("CustomerApi", {
                 [CreateCustomer]: this._createCustomer,
                 [UpdateCustomer]: this._updateCustomer,
                 [ActivateCustomer]: this._activateCustomer,
-                [InactivateCustomer]: this._inactivateCustomer
+                [DeactivateCustomer]: this._deactivateCustomer
             }
         ];
     },
@@ -36,7 +36,7 @@ const CustomerApi = Space.messaging.Api.extend("CustomerApi", {
         this.commandBus.send(command);
     },
 
-    _inactivateCustomer(context, command) {
+    _deactivateCustomer(context, command) {
         this.commandBus.send(command);
     }
 });

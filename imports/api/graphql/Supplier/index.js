@@ -1,4 +1,4 @@
-import { RecordStatus } from "../../../constants";
+import { ENTITYSTATUS } from "../../../constants";
 import Suppliers from "../../../domain/Supplier/repository";
 import commands from "../../../domain/Supplier/commands";
 import events from "../../../domain/Supplier/events";
@@ -17,21 +17,21 @@ const {
     CreateSupplier,
     UpdateSupplier,
     ActivateSupplier,
-    InactivateSupplier
+    DeactivateSupplier
 } = commands;
 
 const {
     SupplierCreated,
     SupplierUpdated,
     SupplierActivated,
-    SupplierInactivated
+    SupplierDeactivated
 } = events;
 
 const queryResolver = {
     Query: {
         suppliers(_, { filter, skip, pageSize }, context) {
-            let { name } = filter || {};
-            let queryFilter = {};
+            const { name } = filter || {};
+            const queryFilter = {};
             if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
             return Suppliers.find(queryFilter, {
                 skip,
@@ -42,8 +42,8 @@ const queryResolver = {
             }).fetch();
         },
         supplierCount(_, { filter }, context) {
-            let { name } = filter || {};
-            let queryFilter = {};
+            const { name } = filter || {};
+            const queryFilter = {};
             if (name) queryFilter["name"] = name;
             return Suppliers.find(queryFilter).count();
         },
@@ -55,43 +55,51 @@ const queryResolver = {
 
 const mutationResolver = {
     Mutation: {
-        createSupplier(_, { supplier }, context) {
-            let { name, address, phoneNumber } = supplier;
-            let _id = uuid.v4();
-            let createSupplierCommand = new CreateSupplier({
+        async createSupplier(_, { supplier }, context) {
+            const { name, address, phoneNumber, cellphoneNumber } = supplier;
+            const _id = uuid.v4();
+            const createSupplierCommand = new CreateSupplier({
                 targetId: _id,
                 _id,
                 name,
                 address,
                 phoneNumber,
+                cellphoneNumber,
                 createdAt: new Date(),
                 updatedAt: new Date()
             });
             SupplierApi.send(createSupplierCommand);
             return _id;
         },
-        updateSupplier(_, { supplier }, context) {
-            let { _id, name, address, phoneNumber } = supplier;
-            let updateSupplierCommand = new UpdateSupplier({
+        async updateSupplier(_, { supplier }, context) {
+            const {
+                _id,
+                name,
+                address,
+                phoneNumber,
+                cellphoneNumber
+            } = supplier;
+            const updateSupplierCommand = new UpdateSupplier({
                 targetId: _id,
                 _id,
                 name,
                 address,
                 phoneNumber,
+                cellphoneNumber,
                 updatedAt: new Date()
             });
             SupplierApi.send(updateSupplierCommand);
             return _id;
         },
-        updateSupplierStatus(_, { _id, newStatus }) {
-            let updateStatusCommand =
-                newStatus === RecordStatus.ACTIVE
+        async updateSupplierStatus(_, { _id, newStatus }) {
+            const updateStatusCommand =
+                newStatus === ENTITYSTATUS.ACTIVE
                     ? new ActivateSupplier({
                           targetId: _id,
                           _id,
                           updatedAt: new Date()
                       })
-                    : new InactivateSupplier({
+                    : new DeactivateSupplier({
                           targetId: _id,
                           _id,
                           updatedAt: new Date()
@@ -111,29 +119,29 @@ const subscriptionResolver = {
                         [SupplierCreated],
                         [SupplierUpdated],
                         [SupplierActivated],
-                        [SupplierInactivated]
+                        [SupplierDeactivated]
                     ]),
                 (payload, variables) => {
-                    let { supplierIds } = variables;
+                    const { supplierIds } = variables;
                     if (
                         payload instanceof SupplierUpdated ||
                         payload instanceof SupplierActivated ||
-                        payload instanceof SupplierInactivated
+                        payload instanceof SupplierDeactivated
                     )
                         return supplierIds.indexOf(payload._id) > -1;
                     return true;
                 }
             ),
             resolve: (payload, args, context, info) => {
-                let data = {};
+                const data = {};
                 if (payload instanceof SupplierCreated)
                     data[[SupplierCreated]] = payload;
                 else if (payload instanceof SupplierUpdated)
                     data[[SupplierUpdated]] = payload;
                 else if (payload instanceof SupplierActivated)
                     data[[SupplierActivated]] = payload;
-                else if (payload instanceof SupplierInactivated)
-                    data[[SupplierInactivated]] = payload;
+                else if (payload instanceof SupplierDeactivated)
+                    data[[SupplierDeactivated]] = payload;
                 return data;
             }
         }

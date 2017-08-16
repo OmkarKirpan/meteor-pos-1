@@ -5,23 +5,21 @@ const CUSTOMEREVENTSUBSCRIPTION = gql`
         customerEvent(customerIds: $customerIds) {
             CustomerCreated {
                 _id
-                name
-                address
-                phoneNumber
             }
             CustomerUpdated {
                 _id
                 name
                 address
                 phoneNumber
+                cellphoneNumber
             }
             CustomerActivated {
                 _id
-                status
+                entityStatus
             }
-            CustomerInactivated {
+            CustomerDeactivated {
                 _id
-                status
+                entityStatus
             }
         }
     }

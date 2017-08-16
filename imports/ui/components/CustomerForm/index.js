@@ -43,7 +43,7 @@ class CustomerForm extends Component {
 
         form.validateFields((errors, customer) => {
             if (!errors) {
-                let mutation = isNew
+                const mutation = isNew
                     ? props => {
                           return createCustomer(props);
                       }
@@ -79,13 +79,13 @@ class CustomerForm extends Component {
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item className="inventory-form-inventory">
+                    <Form.Item className="item-form-item">
                         {getFieldDecorator("_id")(
                             <Input style={{ display: "none" }} />
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="inventory-form-inventory"
+                        className="item-form-item"
                         label={i18n.__("customer-name")}
                         hasFeedback
                     >
@@ -107,7 +107,7 @@ class CustomerForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="inventory-form-inventory"
+                        className="item-form-item"
                         label={i18n.__("customer-address")}
                         hasFeedback
                     >
@@ -129,7 +129,7 @@ class CustomerForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="inventory-form-inventory"
+                        className="item-form-item"
                         label={i18n.__("customer-phoneNumber")}
                         hasFeedback
                     >
@@ -150,6 +150,28 @@ class CustomerForm extends Component {
                             />
                         )}
                     </Form.Item>
+                    <Form.Item
+                        className="item-form-item"
+                        label={i18n.__("customer-cellphoneNumber")}
+                        hasFeedback
+                    >
+                        {getFieldDecorator("cellphoneNumber", {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: i18n.__(
+                                        "customer-required-field-cellphoneNumber"
+                                    )
+                                }
+                            ]
+                        })(
+                            <Input
+                                placeholder={i18n.__(
+                                    "customer-cellphoneNumber-placeholder"
+                                )}
+                            />
+                        )}
+                    </Form.Item>
                 </Form>
             </Modal>
         );
@@ -161,7 +183,13 @@ CustomerForm.propTypes = {
 };
 
 const mapPropsToFields = ({ editingCustomer }) => {
-    const { _id, name, address, phoneNumber } = editingCustomer;
+    const {
+        _id,
+        name,
+        address,
+        phoneNumber,
+        cellphoneNumber
+    } = editingCustomer;
 
     return {
         _id: {
@@ -175,7 +203,8 @@ const mapPropsToFields = ({ editingCustomer }) => {
         },
         phoneNumber: {
             value: phoneNumber
-        }
+        },
+        cellphoneNumber: { value: cellphoneNumber }
     };
 };
 

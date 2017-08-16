@@ -4,13 +4,14 @@ export default `
         name: String
         address: String
         phoneNumber: String
-        status: Int
+        cellphoneNumber: String
+        entityStatus: Int
     }
 
     type SupplierEvent {
         SupplierCreated: Supplier
         SupplierUpdated: Supplier
         SupplierActivated: Supplier
-        SupplierInactivated: Supplier
+        SupplierDeactivated: Supplier
     }
 `;

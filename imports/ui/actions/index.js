@@ -8,15 +8,15 @@ export {
     searchCustomers
 } from "./CustomerActions";
 export {
-    changeInventoriesPage,
-    closeInventoryForm,
-    editInventoryForm,
-    newInventoryForm,
-    searchInventories,
-    changeInventoryForm,
-    searchInventoryCategories,
-    getInventoryCategory
-} from "./InventoryActions";
+    changeItemsPage,
+    closeItemForm,
+    editItemForm,
+    newItemForm,
+    searchItems,
+    changeItemForm,
+    searchItemCategories,
+    searchItemBrands
+} from "./ItemActions";
 export {
     changeSupplierForm,
     changeSuppliersPage,
@@ -26,16 +26,19 @@ export {
     searchSuppliers
 } from "./SupplierActions";
 export {
-    changeInvoicesPage,
-    closeInvoiceForm,
-    createInvoice,
-    deleteInvoice,
-    editInvoiceForm,
-    fetchInvoices,
-    newInvoiceForm,
-    searchInvoices,
-    updateInvoice
-} from "./InvoiceActions";
+    changeOrderForm,
+    changeOrdersPage,
+    closeOrderForm,
+    editOrderForm,
+    newOrderForm,
+    searchOrderCustomers,
+    searchOrderItems,
+    searchOrders,
+    closeOrderItemForm,
+    editOrderItemForm,
+    newOrderItemForm,
+    changeOrderItemForm
+} from "./OrderActions";
 export {
     changeCategoriesPage,
     changeCategoryForm,
@@ -44,3 +47,11 @@ export {
     newCategoryForm,
     searchCategories
 } from "./CategoryActions";
+export {
+    changeBrandForm,
+    changeBrandsPage,
+    closeBrandForm,
+    editBrandForm,
+    newBrandForm,
+    searchBrands
+} from "./BrandActions";

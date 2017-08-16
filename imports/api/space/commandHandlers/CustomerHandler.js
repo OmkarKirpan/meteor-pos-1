@@ -5,13 +5,13 @@ const {
     CreateCustomer,
     UpdateCustomer,
     ActivateCustomer,
-    InactivateCustomer
+    DeactivateCustomer
 } = commands;
 
 const CustomerHandler = Space.eventSourcing.Router.extend("CustomerHandler", {
     eventSourceable: Customer,
     initializingMessage: CreateCustomer,
-    routeCommands: [UpdateCustomer, ActivateCustomer, InactivateCustomer]
+    routeCommands: [UpdateCustomer, ActivateCustomer, DeactivateCustomer]
 });
 
 export default CustomerHandler;

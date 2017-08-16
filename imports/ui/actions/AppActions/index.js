@@ -1,4 +1,4 @@
-import { APP } from "../../constants";
+import { APP } from "../actionTypes";
 
 const toggleSidebar = () => dispatch => {
     dispatch({

@@ -11,7 +11,8 @@ const GETCUSTOMERS = gql`
             name
             address
             phoneNumber
-            status
+            cellphoneNumber
+            entityStatus
         }
     }
 `;
@@ -23,7 +24,8 @@ const GETCUSTOMER = gql`
             name
             address
             phoneNumber
-            status
+            cellphoneNumber
+            entityStatus
         }
     }
 `;

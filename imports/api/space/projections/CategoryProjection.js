@@ -1,4 +1,4 @@
-import { RecordStatus } from "../../../constants";
+import { ENTITYSTATUS } from "../../../constants";
 import events from "../../../domain/Category/events";
 import pubsub from "../../graphql/pubsub";
 
@@ -6,7 +6,7 @@ const {
     CategoryCreated,
     CategoryUpdated,
     CategoryActivated,
-    CategoryInactivated
+    CategoryDeactivated
 } = events;
 
 const CategoryProjection = Space.eventSourcing.Projection.extend(
@@ -22,18 +22,18 @@ const CategoryProjection = Space.eventSourcing.Projection.extend(
                     [CategoryCreated]: this._onCategoryCreated,
                     [CategoryUpdated]: this._onCategoryUpdated,
                     [CategoryActivated]: this._onCategoryActivated,
-                    [CategoryInactivated]: this._onCategoryInactivated
+                    [CategoryDeactivated]: this._onCategoryDeactivated
                 }
             ];
         },
 
         _onCategoryCreated(event) {
-            event.status = RecordStatus.ACTIVE;
-            let { _id, name, createdAt, updatedAt, status } = event;
+            event.entityStatus = ENTITYSTATUS.ACTIVE;
+            const { _id, name, createdAt, updatedAt, entityStatus } = event;
             this.categories.insert({
                 _id,
                 name,
-                status,
+                entityStatus,
                 createdAt,
                 updatedAt
             });
@@ -41,8 +41,8 @@ const CategoryProjection = Space.eventSourcing.Projection.extend(
         },
 
         _onCategoryUpdated(event) {
-            let { _id, name, updatedAt } = event;
-            let updatedFields = {
+            const { _id, name, updatedAt } = event;
+            const updatedFields = {
                 name,
                 updatedAt
             };
@@ -53,23 +53,23 @@ const CategoryProjection = Space.eventSourcing.Projection.extend(
         },
 
         _onCategoryActivated(event) {
-            event.status = RecordStatus.ACTIVE;
-            let { _id, updatedAt, status } = event;
-            let updatedFields = { updatedAt, status };
+            event.entityStatus = ENTITYSTATUS.ACTIVE;
+            const { _id, updatedAt, entityStatus } = event;
+            const updatedFields = { updatedAt, entityStatus };
             this.categories.update(_id, {
                 $set: { ...updatedFields }
             });
             pubsub.publish("CategoryActivated", event);
         },
 
-        _onCategoryInactivated(event) {
-            event.status = RecordStatus.INACTIVE;
-            let { _id, updatedAt, status } = event;
-            let updatedFields = { updatedAt, status };
+        _onCategoryDeactivated(event) {
+            event.entityStatus = ENTITYSTATUS.INACTIVE;
+            const { _id, updatedAt, entityStatus } = event;
+            const updatedFields = { updatedAt, entityStatus };
             this.categories.update(_id, {
                 $set: { ...updatedFields }
             });
-            pubsub.publish("CategoryInactivated", event);
+            pubsub.publish("CategoryDeactivated", event);
         }
     }
 );

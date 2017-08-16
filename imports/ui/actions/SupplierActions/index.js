@@ -1,6 +1,6 @@
 import { GETSUPPLIER, GETSUPPLIERS } from "../../graphql/queries/supplier";
 
-import { SUPPLIER } from "../../constants";
+import { SUPPLIER } from "../actionTypes";
 import { gql } from "react-apollo";
 
 const changeSuppliersPage = ({ client, current }) => (dispatch, getState) => {
@@ -35,6 +35,7 @@ const editSupplierForm = ({ client, _id }) => dispatch => {
     client
         .query({
             query: GETSUPPLIER,
+            fetchPolicy: "network-only",
             variables: {
                 _id
             }
@@ -50,7 +51,7 @@ const editSupplierForm = ({ client, _id }) => dispatch => {
                 }
             });
         })
-        .catch(error => console.dir(error));
+        .catch(error => console.error(error));
 };
 
 const closeSupplierForm = () => dispatch => {

@@ -1,8 +1,8 @@
 _locale: en-US
-create: Create,
+create: Create
 update: Update
 cancel: Cancel
-status: Status
+entityStatus: Status
 no-data: No Data
 
 customer-add: Add Customer
@@ -31,31 +31,31 @@ supplier-required-field-address: Supplier address is required
 supplier-required-field-phoneNumber: Supplier phone number is required
 supplier-search: Search supplier
 
-invoice-add: Add Invoice
-invoice-update: Update Invoice
+order-add: Add Order
+order-update: Update Order
 
-inventory-add: Add Inventory
-inventory-update: Update Inventory
-inventory-name: Name
-inventory-price: Price
-inventory-unit: Unit
-inventory-stock: Stock
-inventory-multiplier: Multiplier
-inventory-category: Category
-inventory-add-item-price: Add price
-inventory-name-placeholder: Inventory name
-inventory-price-placeholder: Inventory price
-inventory-unit-placeholder: Inventory unit
-inventory-stock-placeholder: Inventory stock
-inventory-multiplier-placeholder: Inventory stock multiplier
-inventory-category-placeholder: Inventory category 
-inventory-required-field-name: Inventory name is required
-inventory-required-field-price: Inventory price is required
-inventory-required-field-unit: Inventory unit is required
-inventory-required-field-stock: Inventory stock is required
-inventory-required-field-multiplier: Inventory multiplier is required
-inventory-required-field-category: Inventory category is required
-inventory-search: Search inventory
+item-add: Add Item
+item-update: Update Item
+item-name: Name
+item-price: Price
+item-unit: Unit
+item-stock: Stock
+item-multiplier: Multiplier
+item-category: Category
+item-add-item-price: Add price
+item-name-placeholder: Item name
+item-price-placeholder: Item price
+item-unit-placeholder: Item unit
+item-stock-placeholder: Item stock
+item-multiplier-placeholder: Item stock multiplier
+item-category-placeholder: Item category 
+item-required-field-name: Item name is required
+item-required-field-price: Item price is required
+item-required-field-unit: Item unit is required
+item-required-field-stock: Item stock is required
+item-required-field-multiplier: Item multiplier is required
+item-required-field-category: Item category is required
+item-search: Search item
 
 category-add: Add Category
 category-update: Update Category
@@ -63,3 +63,12 @@ category-name: Name
 category-name-placeholder: Category name
 category-required-field-name: Category name is required
 category-search: Search category
+
+brand-add: Add Brand
+brand-update: Update Brand
+brand-name: Name
+brand-name-placeholder: Brand name
+brand-required-field-name: Brand name is required
+brand-search: Search brand
+
+datepicker-today: Hari ini

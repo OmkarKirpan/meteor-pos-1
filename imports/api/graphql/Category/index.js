@@ -1,5 +1,5 @@
 import Categories from "../../../domain/Category/repository";
-import { RecordStatus } from "../../../constants";
+import { ENTITYSTATUS } from "../../../constants";
 import commands from "../../../domain/Category/commands";
 import events from "../../../domain/Category/events";
 import { extend } from "lodash";
@@ -17,21 +17,21 @@ const {
     CreateCategory,
     UpdateCategory,
     ActivateCategory,
-    InactivateCategory
+    DeactivateCategory
 } = commands;
 
 const {
-    InventoryCreatedCategory,
-    InventoryUpdatedCategory,
-    InventoryActivatedCategory,
-    InventoryInactivatedCategory
+    ItemCreatedCategory,
+    ItemUpdatedCategory,
+    ItemActivatedCategory,
+    ItemDeactivatedCategory
 } = events;
 
 const queryResolver = {
     Query: {
         categories(_, { filter, skip, pageSize }, context) {
-            let { name } = filter || {};
-            let queryFilter = {};
+            const { name } = filter || {};
+            const queryFilter = {};
             if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
             return Categories.find(queryFilter, {
                 skip,
@@ -42,8 +42,8 @@ const queryResolver = {
             }).fetch();
         },
         categoryCount(_, { filter }, context) {
-            let { name } = filter || {};
-            let queryFilter = {};
+            const { name } = filter || {};
+            const queryFilter = {};
             if (name) queryFilter["name"] = name;
             return Categories.find(queryFilter).count();
         },
@@ -55,10 +55,10 @@ const queryResolver = {
 
 const mutationResolver = {
     Mutation: {
-        createCategory(_, { category }, context) {
-            let { name } = category;
-            let _id = uuid.v4();
-            let createCategoryCommand = new CreateCategory({
+        async createCategory(_, { category }, context) {
+            const { name } = category;
+            const _id = uuid.v4();
+            const createCategoryCommand = new CreateCategory({
                 targetId: _id,
                 _id,
                 name,
@@ -68,9 +68,9 @@ const mutationResolver = {
             CategoryApi.send(createCategoryCommand);
             return _id;
         },
-        updateCategory(_, { category }, context) {
-            let { _id, name } = category;
-            let updateCategoryCommand = new UpdateCategory({
+        async updateCategory(_, { category }, context) {
+            const { _id, name } = category;
+            const updateCategoryCommand = new UpdateCategory({
                 targetId: _id,
                 _id,
                 name,
@@ -79,15 +79,15 @@ const mutationResolver = {
             CategoryApi.send(updateCategoryCommand);
             return _id;
         },
-        updateCategoryStatus(_, { _id, newStatus }) {
-            let updateStatusCommand =
-                newStatus === RecordStatus.ACTIVE
+        async updateCategoryStatus(_, { _id, newStatus }) {
+            const updateStatusCommand =
+                newStatus === ENTITYSTATUS.ACTIVE
                     ? new ActivateCategory({
                           targetId: _id,
                           _id,
                           updatedAt: new Date()
                       })
-                    : new InactivateCategory({
+                    : new DeactivateCategory({
                           targetId: _id,
                           _id,
                           updatedAt: new Date()
@@ -107,29 +107,29 @@ const subscriptionResolver = {
                         [CategoryCreated],
                         [CategoryUpdated],
                         [CategoryActivated],
-                        [CategoryInactivated]
+                        [CategoryDeactivated]
                     ]),
                 (payload, variables) => {
-                    let { categoryIds } = variables;
+                    const { categoryIds } = variables;
                     if (
                         payload instanceof CategoryUpdated ||
                         payload instanceof CategoryActivated ||
-                        payload instanceof CategoryInactivated
+                        payload instanceof CategoryDeactivated
                     )
                         return categoryIds.indexOf(payload._id) > -1;
                     return true;
                 }
             ),
             resolve: (payload, args, context, info) => {
-                let data = {};
+                const data = {};
                 if (payload instanceof CategoryCreated)
                     data[[CategoryCreated]] = payload;
                 else if (payload instanceof CategoryUpdated)
                     data[[CategoryUpdated]] = payload;
                 else if (payload instanceof CategoryActivated)
                     data[[CategoryActivated]] = payload;
-                else if (payload instanceof CategoryInactivated)
-                    data[[CategoryInactivated]] = payload;
+                else if (payload instanceof CategoryDeactivated)
+                    data[[CategoryDeactivated]] = payload;
                 return data;
             }
         }

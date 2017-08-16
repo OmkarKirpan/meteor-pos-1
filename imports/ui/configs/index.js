@@ -1,3 +1,5 @@
+import i18n from "meteor/universe:i18n";
+
 const LANGUAGE = "en";
 
 const OPEN_PAGES = ["/login"];
@@ -15,9 +17,9 @@ const MENUS = [
         exact: false,
         subMenus: [
             {
-                name: "Invoice",
+                name: "Order",
                 icon: "shopping-cart",
-                path: "/invoices",
+                path: "/orders",
                 exact: true
             },
             {
@@ -34,15 +36,21 @@ const MENUS = [
         exact: false,
         subMenus: [
             {
+                name: "Brand",
+                icon: "database",
+                path: "/brands",
+                exact: true
+            },
+            {
                 name: "Category",
                 icon: "database",
                 path: "/categories",
                 exact: true
             },
             {
-                name: "Inventory",
+                name: "Item",
                 icon: "database",
-                path: "/inventories",
+                path: "/items",
                 exact: true
             },
             {
@@ -61,4 +69,30 @@ const MENUS = [
     }
 ];
 
-export { LANGUAGE, OPEN_PAGES, MENUS };
+const LOCALE = {
+    DATEPICKER: {
+        lang: {
+            today: i18n.__("datepicker-today"),
+            backToToday: "Back to today",
+            ok: "Ok",
+            dateSelect: "Select date",
+            decadeSelect: "Choose a decade",
+            yearFormat: "YYYY",
+            dateFormat: "M/D/YYYY",
+            dayFormat: "D",
+            dateTimeFormat: "M/D/YYYY HH:mm:ss",
+            monthFormat: "MMMM",
+            monthBeforeYear: true,
+            previousMonth: "Previous month (PageUp)",
+            nextMonth: "Next month (PageDown)",
+            previousYear: "Last year (Control + left)",
+            nextYear: "Next year (Control + right)",
+            previousDecade: "Last decade",
+            nextDecade: "Next decade",
+            previousCentury: "Last century",
+            nextCentury: "Next century"
+        }
+    }
+};
+
+export { LANGUAGE, OPEN_PAGES, MENUS, LOCALE };

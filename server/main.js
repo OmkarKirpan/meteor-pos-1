@@ -4,6 +4,7 @@ import { resolvers, typeDefs } from "../imports/api/graphql";
 import ServerApp from "../imports/api/space";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { createApolloServer } from "meteor/apollo";
+import { initPrinter } from "../imports/util/printing";
 import { makeExecutableSchema } from "graphql-tools";
 
 const schema = makeExecutableSchema({
@@ -32,6 +33,7 @@ SubscriptionServer.create(
 
 Meteor.startup(function() {
     if (Meteor.isServer) {
+        initPrinter();
         ServerApp.start();
     }
 });

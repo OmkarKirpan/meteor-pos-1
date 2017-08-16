@@ -5,13 +5,13 @@ const {
     CreateSupplier,
     UpdateSupplier,
     ActivateSupplier,
-    InactivateSupplier
+    DeactivateSupplier
 } = commands;
 
 const SupplierHandler = Space.eventSourcing.Router.extend("SupplierHandler", {
     eventSourceable: Supplier,
     initializingMessage: CreateSupplier,
-    routeCommands: [UpdateSupplier, ActivateSupplier, InactivateSupplier]
+    routeCommands: [UpdateSupplier, ActivateSupplier, DeactivateSupplier]
 });
 
 export default SupplierHandler;

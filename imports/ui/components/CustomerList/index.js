@@ -3,16 +3,16 @@ import React, { Component } from "react";
 import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { CUSTOMEREVENTSUBSCRIPTION } from "../../graphql/subscriptions/customer";
+import { ENTITYSTATUS } from "../../../constants";
 import { GETCUSTOMERS } from "../../graphql/queries/customer";
 import PropTypes from "prop-types";
-import { RECORDSTATUS } from "../../constants";
 import { UPDATECUSTOMERSTATUS } from "../../graphql/mutations/customer";
 import { cloneDeep } from "lodash";
 import i18n from "meteor/universe:i18n";
 
 @graphql(GETCUSTOMERS, {
     props: ({ data }) => {
-        let {
+        const {
             customers,
             customerCount,
             loading,
@@ -54,52 +54,28 @@ class CustomerList extends Component {
                 }
             }
 
-            let customerIds = newProps.customers.map(({ _id }) => _id);
+            const customerIds = newProps.customers.map(({ _id }) => _id);
 
             this.unsubscribe = newProps.subscribeToMore({
                 document: CUSTOMEREVENTSUBSCRIPTION,
                 variables: { customerIds },
                 updateQuery: (previousResult, { subscriptionData }) => {
-                    let newResult = cloneDeep(previousResult);
-
-                    let { data } = subscriptionData;
-                    let { customerEvent } = data;
-                    let {
-                        CustomerCreated,
-                        CustomerUpdated,
-                        CustomerActivated,
-                        CustomerInactivated
-                    } = customerEvent;
+                    const { data } = subscriptionData;
+                    const { customerEvent } = data;
+                    const { CustomerCreated } = customerEvent;
 
                     if (CustomerCreated) {
-                        newProps.refetch();
-                    } else if (CustomerUpdated) {
-                        newResult.customers.forEach(customer => {
-                            if (customer._id === CustomerUpdated._id) {
-                                customer.name = CustomerUpdated.name;
-                                customer.address = CustomerUpdated.address;
-                                customer.phoneNumber =
-                                    CustomerUpdated.phoneNumber;
-                                return;
-                            }
-                        });
-                    } else if (CustomerActivated) {
-                        newResult.customers.forEach(customer => {
-                            if (customer._id === CustomerActivated._id) {
-                                customer.status = RECORDSTATUS.ACTIVE;
-                                return;
-                            }
-                        });
-                    } else if (CustomerInactivated) {
-                        newResult.customers.forEach(customer => {
-                            if (customer._id === CustomerInactivated._id) {
-                                customer.status = RECORDSTATUS.INACTIVE;
-                                return;
+                        newProps.refetch({
+                            variables: {
+                                skip:
+                                    (newProps.current - 1) * newProps.pageSize,
+                                pageSize: newProps.pageSize,
+                                filter: newProps.filter || {}
                             }
                         });
                     }
 
-                    return newResult;
+                    return previousResult;
                 },
                 onError: err => console.error(err)
             });
@@ -121,7 +97,7 @@ class CustomerList extends Component {
             client,
             current,
             pageSize,
-            changeInventoriesPage,
+            changeItemsPage,
             editCustomerForm,
             updateCustomerStatus
         } = this.props;
@@ -131,9 +107,9 @@ class CustomerList extends Component {
                 title: i18n.__("customer-name"),
                 key: "name",
                 dataIndex: "name",
-                width: "30%",
+                width: "20%",
                 render: (name, customer) =>
-                    customer.status === RECORDSTATUS.ACTIVE
+                    customer.entityStatus === ENTITYSTATUS.ACTIVE
                         ? <a
                               onClick={() => {
                                   const { _id } = customer;
@@ -152,7 +128,7 @@ class CustomerList extends Component {
                 title: i18n.__("customer-address"),
                 key: "address",
                 dataIndex: "address",
-                width: "30%",
+                width: "20%",
                 render: address =>
                     <strong>
                         {address}
@@ -162,35 +138,45 @@ class CustomerList extends Component {
                 title: i18n.__("customer-phoneNumber"),
                 key: "phoneNumber",
                 dataIndex: "phoneNumber",
-                width: "30%",
+                width: "25%",
                 render: phoneNumber =>
                     <strong>
                         {phoneNumber}
                     </strong>
             },
             {
-                title: i18n.__("status"),
-                key: "status",
-                dataIndex: "status",
+                title: i18n.__("customer-cellphoneNumber"),
+                key: "cellphoneNumber",
+                dataIndex: "cellphoneNumber",
+                width: "25%",
+                render: phoneNumber =>
+                    <strong>
+                        {phoneNumber}
+                    </strong>
+            },
+            {
+                title: i18n.__("entityStatus"),
+                key: "entityStatus",
+                dataIndex: "entityStatus",
                 width: "10%",
-                render: (status, customer) =>
+                render: (entityStatus, customer) =>
                     <Switch
                         className={
-                            "customer-status-" +
-                            (status === RECORDSTATUS.ACTIVE
+                            "customer-entityStatus-" +
+                            (entityStatus === ENTITYSTATUS.ACTIVE
                                 ? "active"
                                 : "inactive")
                         }
-                        checked={status === RECORDSTATUS.ACTIVE}
+                        checked={entityStatus === ENTITYSTATUS.ACTIVE}
                         onChange={() => {
                             const { _id } = customer;
                             updateCustomerStatus({
                                 variables: {
                                     _id,
                                     newStatus:
-                                        status === RECORDSTATUS.ACTIVE
-                                            ? RECORDSTATUS.INACTIVE
-                                            : RECORDSTATUS.ACTIVE
+                                        entityStatus === ENTITYSTATUS.ACTIVE
+                                            ? ENTITYSTATUS.INACTIVE
+                                            : ENTITYSTATUS.ACTIVE
                                 }
                             });
                         }}
@@ -211,7 +197,7 @@ class CustomerList extends Component {
                 total,
                 pageSize,
                 onChange: page => {
-                    changeInventoriesPage({ client, current: page });
+                    changeItemsPage({ client, current: page });
                 }
             },
             locale: {

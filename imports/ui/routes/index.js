@@ -1,11 +1,12 @@
 import {
     App,
+    BrandPage,
     CategoryPage,
     CustomerPage,
     DashboardPage,
-    InventoryPage,
-    InvoicePage,
+    ItemPage,
     LoginPage,
+    OrderPage,
     SupplierPage
 } from "../pages";
 import React, { Component } from "react";
@@ -25,9 +26,9 @@ const appRoutes = [
         exact: true
     },
     {
-        path: "/inventories",
-        name: "Inventories",
-        component: InventoryPage,
+        path: "/items",
+        name: "Items",
+        component: ItemPage,
         exact: true
     },
     {
@@ -49,9 +50,15 @@ const appRoutes = [
         exact: true
     },
     {
-        path: "/invoices",
-        name: "Invoices",
-        component: InvoicePage,
+        path: "/orders",
+        name: "Orders",
+        component: OrderPage,
+        exact: true
+    },
+    {
+        path: "/brands",
+        name: "Brands",
+        component: BrandPage,
         exact: true
     }
 ];

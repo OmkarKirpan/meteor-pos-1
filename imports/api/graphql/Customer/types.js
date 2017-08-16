@@ -4,13 +4,14 @@ export default `
         name: String
         address: String
         phoneNumber: String
-        status: Int
+        cellphoneNumber: String
+        entityStatus: Int
     }
 
     type CustomerEvent {
         CustomerCreated: Customer
         CustomerUpdated: Customer
         CustomerActivated: Customer
-        CustomerInactivated: Customer
+        CustomerDeactivated: Customer
     }
 `;

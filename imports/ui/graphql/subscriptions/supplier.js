@@ -5,23 +5,21 @@ const SUPPLIEREVENTSUBSCRIPTION = gql`
         supplierEvent(supplierIds: $supplierIds) {
             SupplierCreated {
                 _id
-                name
-                address
-                phoneNumber
             }
             SupplierUpdated {
                 _id
                 name
                 address
                 phoneNumber
+                cellphoneNumber
             }
             SupplierActivated {
                 _id
-                status
+                entityStatus
             }
-            SupplierInactivated {
+            SupplierDeactivated {
                 _id
-                status
+                entityStatus
             }
         }
     }

@@ -1,5 +1,5 @@
 import Customers from "../../../domain/Customer/repository";
-import { RecordStatus } from "../../../constants";
+import { ENTITYSTATUS } from "../../../constants";
 import commands from "../../../domain/Customer/commands";
 import events from "../../../domain/Customer/events";
 import { extend } from "lodash";
@@ -17,21 +17,21 @@ const {
     CreateCustomer,
     UpdateCustomer,
     ActivateCustomer,
-    InactivateCustomer
+    DeactivateCustomer
 } = commands;
 
 const {
     CustomerCreated,
     CustomerUpdated,
     CustomerActivated,
-    CustomerInactivated
+    CustomerDeactivated
 } = events;
 
 const queryResolver = {
     Query: {
         customers(_, { filter, skip, pageSize }, context) {
-            let { name } = filter || {};
-            let queryFilter = {};
+            const { name } = filter || {};
+            const queryFilter = {};
             if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
             return Customers.find(queryFilter, {
                 skip,
@@ -42,8 +42,8 @@ const queryResolver = {
             }).fetch();
         },
         customerCount(_, { filter }, context) {
-            let { name } = filter || {};
-            let queryFilter = {};
+            const { name } = filter || {};
+            const queryFilter = {};
             if (name) queryFilter["name"] = name;
             return Customers.find(queryFilter).count();
         },
@@ -55,43 +55,51 @@ const queryResolver = {
 
 const mutationResolver = {
     Mutation: {
-        createCustomer(_, { customer }, context) {
-            let { name, address, phoneNumber } = customer;
-            let _id = uuid.v4();
-            let createCustomerCommand = new CreateCustomer({
+        async createCustomer(_, { customer }, context) {
+            const { name, address, phoneNumber, cellphoneNumber } = customer;
+            const _id = uuid.v4();
+            const createCustomerCommand = new CreateCustomer({
                 targetId: _id,
                 _id,
                 name,
                 address,
                 phoneNumber,
+                cellphoneNumber,
                 createdAt: new Date(),
                 updatedAt: new Date()
             });
             CustomerApi.send(createCustomerCommand);
             return _id;
         },
-        updateCustomer(_, { customer }, context) {
-            let { _id, name, address, phoneNumber } = customer;
-            let updateCustomerCommand = new UpdateCustomer({
+        async updateCustomer(_, { customer }, context) {
+            const {
+                _id,
+                name,
+                address,
+                phoneNumber,
+                cellphoneNumber
+            } = customer;
+            const updateCustomerCommand = new UpdateCustomer({
                 targetId: _id,
                 _id,
                 name,
                 address,
                 phoneNumber,
+                cellphoneNumber,
                 updatedAt: new Date()
             });
             CustomerApi.send(updateCustomerCommand);
             return _id;
         },
-        updateCustomerStatus(_, { _id, newStatus }) {
-            let updateStatusCommand =
-                newStatus === RecordStatus.ACTIVE
+        async updateCustomerStatus(_, { _id, newStatus }) {
+            const updateStatusCommand =
+                newStatus === ENTITYSTATUS.ACTIVE
                     ? new ActivateCustomer({
                           targetId: _id,
                           _id,
                           updatedAt: new Date()
                       })
-                    : new InactivateCustomer({
+                    : new DeactivateCustomer({
                           targetId: _id,
                           _id,
                           updatedAt: new Date()
@@ -111,29 +119,29 @@ const subscriptionResolver = {
                         [CustomerCreated],
                         [CustomerUpdated],
                         [CustomerActivated],
-                        [CustomerInactivated]
+                        [CustomerDeactivated]
                     ]),
                 (payload, variables) => {
-                    let { customerIds } = variables;
+                    const { customerIds } = variables;
                     if (
                         payload instanceof CustomerUpdated ||
                         payload instanceof CustomerActivated ||
-                        payload instanceof CustomerInactivated
+                        payload instanceof CustomerDeactivated
                     )
                         return customerIds.indexOf(payload._id) > -1;
                     return true;
                 }
             ),
             resolve: (payload, args, context, info) => {
-                let data = {};
+                const data = {};
                 if (payload instanceof CustomerCreated)
                     data[[CustomerCreated]] = payload;
                 else if (payload instanceof CustomerUpdated)
                     data[[CustomerUpdated]] = payload;
                 else if (payload instanceof CustomerActivated)
                     data[[CustomerActivated]] = payload;
-                else if (payload instanceof CustomerInactivated)
-                    data[[CustomerInactivated]] = payload;
+                else if (payload instanceof CustomerDeactivated)
+                    data[[CustomerDeactivated]] = payload;
                 return data;
             }
         }

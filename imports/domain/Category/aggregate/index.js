@@ -1,4 +1,4 @@
-import { RecordStatus } from "../../../constants";
+import { ENTITYSTATUS } from "../../../constants";
 import commands from "../commands/";
 import events from "../events";
 
@@ -6,21 +6,21 @@ const {
     CreateCategory,
     UpdateCategory,
     ActivateCategory,
-    InactivateCategory
+    DeactivateCategory
 } = commands;
 
 const {
     CategoryCreated,
     CategoryUpdated,
     CategoryActivated,
-    CategoryInactivated
+    CategoryDeactivated
 } = events;
 
 const Category = Space.eventSourcing.Aggregate.extend("Category", {
     fields: {
         _id: String,
         name: String,
-        status: Number,
+        entityStatus: Number,
         createdAt: Date,
         updatedAt: Date
     },
@@ -30,7 +30,7 @@ const Category = Space.eventSourcing.Aggregate.extend("Category", {
             [CreateCategory]: this._createCategory,
             [UpdateCategory]: this._updateCategory,
             [ActivateCategory]: this._activateCategory,
-            [InactivateCategory]: this._inactivateCategory
+            [DeactivateCategory]: this._deactivateCategory
         };
     },
 
@@ -39,7 +39,7 @@ const Category = Space.eventSourcing.Aggregate.extend("Category", {
             [CategoryCreated]: this._onCategoryCreated,
             [CategoryUpdated]: this._onCategoryUpdated,
             [CategoryActivated]: this._onCategoryActivated,
-            [CategoryInactivated]: this._onCategoryInactivated
+            [CategoryDeactivated]: this._onCategoryDeactivated
         };
     },
 
@@ -73,9 +73,9 @@ const Category = Space.eventSourcing.Aggregate.extend("Category", {
         );
     },
 
-    _inactivateCategory(command) {
+    _deactivateCategory(command) {
         this.record(
-            new CategoryInactivated({
+            new CategoryDeactivated({
                 ...this._eventPropsFromCommand(command),
                 updatedAt: new Date()
             })
@@ -86,7 +86,7 @@ const Category = Space.eventSourcing.Aggregate.extend("Category", {
 
     _onCategoryCreated(event) {
         this._assignFields(event);
-        this.status = RecordStatus.ACTIVE;
+        this.entityStatus = ENTITYSTATUS.ACTIVE;
     },
 
     _onCategoryUpdated(event) {
@@ -95,12 +95,12 @@ const Category = Space.eventSourcing.Aggregate.extend("Category", {
 
     _onCategoryActivated(event) {
         this._assignFields(event);
-        this.status = RecordStatus.ACTIVE;
+        this.entityStatus = ENTITYSTATUS.ACTIVE;
     },
 
-    _onCategoryInactivated(event) {
+    _onCategoryDeactivated(event) {
         this._assignFields(event);
-        this.status = RecordStatus.INACTIVE;
+        this.entityStatus = ENTITYSTATUS.INACTIVE;
     }
 });
 
