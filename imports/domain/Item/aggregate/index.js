@@ -2,10 +2,13 @@ import { ENTITYSTATUS } from "../../../constants";
 import { ItemPrice } from "../valueObjects";
 import commands from "../commands/";
 import events from "../events";
+import supplyOrderEvents from "../../SupplyOrder/events";
 
 const { CreateItem, UpdateItem, ActivateItem, DeactivateItem } = commands;
 
 const { ItemCreated, ItemUpdated, ItemActivated, ItemDeactivated } = events;
+
+const { SupplyOrderCreated } = supplyOrderEvents;
 
 const Item = Space.eventSourcing.Aggregate.extend("Item", {
     fields: {
@@ -36,7 +39,8 @@ const Item = Space.eventSourcing.Aggregate.extend("Item", {
             [ItemCreated]: this._onItemCreated,
             [ItemUpdated]: this._onItemUpdated,
             [ItemActivated]: this._onItemActivated,
-            [ItemDeactivated]: this._onItemDeactivated
+            [ItemDeactivated]: this._onItemDeactivated,
+            [SupplyOrderCreated]: this._onSupplyOrderCreated
         };
     },
 
@@ -99,6 +103,16 @@ const Item = Space.eventSourcing.Aggregate.extend("Item", {
     _onItemDeactivated(event) {
         this._assignFields(event);
         this.entityStatus = ENTITYSTATUS.INACTIVE;
+    },
+
+    _onSupplyOrderCreated(event) {
+        const { items } = event;
+        items.forEach(item => {
+            const { itemId, quantity } = item;
+            if (itemId === this._id) {
+                this.stock += quantity;
+            }
+        });
     }
 });
 

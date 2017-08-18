@@ -1,11 +1,14 @@
 import { ENTITYSTATUS } from "../../../constants";
-import categoryEvents from "../../../domain/Category/events";
 import events from "../../../domain/Item/events";
+import itemAdjustmentEvents from "../../../domain/ItemAdjustment/events";
 import pubsub from "../../graphql/pubsub";
+import supplyOrderEvents from "../../../domain/SupplyOrder/events";
 
 const { ItemCreated, ItemUpdated, ItemActivated, ItemDeactivated } = events;
 
-const { CategoryDeactivated } = categoryEvents;
+const { SupplyOrderCreated } = supplyOrderEvents;
+
+const { ItemAdjustmentCreated } = itemAdjustmentEvents;
 
 const ItemProjection = Space.eventSourcing.Projection.extend("ItemProjection", {
     collections: {
@@ -19,7 +22,8 @@ const ItemProjection = Space.eventSourcing.Projection.extend("ItemProjection", {
                 [ItemUpdated]: this._onItemUpdated,
                 [ItemActivated]: this._onItemActivated,
                 [ItemDeactivated]: this._onItemDeactivated,
-                [CategoryDeactivated]: this._onCategoryDeactivated
+                [SupplyOrderCreated]: this._onSupplyOrderCreated,
+                [ItemAdjustmentCreated]: this._onItemAdjustmentCreated
             }
         ];
     },
@@ -108,16 +112,18 @@ const ItemProjection = Space.eventSourcing.Projection.extend("ItemProjection", {
         pubsub.publish("ItemDeactivated", event);
     },
 
-    _onCategoryDeactivated(event) {
-        const { _id } = event;
-        this.items.update(
-            { categoryId: _id },
-            {
-                $set: {
-                    categoryId: null
-                }
-            }
-        );
+    _onSupplyOrderCreated(event) {
+        event.supplyItems.forEach(supplyItem => {
+            const { itemId, quantity } = supplyItem;
+            this.items.update(itemId, { $inc: { stock: quantity } });
+        });
+    },
+
+    _onItemAdjustmentCreated(event) {
+        event.adjustmentItems.forEach(adjustmentItem => {
+            const { itemId, quantity } = adjustmentItem;
+            this.items.update(itemId, { $inc: { stock: quantity } });
+        });
     }
 });
 

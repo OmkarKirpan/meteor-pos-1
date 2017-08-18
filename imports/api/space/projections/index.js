@@ -4,3 +4,7 @@ export { default as SupplierProjection } from "./SupplierProjection";
 export { default as CustomerProjection } from "./CustomerProjection";
 export { default as BrandProjection } from "./BrandProjection";
 export { default as OrderProjection } from "./OrderProjection";
+export {
+    default as ItemAdjustmentProjection
+} from "./ItemAdjustmentProjection";
+export { default as SupplyOrderProjection } from "./SupplyOrderProjection";
