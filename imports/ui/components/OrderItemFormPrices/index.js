@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { Button, Form, Icon, Input, InputNumber, Select, Table } from "antd";
 import React, { Component } from "react";
 import { compose, graphql, withApollo } from "react-apollo";
@@ -12,6 +14,7 @@ class OrderItemFormPrices extends Component {
         this.removeItemPrice = this.removeItemPrice.bind(this);
         this.onItemPriceSelected = this.onItemPriceSelected.bind(this);
         this.checkDuplicateUnits = this.checkDuplicateUnits.bind(this);
+        this.validateItemPrices = this.validateItemPrices.bind(this);
     }
 
     addItemPrice() {
@@ -52,6 +55,7 @@ class OrderItemFormPrices extends Component {
     }
 
     checkDuplicateUnits(rule, unit, callback) {
+        if (unit === undefined) callback();
         const { orderItemForm } = this.props;
         const itemPrices = orderItemForm.getFieldValue("itemPrices") || [];
         let duplicateUnitCount = 0;
@@ -63,8 +67,20 @@ class OrderItemFormPrices extends Component {
                     ? 1
                     : 0;
         });
-        if (duplicateUnitCount === 1) callback();
-        else callback(new Error("duplicated"));
+        if (duplicateUnitCount <= 1) callback();
+        else
+            callback(
+                new Error(i18n.__("order-item-itemPrice-unit-duplicated"))
+            );
+    }
+
+    validateItemPrices(rule, _, callback) {
+        const { orderItemForm } = this.props;
+        const { getFieldValue } = orderItemForm;
+        const itemPrices = getFieldValue("itemPrices");
+        if (!itemPrices || itemPrices.length <= 0)
+            callback(new Error(i18n.__("order-item-itemPrices-required")));
+        else callback();
     }
 
     render() {
@@ -84,7 +100,6 @@ class OrderItemFormPrices extends Component {
                     <div>
                         {!editDisabled &&
                             <Icon
-                                className="dynamic-delete-button"
                                 type="minus-circle-o"
                                 onClick={() =>
                                     this.removeItemPrice(itemPriceId)}
@@ -92,13 +107,13 @@ class OrderItemFormPrices extends Component {
                     </div>
                 ),
                 unit: (
-                    <Form.Item className="order-form-order">
+                    <Form.Item>
                         {getFieldDecorator(`itemPrice-${itemPriceId}-unit`, {
                             rules: [
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "order-required-field-unit"
+                                        "order-item-itemPrice-unit-required"
                                     )
                                 },
                                 {
@@ -108,7 +123,9 @@ class OrderItemFormPrices extends Component {
                         })(
                             <Select
                                 disabled={editDisabled}
-                                placeholder={i18n.__("item-brand-placeholder")}
+                                placeholder={i18n.__(
+                                    "order-item-itemPrice-unit-placeholder"
+                                )}
                                 mode="combobox"
                                 notFoundContent=""
                                 optionLabelProp="text"
@@ -122,7 +139,7 @@ class OrderItemFormPrices extends Component {
                                     .map(itemPrice =>
                                         <Select.Option
                                             key={itemPrice.unit}
-                                            text={`${itemPrice.unit} - ${itemPrice.price}`}
+                                            text={`${itemPrice.unit}`}
                                             itemPrice={itemPrice}
                                             itemPriceId={itemPriceId}
                                         >
@@ -136,7 +153,7 @@ class OrderItemFormPrices extends Component {
                     </Form.Item>
                 ),
                 multiplier: (
-                    <Form.Item className="order-form-order">
+                    <Form.Item>
                         {getFieldDecorator(
                             `itemPrice-${itemPriceId}-multiplier`,
                             {
@@ -144,30 +161,55 @@ class OrderItemFormPrices extends Component {
                                     {
                                         required: true,
                                         message: i18n.__(
-                                            "order-required-field-unit"
+                                            "order-item-itemPrice-multiplier-required"
                                         )
                                     }
                                 ]
                             }
-                        )(<InputNumber disabled style={{ width: "100%" }} />)}
+                        )(
+                            <InputNumber
+                                placeholder={i18n.__(
+                                    "order-item-itemPrice-multiplier-placeholder"
+                                )}
+                                disabled
+                                style={{ width: "100%" }}
+                            />
+                        )}
                     </Form.Item>
                 ),
                 price: (
-                    <Form.Item className="order-form-order">
+                    <Form.Item>
                         {getFieldDecorator(`itemPrice-${itemPriceId}-price`, {
                             rules: [
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "order-required-field-price"
+                                        "order-item-itemPrice-price-required"
                                     )
                                 }
                             ]
-                        })(<InputNumber disabled style={{ width: "100%" }} />)}
+                        })(
+                            <InputNumber
+                                placeholder={i18n.__(
+                                    "order-item-itemPrice-price-placeholder"
+                                )}
+                                formatter={value =>
+                                    `Rp ${value
+                                        .toString()
+                                        .replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )}`}
+                                parser={value =>
+                                    value.toString().replace(/Rp\s?|(,*)/g, "")}
+                                disabled
+                                style={{ width: "100%" }}
+                            />
+                        )}
                     </Form.Item>
                 ),
                 quantity: (
-                    <Form.Item className="orderItem-${orderItemId}-discount">
+                    <Form.Item>
                         {getFieldDecorator(
                             `itemPrice-${itemPriceId}-quantity`,
                             {
@@ -175,13 +217,16 @@ class OrderItemFormPrices extends Component {
                                     {
                                         required: true,
                                         message: i18n.__(
-                                            "order-required-field-multiplier"
+                                            "order-item-itemPrice-quantity-required"
                                         )
                                     }
                                 ]
                             }
                         )(
                             <InputNumber
+                                placeholder={i18n.__(
+                                    "order-item-itemPrice-quantity-placeholder"
+                                )}
                                 disabled={editDisabled}
                                 style={{ width: "100%" }}
                             />
@@ -189,7 +234,7 @@ class OrderItemFormPrices extends Component {
                     </Form.Item>
                 ),
                 discount: (
-                    <Form.Item className="orderItem-${orderItemId}-discount">
+                    <Form.Item>
                         {getFieldDecorator(
                             `itemPrice-${itemPriceId}-discount`,
                             {
@@ -197,13 +242,25 @@ class OrderItemFormPrices extends Component {
                                     {
                                         required: true,
                                         message: i18n.__(
-                                            "order-required-field-multiplier"
+                                            "order-item-itemPrice-discount-required"
                                         )
                                     }
                                 ]
                             }
                         )(
                             <InputNumber
+                                placeholder={i18n.__(
+                                    "order-item-itemPrice-discount-placeholder"
+                                )}
+                                formatter={value =>
+                                    `Rp ${value
+                                        .toString()
+                                        .replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )}`}
+                                parser={value =>
+                                    value.toString().replace(/Rp\s?|(,*)/g, "")}
                                 disabled={editDisabled}
                                 style={{ width: "100%" }}
                             />
@@ -214,36 +271,46 @@ class OrderItemFormPrices extends Component {
         });
 
         const orderPricesTableProps = {
+            title: () =>
+                <Form.Item>
+                    {getFieldDecorator("itemPrices", {
+                        rules: [
+                            {
+                                validator: this.validateItemPrices
+                            }
+                        ]
+                    })(<div />)}
+                </Form.Item>,
             rowKey: "itemPriceId",
             pagination: false,
             dataSource: itemPricesDatasource,
             columns: [
                 {
-                    title: i18n.__("order-unit"),
+                    title: i18n.__("order-item-itemPrice-unit"),
                     dataIndex: "unit",
                     key: "unit",
                     width: "20%"
                 },
                 {
-                    title: i18n.__("order-multiplier"),
+                    title: i18n.__("order-item-itemPrice-multiplier"),
                     dataIndex: "multiplier",
                     key: "multiplier",
-                    width: "10%"
+                    width: "15%"
                 },
                 {
-                    title: i18n.__("order-price"),
+                    title: i18n.__("order-item-itemPrice-price"),
                     dataIndex: "price",
                     key: "price",
                     width: "20%"
                 },
                 {
-                    title: i18n.__("order-quantity"),
+                    title: i18n.__("order-item-itemPrice-quantity"),
                     dataIndex: "quantity",
                     key: "quantity",
-                    width: "10%"
+                    width: "15%"
                 },
                 {
-                    title: i18n.__("order-discount"),
+                    title: i18n.__("order-item-itemPrice-discount"),
                     dataIndex: "discount",
                     key: "discount",
                     width: "20%"
@@ -251,26 +318,26 @@ class OrderItemFormPrices extends Component {
                 {
                     dataIndex: "delete",
                     key: "delete",
-                    width: "20%"
+                    width: "10%"
                 }
             ],
-            scroll: { y: 100 }
+            scroll: { y: 200 },
+            locale: {
+                emptyText: i18n.__("no-data")
+            }
         };
 
         return (
             <div>
-                <Table
-                    className="order-form-price-table"
-                    {...orderPricesTableProps}
-                />
+                <Table {...orderPricesTableProps} />
                 <Button
+                    className="order-item-itemPrices-add-button"
                     type="dashed"
                     onClick={this.addItemPrice}
                     disabled={!selectedItem || editDisabled}
-                    style={{ width: "60%" }}
                 >
                     <Icon type="plus" />
-                    {i18n.__("order-add-item-price")}
+                    {i18n.__("order-item-itemPrices-add")}
                 </Button>
             </div>
         );

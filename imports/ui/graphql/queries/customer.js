@@ -14,6 +14,7 @@ const GETCUSTOMERS = gql`
             cellphoneNumber
             entityStatus
         }
+        customerCount(filter: $filter)
     }
 `;
 

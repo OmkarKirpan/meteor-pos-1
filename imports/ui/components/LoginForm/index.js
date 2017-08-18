@@ -1,25 +1,87 @@
+import "./index.scss";
+
+import { Button, Form, Input, Row } from "antd";
 import React, { Component } from "react";
 
-import { Blaze } from "meteor/blaze";
-import ReactDOM from "react-dom";
-import { Template } from "meteor/templating";
+import i18n from "meteor/universe:i18n";
 
 class LoginForm extends Component {
-    componentDidMount() {
-        // Use Meteor Blaze to render login buttons
-        this.view = Blaze.render(
-            Template.loginButtons,
-            ReactDOM.findDOMNode(this.refs.container)
-        );
+    constructor() {
+        super();
+        this.login = this.login.bind(this);
     }
-    componentWillUnmount() {
-        // Clean up Blaze view
-        Blaze.remove(this.view);
+
+    login() {
+        const { form, login } = this.props;
+        const { validateFields } = form;
+        validateFields((err, loginData) => {
+            if (!err) {
+                const { username, password } = loginData;
+                login({ username, password });
+            }
+        });
     }
+
     render() {
-        // Just render a placeholder container that will be filled in
-        return <span ref="container" />;
+        const { form } = this.props;
+        const { getFieldDecorator } = form;
+        return (
+            <div className="form">
+                <div className="logo">
+                    <img alt={"logo"} src="/logo.png" />
+                    <span>
+                        {i18n.__("login-title")}
+                    </span>
+                </div>
+                <Form>
+                    <Form.Item>
+                        {getFieldDecorator("username", {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: i18n.__("login-username-required")
+                                }
+                            ]
+                        })(
+                            <Input
+                                placeholder={i18n.__(
+                                    "login-username-placeholder"
+                                )}
+                                size="large"
+                            />
+                        )}
+                    </Form.Item>
+                    <Form.Item>
+                        {getFieldDecorator("password", {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: i18n.__("login-password-required")
+                                }
+                            ]
+                        })(
+                            <Input
+                                placeholder={i18n.__(
+                                    "login-password-placeholder"
+                                )}
+                                size="large"
+                                type="password"
+                            />
+                        )}
+                    </Form.Item>
+                    <Row>
+                        <Button
+                            type="primary"
+                            size="large"
+                            onClick={this.login}
+                        >
+                            {i18n.__("login-signIn")}
+                        </Button>
+                    </Row>
+                </Form>
+            </div>
+        );
     }
 }
 
-export default LoginForm;
+export default Form.create()(LoginForm);

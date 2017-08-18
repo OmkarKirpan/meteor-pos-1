@@ -7,7 +7,8 @@ import {
     ItemPage,
     LoginPage,
     OrderPage,
-    SupplierPage
+    SupplierPage,
+    UserPage
 } from "../pages";
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -59,6 +60,12 @@ const appRoutes = [
         path: "/brands",
         name: "Brands",
         component: BrandPage,
+        exact: true
+    },
+    {
+        path: "/users",
+        name: "Users",
+        component: UserPage,
         exact: true
     }
 ];

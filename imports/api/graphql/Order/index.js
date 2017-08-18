@@ -40,7 +40,7 @@ const queryResolver = {
         orders(_, { filter, skip, pageSize }, context) {
             const { orderStatus } = filter || {};
             const queryFilter = {};
-            if (orderStatus !== null)
+            if (orderStatus !== undefined)
                 queryFilter["orderStatus"] = { $eq: orderStatus };
             return Orders.find(queryFilter, {
                 skip,
@@ -53,7 +53,7 @@ const queryResolver = {
         orderCount(_, { filter }, context) {
             const { orderStatus } = filter || {};
             const queryFilter = {};
-            if (orderStatus !== null)
+            if (orderStatus !== undefined)
                 queryFilter["orderStatus"] = { $eq: orderStatus };
             return Orders.find(queryFilter).count();
         },

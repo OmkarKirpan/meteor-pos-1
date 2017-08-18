@@ -1,6 +1,7 @@
 export default `
     input CustomerSearchFilter {
         name: String
+        entityStatus: Int
     }
     
     input CreateCustomerInput {

@@ -13,10 +13,7 @@ class SupplierHeader extends Component {
         return (
             <Row>
                 <Col span={4}>
-                    <Button
-                        className="add-supplier-button"
-                        onClick={() => newSupplierForm({ client })}
-                    >
+                    <Button onClick={() => newSupplierForm({ client })}>
                         {i18n.__("supplier-add")}
                     </Button>
                 </Col>

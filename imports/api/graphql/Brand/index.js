@@ -20,9 +20,11 @@ const { ItemCreatedBrand, ItemUpdatedBrand } = events;
 const queryResolver = {
     Query: {
         brands(_, { filter, skip, pageSize }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
             if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Brands.find(queryFilter, {
                 skip,
                 limit: pageSize,
@@ -32,9 +34,11 @@ const queryResolver = {
             }).fetch();
         },
         brandCount(_, { filter }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
-            if (name) queryFilter["name"] = name;
+            if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Brands.find(queryFilter).count();
         },
         brand(_, { _id }, context) {

@@ -1,4 +1,6 @@
-import { Col, Row, Switch, Table } from "antd";
+import "./index.scss";
+
+import { Button, Col, Row, Switch, Table } from "antd";
 import React, { Component } from "react";
 import { compose, gql, graphql, withApollo } from "react-apollo";
 
@@ -103,7 +105,11 @@ class SupplierList extends Component {
 
         const columns = [
             {
-                title: i18n.__("supplier-name"),
+                title: (
+                    <strong>
+                        {i18n.__("supplier-name")}
+                    </strong>
+                ),
                 key: "name",
                 dataIndex: "name",
                 width: "20%",
@@ -124,50 +130,83 @@ class SupplierList extends Component {
                           </strong>
             },
             {
-                title: i18n.__("supplier-address"),
+                title: (
+                    <strong>
+                        {i18n.__("supplier-address")}
+                    </strong>
+                ),
                 key: "address",
                 dataIndex: "address",
-                width: "30%",
+                width: "20%",
                 render: address =>
-                    <strong>
+                    <span>
                         {address}
-                    </strong>
+                    </span>
             },
             {
-                title: i18n.__("supplier-phoneNumber"),
+                title: (
+                    <strong>
+                        {i18n.__("supplier-phoneNumber")}
+                    </strong>
+                ),
                 key: "phoneNumber",
                 dataIndex: "phoneNumber",
                 width: "20%",
                 render: phoneNumber =>
-                    <strong>
+                    <span>
                         {phoneNumber}
-                    </strong>
+                    </span>
             },
             {
-                title: i18n.__("supplier-cellphoneNumber"),
+                title: (
+                    <strong>
+                        {i18n.__("supplier-cellphoneNumber")}
+                    </strong>
+                ),
                 key: "cellphoneNumber",
                 dataIndex: "cellphoneNumber",
                 width: "20%",
                 render: phoneNumber =>
-                    <strong>
+                    <span>
                         {phoneNumber}
-                    </strong>
+                    </span>
             },
             {
-                title: i18n.__("entityStatus"),
+                title: (
+                    <strong>
+                        {i18n.__("entityStatus")}
+                    </strong>
+                ),
                 key: "entityStatus",
                 dataIndex: "entityStatus",
                 width: "10%",
-                render: (entityStatus, supplier) =>
-                    <Switch
+                render: entityStatus =>
+                    <span
                         className={
-                            "supplier-entityStatus-" +
+                            "entity-status-" +
                             (entityStatus === ENTITYSTATUS.ACTIVE
                                 ? "active"
                                 : "inactive")
                         }
-                        checked={entityStatus === ENTITYSTATUS.ACTIVE}
-                        onChange={() => {
+                    >
+                        {entityStatus === ENTITYSTATUS.ACTIVE
+                            ? i18n.__("entityStatus-active")
+                            : i18n.__("entityStatus-inactive")}
+                    </span>
+            },
+            {
+                title: (
+                    <strong>
+                        {i18n.__("action")}
+                    </strong>
+                ),
+                key: "action",
+                dataIndex: "entityStatus",
+                width: "10%",
+                render: (entityStatus, supplier) =>
+                    <Button
+                        style={{ width: "100%" }}
+                        onClick={() => {
                             const { _id } = supplier;
                             updateSupplierStatus({
                                 variables: {
@@ -179,7 +218,11 @@ class SupplierList extends Component {
                                 }
                             });
                         }}
-                    />
+                    >
+                        {entityStatus === ENTITYSTATUS.ACTIVE
+                            ? i18n.__("deactivate")
+                            : i18n.__("activate")}
+                    </Button>
             }
         ];
 
@@ -187,10 +230,9 @@ class SupplierList extends Component {
             error,
             columns,
             loading,
-            bordered: true,
             dataSource: suppliers,
             rowKey: "_id",
-            size: "small",
+            size: "middle",
             pagination: {
                 current,
                 total,

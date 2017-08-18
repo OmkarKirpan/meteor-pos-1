@@ -30,9 +30,11 @@ const {
 const queryResolver = {
     Query: {
         suppliers(_, { filter, skip, pageSize }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
             if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Suppliers.find(queryFilter, {
                 skip,
                 limit: pageSize,
@@ -42,9 +44,11 @@ const queryResolver = {
             }).fetch();
         },
         supplierCount(_, { filter }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
-            if (name) queryFilter["name"] = name;
+            if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Suppliers.find(queryFilter).count();
         },
         supplier(_, { _id }, context) {

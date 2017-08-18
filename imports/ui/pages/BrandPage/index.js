@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { BrandForm, BrandHeader, BrandList } from "../../components";
 import React, { Component } from "react";
 import {
@@ -12,6 +14,7 @@ import { compose, withApollo } from "react-apollo";
 
 import { ApolloClient } from "apollo-client";
 import PropTypes from "prop-types";
+import { Row } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import i18n from "meteor/universe:i18n";
@@ -87,11 +90,17 @@ class BrandPage extends Component {
         };
 
         return (
-            <div>
-                <BrandHeader {...brandHeaderProps} />
-                <BrandList {...brandListProps} />
-                <BrandForm {...brandFormProps} />
-            </div>
+            <Row>
+                <Row className="brand-page-header">
+                    <BrandHeader {...brandHeaderProps} />
+                </Row>
+                <Row>
+                    <BrandList {...brandListProps} />
+                </Row>
+                <Row>
+                    <BrandForm {...brandFormProps} />
+                </Row>
+            </Row>
         );
     }
 }

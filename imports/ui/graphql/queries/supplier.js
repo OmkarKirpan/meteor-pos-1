@@ -14,6 +14,7 @@ const GETSUPPLIERS = gql`
             cellphoneNumber
             entityStatus
         }
+        supplierCount(filter: $filter)
     }
 `;
 

@@ -1,6 +1,7 @@
 export default `
     input BrandSearchFilter {
         name: String
+        entityStatus: Int
     }
     
     input CreateBrandInput {

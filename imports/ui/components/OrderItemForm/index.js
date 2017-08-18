@@ -11,6 +11,7 @@ import {
 import React, { Component } from "react";
 import { compose, graphql, withApollo } from "react-apollo";
 
+import { ENTITYSTATUS } from "../../../constants";
 import OrderItemFormPrices from "../OrderItemFormPrices";
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
@@ -23,6 +24,7 @@ class OrderItemForm extends Component {
         this.onOk = this.onOk.bind(this);
         this.onItemSelected = this.onItemSelected.bind(this);
         this.onSearchItems = this.onSearchItems.bind(this);
+        this.validateItem = this.validateItem.bind(this);
     }
 
     saveOrderItem(orderItem) {
@@ -92,9 +94,18 @@ class OrderItemForm extends Component {
     onSearchItems(searchText) {
         const { searchOrderItems, client } = this.props;
         const filter = {
-            name: searchText
+            name: searchText,
+            entityStatus: ENTITYSTATUS.ACTIVE
         };
         searchOrderItems({ client, filter });
+    }
+
+    validateItem(rule, itemId, callback) {
+        const { form } = this.props;
+        const { getFieldValue } = form;
+        const selectedItem = getFieldValue("item");
+        if (selectedItem && selectedItem._id === itemId) callback();
+        else callback(new Error());
     }
 
     onOk() {
@@ -147,13 +158,13 @@ class OrderItemForm extends Component {
         getFieldDecorator("itemPriceCount");
 
         const modalProps = {
-            title: "Order Item",
+            title: i18n.__("Order Item"),
             visible,
             onCancel: closeOrderItemForm,
-            okText: i18n.__(isNew ? "create" : "update"),
+            okText: i18n.__("order-item-save"),
             cancelText: i18n.__("cancel"),
             onOk: this.onOk,
-            width: 500,
+            width: "50%",
             maskClosable: false
         };
 
@@ -172,11 +183,16 @@ class OrderItemForm extends Component {
             editDisabled
         };
 
+        const formItemProps = {
+            labelCol: { span: 3 },
+            wrapperCol: { span: 21 }
+        };
+
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
                     <Form.Item
-                        className="order-form-order"
+                        {...formItemProps}
                         label={i18n.__("order-item")}
                         hasFeedback
                     >
@@ -184,17 +200,14 @@ class OrderItemForm extends Component {
                             rules: [
                                 {
                                     required: true,
-                                    message: i18n.__(
-                                        "order-required-field-item"
-                                    )
+                                    message: i18n.__("order-item-required"),
+                                    validator: this.validateItem
                                 }
                             ]
                         })(
                             <Select
                                 disabled={!isNew}
-                                placeholder={i18n.__(
-                                    "order-customer-placeholder"
-                                )}
+                                placeholder={i18n.__("order-item-placeholder")}
                                 mode="combobox"
                                 notFoundContent=""
                                 optionLabelProp="text"
@@ -207,10 +220,9 @@ class OrderItemForm extends Component {
                             </Select>
                         )}
                     </Form.Item>
-                    <OrderItemFormPrices {...orderItemFormPricesProps} />
                     <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-discount")}
+                        {...formItemProps}
+                        label={i18n.__("order-item-discount")}
                         hasFeedback
                     >
                         {getFieldDecorator("discount", {
@@ -218,7 +230,7 @@ class OrderItemForm extends Component {
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "order-required-field-item"
+                                        "order-item-discount-required"
                                     )
                                 }
                             ]
@@ -235,10 +247,13 @@ class OrderItemForm extends Component {
                                         )}`}
                                 parser={value =>
                                     value.toString().replace(/Rp\s?|(,*)/g, "")}
-                                placeholder={i18n.__("item-price-placeholder")}
+                                placeholder={i18n.__(
+                                    "order-item-discount-placeholder"
+                                )}
                             />
                         )}
                     </Form.Item>
+                    <OrderItemFormPrices {...orderItemFormPricesProps} />
                 </Form>
             </Modal>
         );
@@ -261,6 +276,7 @@ const mapPropsToFields = ({ editingOrderItem }) => {
     } = editingOrderItem;
 
     const itemPriceData = {};
+
     if (itemPrices) {
         itemPrices.forEach(itemPrice => {
             const {

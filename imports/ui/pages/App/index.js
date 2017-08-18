@@ -1,9 +1,10 @@
+import "./index.scss";
+
+import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import React, { Component } from "react";
 import { logout, toggleSidebar } from "../../actions";
 
-import { AppSidebar } from "../../components";
 import { Layout } from "antd";
-import LoginForm from "../../components/LoginForm";
 import { MENUS } from "../../configs";
 import { Meteor } from "meteor/meteor";
 import { bindActionCreators } from "redux";
@@ -19,7 +20,8 @@ const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(
             {
-                toggleSidebar
+                toggleSidebar,
+                logout
             },
             dispatch
         )
@@ -31,6 +33,14 @@ class App extends Component {
         const { logout, toggleSidebar } = this.props.actions;
         const { app } = this.props;
         const { sidebarCollapsed } = app;
+        const user = Meteor.user();
+
+        const headerProps = {
+            user,
+            logout,
+            sidebarCollapsed,
+            toggleSidebar
+        };
 
         const sidebarProps = {
             menu: MENUS,
@@ -39,20 +49,17 @@ class App extends Component {
         };
 
         return (
-            <Layout>
+            <Layout className="main-layout">
                 <AppSidebar {...sidebarProps} />
-                <Layout>
-                    <LoginForm />
-                    <Layout.Header style={{ background: "#fff", padding: 0 }} />
+                <div className="main">
+                    <AppHeader {...headerProps} />
                     <Layout.Content style={{ margin: "50px 50px 0" }}>
                         <div style={{ padding: 24, background: "#fff" }}>
                             {this.props.children}
                         </div>
                     </Layout.Content>
-                    <Layout.Footer style={{ textAlign: "center" }}>
-                        Ant Design ©2016 Created by Ant UED
-                    </Layout.Footer>
-                </Layout>
+                    <AppFooter />
+                </div>
             </Layout>
         );
     }

@@ -39,7 +39,8 @@ const OrderReducer = (state = initialState, { type, payload = {} }) => {
         case ORDER.SEARCH_ORDERS:
             return update(state, {
                 orderList: {
-                    filter: { $merge: payload.filter }
+                    filter: { $merge: payload.filter },
+                    current: { $set: 1 }
                 }
             });
         case ORDER.ORDER_FORM_OPEN:

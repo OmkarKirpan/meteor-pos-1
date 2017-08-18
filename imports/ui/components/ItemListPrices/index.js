@@ -1,8 +1,8 @@
 import { Col, Row } from "antd";
 import React, { Component } from "react";
 
-import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
+import { formatCurrency } from "../../../util/currency";
 import i18n from "meteor/universe:i18n";
 
 class ItemListPrices extends Component {
@@ -15,13 +15,19 @@ class ItemListPrices extends Component {
                 <Col span={10}>
                     <Row>
                         <Col span={4}>
-                            {i18n.__("item-unit")}
+                            <strong>
+                                {i18n.__("item-itemPrice-unit")}
+                            </strong>
                         </Col>
                         <Col span={8} offset={2}>
-                            {i18n.__("item-price")}
+                            <strong>
+                                {i18n.__("item-itemPrice-price")}
+                            </strong>
                         </Col>
                         <Col span={6} offset={2}>
-                            {i18n.__("item-multiplier")}
+                            <strong>
+                                {i18n.__("item-itemPrice-multiplier")}
+                            </strong>
                         </Col>
                     </Row>
                     {allPrices.map((itemPrice, i) =>
@@ -31,13 +37,9 @@ class ItemListPrices extends Component {
                             </Col>
                             <Col span={8} offset={2}>
                                 <div>
-                                    <span style={{ float: "left" }}>Rp</span>
-                                    <NumberFormat
-                                        value={itemPrice.price}
-                                        displayType={"text"}
-                                        thousandSeparator={true}
-                                        style={{ float: "right" }}
-                                    />
+                                    <span style={{ float: "left" }}>
+                                        {formatCurrency(itemPrice.price)}
+                                    </span>
                                 </div>
                             </Col>
                             <Col span={6} offset={2}>

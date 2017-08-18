@@ -1,6 +1,7 @@
 export default `
     input ItemSearchFilter {
         name: String
+        entityStatus: Int
     }
     
     input ItemPriceInput {

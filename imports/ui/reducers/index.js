@@ -8,7 +8,9 @@ import { default as item } from "./ItemReducer";
 import { default as order } from "./OrderReducer";
 import { reducer as reduxForm } from "redux-form";
 import { routerReducer } from "react-router-redux";
+import { default as session } from "./SessionReducer";
 import { default as supplier } from "./SupplierReducer";
+import { default as user } from "./UserReducer";
 
 const rootReducer = combineReducers({
     routing: routerReducer,
@@ -21,7 +23,9 @@ const rootReducer = combineReducers({
     order,
     category,
     brand,
-    order
+    order,
+    session,
+    user
 });
 
 export { rootReducer };

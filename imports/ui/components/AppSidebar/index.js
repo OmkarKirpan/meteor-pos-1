@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { Icon, Layout, Menu } from "antd";
 
 import { NavLink } from "react-router-dom";
@@ -9,7 +11,7 @@ const AppSidebar = ({ sidebarCollapsed, toggleSidebar, menu }) => {
         const { name, path, icon, exact, subMenus } = m;
         return exact
             ? <Menu.Item key={name} name={name}>
-                  <NavLink className="nav-text" exact={exact} to={path}>
+                  <NavLink exact={exact} to={path}>
                       <Icon type={icon} />
                       <span>
                           {name}
@@ -26,11 +28,7 @@ const AppSidebar = ({ sidebarCollapsed, toggleSidebar, menu }) => {
               >
                   {subMenus.map(subMenu =>
                       <Menu.Item key={subMenu.name} name={subMenu.name}>
-                          <NavLink
-                              className="nav-text"
-                              exact={subMenu.exact}
-                              to={subMenu.path}
-                          >
+                          <NavLink exact={subMenu.exact} to={subMenu.path}>
                               <Icon type={subMenu.icon} />
                               <span>
                                   {subMenu.name}
@@ -43,12 +41,13 @@ const AppSidebar = ({ sidebarCollapsed, toggleSidebar, menu }) => {
 
     return (
         <Layout.Sider
-            breakpoint="xl"
-            collapsedWidth="0"
+            className="sider"
             collapsed={sidebarCollapsed}
-            onCollapse={toggleSidebar}
+            trigger={null}
         >
-            <div className="logo" />
+            <div className="logo">
+                <img alt={"logo"} src="/logo.png" />
+            </div>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["Home"]}>
                 {menuToRender}
             </Menu>

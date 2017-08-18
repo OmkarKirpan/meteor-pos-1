@@ -6,6 +6,10 @@ import React from "react";
 import i18n from "meteor/universe:i18n";
 import { render } from "react-dom";
 
+Accounts.ui.config({
+    passwordSignupFields: "USERNAME_ONLY"
+});
+
 Meteor.startup(() => {
     i18n.setLocale("en-US");
     render(<App />, document.getElementById("render-target"));

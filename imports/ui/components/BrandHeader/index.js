@@ -13,10 +13,7 @@ class BrandHeader extends Component {
         return (
             <Row>
                 <Col span={4}>
-                    <Button
-                        className="add-brand-button"
-                        onClick={() => newBrandForm({ client })}
-                    >
+                    <Button onClick={() => newBrandForm({ client })}>
                         {i18n.__("brand-add")}
                     </Button>
                 </Col>

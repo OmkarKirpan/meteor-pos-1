@@ -69,20 +69,25 @@ class BrandForm extends Component {
             okText: i18n.__(isNew ? "create" : "update"),
             cancelText: i18n.__("cancel"),
             onOk: this.onOk,
-            width: 400,
+            width: "30%",
             maskClosable: false
+        };
+
+        const formItemProps = {
+            labelCol: { span: 6 },
+            wrapperCol: { span: 14 }
         };
 
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item className="item-form-item">
+                    <Form.Item>
                         {getFieldDecorator("_id")(
                             <Input style={{ display: "none" }} />
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="item-form-item"
+                        {...formItemProps}
                         label={i18n.__("brand-name")}
                         hasFeedback
                     >
@@ -90,9 +95,7 @@ class BrandForm extends Component {
                             rules: [
                                 {
                                     required: true,
-                                    message: i18n.__(
-                                        "brand-required-field-name"
-                                    )
+                                    message: i18n.__("brand-name-required")
                                 }
                             ]
                         })(

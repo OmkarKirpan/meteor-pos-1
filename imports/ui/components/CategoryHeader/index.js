@@ -13,10 +13,7 @@ class CategoryHeader extends Component {
         return (
             <Row>
                 <Col span={4}>
-                    <Button
-                        className="add-category-button"
-                        onClick={() => newCategoryForm({ client })}
-                    >
+                    <Button onClick={() => newCategoryForm({ client })}>
                         {i18n.__("category-add")}
                     </Button>
                 </Col>

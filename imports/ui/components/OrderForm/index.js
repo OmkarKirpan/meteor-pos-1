@@ -1,12 +1,16 @@
+import "./index.scss";
+
 import {
     Button,
     Checkbox,
+    Col,
     DatePicker,
     Form,
     Icon,
     Input,
     InputNumber,
     Modal,
+    Row,
     Select,
     Table
 } from "antd";
@@ -21,6 +25,7 @@ import {
 import React, { Component } from "react";
 import { compose, graphql, withApollo } from "react-apollo";
 
+import { ENTITYSTATUS } from "../../../constants";
 import { LOCALE } from "../../configs";
 import { ORDERSTATUS } from "../../../constants";
 import OrderFormItems from "../OrderFormItems";
@@ -58,6 +63,7 @@ class OrderForm extends Component {
         this.printOrder = this.printOrder.bind(this);
         this.onSearchCustomers = this.onSearchCustomers.bind(this);
         this.onCustomerSelected = this.onCustomerSelected.bind(this);
+        this.validateCustomer = this.validateCustomer.bind(this);
     }
 
     saveOrder(callback) {
@@ -177,7 +183,8 @@ class OrderForm extends Component {
     onSearchCustomers(searchText) {
         const { searchOrderCustomers, client } = this.props;
         const filter = {
-            name: searchText
+            name: searchText,
+            entityStatus: ENTITYSTATUS.ACTIVE
         };
         searchOrderCustomers({ client, filter });
     }
@@ -191,6 +198,14 @@ class OrderForm extends Component {
             "shipmentInfo-phoneNumber": customer.phoneNumber,
             "shipmentInfo-cellphoneNumber": customer.cellphoneNumber
         });
+    }
+
+    validateCustomer(rule, customerId, callback) {
+        const { form } = this.props;
+        const { getFieldValue } = form;
+        const selectedCustomer = getFieldValue("customer");
+        if (selectedCustomer && selectedCustomer._id === customerId) callback();
+        else callback(new Error());
     }
 
     render() {
@@ -236,70 +251,93 @@ class OrderForm extends Component {
             title: i18n.__(isNew ? "order-add" : "order-update"),
             visible,
             onCancel: closeOrderForm,
-            width: 400,
+            width: "80%",
             maskClosable: false,
             footer: [
-                <Button key="cancel" onClick={closeOrderForm}>
-                    {"Cancel"}
-                </Button>,
-                <div>
-                    {(orderStatus === ORDERSTATUS.INPROGRESS ||
-                        orderStatus === ORDERSTATUS.FINALIZED) &&
-                        <Button key="ok" onClick={() => this.cancelOrder()}>
-                            {"Cancel Order"}
-                        </Button>}
-                </div>,
-                <div>
-                    {(orderStatus === ORDERSTATUS.INPROGRESS || !orderStatus) &&
-                        <Button key="ok1" onClick={() => this.saveOrder()}>
-                            {"Save Order"}
-                        </Button>}
-                </div>,
-                <div>
-                    {(orderStatus === ORDERSTATUS.INPROGRESS || !orderStatus) &&
+                <Row type="flex" justify="end">
+                    <Col>
                         <Button
-                            key="ok2"
-                            onClick={
-                                isNew
-                                    ? () => this.saveOrder(this.finalizeOrder)
-                                    : () => this.finalizeOrder()
-                            }
+                            className="order-save-button"
+                            key="cancel"
+                            onClick={closeOrderForm}
                         >
-                            {isNew
-                                ? "Save and Finalize Order"
-                                : "Finalize Order"}
-                        </Button>}
-                </div>,
-                <div>
-                    {(orderStatus === ORDERSTATUS.INPROGRESS ||
-                        orderStatus === ORDERSTATUS.FINALIZED ||
-                        !orderStatus) &&
-                        <Button
-                            key="ok3"
-                            onClick={
-                                isNew
-                                    ? () => this.saveOrder(this.completeOrder)
-                                    : () => this.completeOrder()
-                            }
-                        >
-                            {isNew
-                                ? "Save and Complete Order"
-                                : "Complete Order"}
-                        </Button>}
-                </div>,
-                <div>
-                    {orderStatus === ORDERSTATUS.COMPLETED &&
-                        <Button
-                            key="ok4"
-                            onClick={
-                                isNew
-                                    ? () => this.saveOrder(this.printOrder)
-                                    : () => this.printOrder()
-                            }
-                        >
-                            {"Print"}
-                        </Button>}
-                </div>
+                            {i18n.__("cancel")}
+                        </Button>
+                    </Col>
+                    <Col>
+                        {(orderStatus === ORDERSTATUS.INPROGRESS ||
+                            orderStatus === ORDERSTATUS.FINALIZED) &&
+                            <Button
+                                className="order-save-button"
+                                key="cancelOrder"
+                                onClick={() => this.cancelOrder()}
+                            >
+                                {i18n.__("order-cancel")}
+                            </Button>}
+                    </Col>
+                    <Col>
+                        {(orderStatus === ORDERSTATUS.INPROGRESS ||
+                            !orderStatus) &&
+                            <Button
+                                className="order-save-button"
+                                key="saveOrder"
+                                onClick={() => this.saveOrder()}
+                            >
+                                {i18n.__("order-save")}
+                            </Button>}
+                    </Col>
+                    <Col>
+                        {(orderStatus === ORDERSTATUS.INPROGRESS ||
+                            !orderStatus) &&
+                            <Button
+                                className="order-save-button"
+                                key="finalizeOrder"
+                                onClick={
+                                    isNew
+                                        ? () =>
+                                              this.saveOrder(this.finalizeOrder)
+                                        : () => this.finalizeOrder()
+                                }
+                            >
+                                {isNew
+                                    ? i18n.__("order-save-finalize")
+                                    : i18n.__("order-finalize")}
+                            </Button>}
+                    </Col>
+                    <Col>
+                        {(orderStatus === ORDERSTATUS.INPROGRESS ||
+                            orderStatus === ORDERSTATUS.FINALIZED ||
+                            !orderStatus) &&
+                            <Button
+                                className="order-save-button"
+                                key="completeOrder"
+                                onClick={
+                                    isNew
+                                        ? () =>
+                                              this.saveOrder(this.completeOrder)
+                                        : () => this.completeOrder()
+                                }
+                            >
+                                {isNew
+                                    ? i18n.__("order-save-complete")
+                                    : i18n.__("order-save")}
+                            </Button>}
+                    </Col>
+                    <Col>
+                        {orderStatus === ORDERSTATUS.COMPLETED &&
+                            <Button
+                                className="order-save-button"
+                                key="printOrder"
+                                onClick={
+                                    isNew
+                                        ? () => this.saveOrder(this.printOrder)
+                                        : () => this.printOrder()
+                                }
+                            >
+                                {i18n.__("order-print")}
+                            </Button>}
+                    </Col>
+                </Row>
             ]
         };
 
@@ -323,126 +361,195 @@ class OrderForm extends Component {
             editDisabled
         };
 
+        const formItemProps = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 12 }
+        };
+
+        const leftSideFormProps = {
+            xs: 24,
+            sm: 24,
+            md: 24,
+            lg: 10,
+            xl: 10
+        };
+
+        const rightSideFormProps = {
+            xs: 24,
+            sm: 24,
+            md: 24,
+            lg: 14,
+            xl: 14
+        };
+
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.saveOrder}>
-                    <Form.Item className="order-form-order">
-                        {getFieldDecorator("_id")(
-                            <Input style={{ display: "none" }} />
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-orderNo")}
-                    >
-                        {getFieldDecorator("orderNo")(<Input disabled />)}
-                    </Form.Item>
-                    <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-orderDate")}
-                    >
-                        {getFieldDecorator("orderDate")(
-                            <DatePicker
-                                disabled={!isNew}
-                                locale={LOCALE.DATEPICKER}
-                                format="DD-MM-YYYY"
-                                allowClear={false}
-                                disabledDate={currentDate => {
-                                    return currentDate > moment();
-                                }}
-                            />
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-customer")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("customerId", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "order-required-field-customer"
-                                    )
-                                }
-                            ]
-                        })(
-                            <Select
-                                disabled={!isNew}
-                                placeholder={i18n.__(
-                                    "order-customer-placeholder"
+                    <Row>
+                        <Col {...leftSideFormProps}>
+                            <Form.Item>
+                                {getFieldDecorator("_id")(
+                                    <Input style={{ display: "none" }} />
                                 )}
-                                mode="combobox"
-                                notFoundContent=""
-                                optionLabelProp="text"
-                                defaultActiveFirstOption={false}
-                                filterOption={false}
-                                onSearch={this.onSearchCustomers}
-                                onSelect={this.onCustomerSelected}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("order-orderNo")}
                             >
-                                {customerOptions}
-                            </Select>
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-customer")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("shipmentInfo-address", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "order-required-field-customer"
-                                    )
-                                }
-                            ]
-                        })(<Input disabled={editDisabled} />)}
-                    </Form.Item>
-                    <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-customer")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("shipmentInfo-phoneNumber", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "order-required-field-customer"
-                                    )
-                                }
-                            ]
-                        })(<Input disabled={editDisabled} />)}
-                    </Form.Item>
-                    <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-customer")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("shipmentInfo-cellphoneNumber", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "order-required-field-customer"
-                                    )
-                                }
-                            ]
-                        })(<Input disabled={editDisabled} />)}
-                    </Form.Item>
-                    <OrderFormItems {...orderFormItemsProps} />
-                    <Form.Item
-                        className="order-form-order"
-                        label={i18n.__("order-customer")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("makePayment", {
-                            rules: []
-                        })(<Checkbox />)}
-                    </Form.Item>
+                                {getFieldDecorator("orderNo")(
+                                    <Input disabled />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("order-orderDate")}
+                            >
+                                {getFieldDecorator("orderDate", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "order-orderDate-required"
+                                            )
+                                        }
+                                    ]
+                                })(
+                                    <DatePicker
+                                        disabled={!isNew}
+                                        locale={LOCALE.DATEPICKER}
+                                        format="DD-MM-YYYY"
+                                        allowClear={false}
+                                        disabledDate={currentDate => {
+                                            return currentDate > moment();
+                                        }}
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("order-customer")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("customerId", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "order-customer-required"
+                                            ),
+                                            validator: this.validateCustomer
+                                        }
+                                    ]
+                                })(
+                                    <Select
+                                        disabled={!isNew}
+                                        placeholder={i18n.__(
+                                            "order-customer-placeholder"
+                                        )}
+                                        mode="combobox"
+                                        notFoundContent=""
+                                        optionLabelProp="text"
+                                        defaultActiveFirstOption={false}
+                                        filterOption={false}
+                                        onSearch={this.onSearchCustomers}
+                                        onSelect={this.onCustomerSelected}
+                                    >
+                                        {customerOptions}
+                                    </Select>
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("order-shipmentInfo-address")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("shipmentInfo-address", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "order-shipmentInfo-address-required"
+                                            )
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        placeholder={i18n.__(
+                                            "order-shipmentInfo-address-placeholder"
+                                        )}
+                                        disabled={editDisabled}
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__(
+                                    "order-shipmentInfo-phoneNumber"
+                                )}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("shipmentInfo-phoneNumber", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "order-shipmentInfo-phoneNumber-required"
+                                            )
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        placeholder={i18n.__(
+                                            "order-shipmentInfo-phoneNumber-placeholder"
+                                        )}
+                                        disabled={editDisabled}
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__(
+                                    "order-shipmentInfo-cellphoneNumber"
+                                )}
+                                hasFeedback
+                            >
+                                {getFieldDecorator(
+                                    "shipmentInfo-cellphoneNumber",
+                                    {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message: i18n.__(
+                                                    "order-shipmentInfo-cellphoneNumber-required"
+                                                )
+                                            }
+                                        ]
+                                    }
+                                )(
+                                    <Input
+                                        placeholder={i18n.__(
+                                            "order-shipmentInfo-cellphoneNumber-placeholder"
+                                        )}
+                                        disabled={editDisabled}
+                                    />
+                                )}
+                            </Form.Item>
+                        </Col>
+                        <Col
+                            className="item-prices-col"
+                            {...rightSideFormProps}
+                        >
+                            <OrderFormItems {...orderFormItemsProps} />
+                            <Form.Item
+                                label={i18n.__("order-customer")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("makePayment", {
+                                    rules: []
+                                })(<Checkbox />)}
+                            </Form.Item>
+                        </Col>
+                    </Row>
                 </Form>
                 <OrderItemForm {...orderItemFormProps} />
             </Modal>
@@ -460,6 +567,7 @@ const mapPropsToFields = ({ editingOrder }) => {
         orderNo,
         orderDate,
         customerId,
+        customer,
         shipmentInfo,
         orderItems,
         paidAmount,
@@ -498,6 +606,7 @@ const mapPropsToFields = ({ editingOrder }) => {
         customerId: {
             value: customerId
         },
+        customer: { value: customer },
         paidAmount: {
             value: paidAmount
         },

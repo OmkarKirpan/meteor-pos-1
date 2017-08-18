@@ -14,6 +14,7 @@ import {
     resolver as supplierResolver,
     typeDefs as supplierTypeDefs
 } from "./Supplier";
+import { resolver as userResolver, typeDefs as userTypeDefs } from "./User";
 
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
@@ -49,7 +50,8 @@ export const typeDefs = mergeTypes([
     customerTypeDefs,
     brandTypeDefs,
     orderTypeDefs,
-    scalarTypeDefs
+    scalarTypeDefs,
+    userTypeDefs
 ]);
 
 export const resolvers = mergeResolvers([
@@ -59,5 +61,6 @@ export const resolvers = mergeResolvers([
     customerResolver,
     brandResolver,
     orderResolver,
-    scalarTypeResolver
+    scalarTypeResolver,
+    userResolver
 ]);

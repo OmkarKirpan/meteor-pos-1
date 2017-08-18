@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { GETORDERS } from "../../graphql/queries/order";
-import NumberFormat from "react-number-format";
 import { ORDEREVENTSUBSCRIPTION } from "../../graphql/subscriptions/order";
 import { ORDERSTATUS } from "../../../constants";
 import PropTypes from "prop-types";
 import { Table } from "antd";
+import { formatCurrency } from "../../../util/currency";
 import i18n from "meteor/universe:i18n";
 import moment from "moment";
 
@@ -113,10 +113,14 @@ class OrderList extends Component {
 
         const columns = [
             {
-                title: i18n.__("order-no"),
+                title: (
+                    <strong>
+                        {i18n.__("order-orderNo")}
+                    </strong>
+                ),
                 key: "orderNo",
                 dataIndex: "orderNo",
-                width: "20%",
+                width: "15%",
                 render: (orderNo, order) =>
                     <a
                         onClick={() => {
@@ -130,118 +134,114 @@ class OrderList extends Component {
                     </a>
             },
             {
-                title: i18n.__("order-date"),
+                title: (
+                    <strong>
+                        {i18n.__("order-orderDate")}
+                    </strong>
+                ),
                 key: "orderDate",
                 dataIndex: "orderDate",
                 width: "10%",
                 render: orderDate =>
-                    <div>
-                        <strong>
-                            {moment(orderDate).format("DD-MM-YYYY")}
-                        </strong>
-                    </div>
+                    <span>
+                        {moment(orderDate).format("DD-MM-YYYY")}
+                    </span>
             },
             {
-                title: i18n.__("order-customer-name"),
+                title: (
+                    <strong>
+                        {i18n.__("order-customer-name")}
+                    </strong>
+                ),
                 key: "customer",
                 dataIndex: "customer",
-                width: "10%",
+                width: "15%",
                 render: customer =>
-                    <div>
-                        <strong>
-                            {customer.name}
-                        </strong>
-                    </div>
+                    <span>
+                        {customer.name}
+                    </span>
             },
             {
-                title: i18n.__("order-subtotal"),
+                title: (
+                    <strong>
+                        {i18n.__("order-subTotal")}
+                    </strong>
+                ),
                 key: "subTotal",
                 dataIndex: "orderItems",
                 width: "20%",
                 render: orderItems =>
-                    <div>
-                        <strong>
-                            <span style={{ float: "left" }}>Rp</span>
-                            <NumberFormat
-                                value={orderItems.reduce((sum, orderItem) => {
-                                    return orderItem.itemPrices.reduce(
-                                        (sum, itemPrices) => {
-                                            return (
-                                                sum +
-                                                itemPrices.quantity *
-                                                    itemPrices.price
-                                            );
-                                        },
-                                        sum
-                                    );
-                                }, 0)}
-                                displayType={"text"}
-                                thousandSeparator={true}
-                                style={{ float: "right" }}
-                            />
-                        </strong>
-                    </div>
+                    <span>
+                        {formatCurrency(
+                            orderItems.reduce((sum, orderItem) => {
+                                return orderItem.itemPrices.reduce(
+                                    (sum, itemPrices) => {
+                                        return (
+                                            sum +
+                                            itemPrices.quantity *
+                                                itemPrices.price
+                                        );
+                                    },
+                                    sum
+                                );
+                            }, 0)
+                        )}
+                    </span>
             },
             {
-                title: i18n.__("order-discount"),
+                title: (
+                    <strong>
+                        {i18n.__("order-discount")}
+                    </strong>
+                ),
                 key: "discount",
                 dataIndex: "orderItems",
                 width: "20%",
                 render: orderItems =>
-                    <div>
-                        <strong>
-                            <span style={{ float: "left" }}>Rp</span>
-                            <NumberFormat
-                                value={orderItems.reduce((sum, orderItem) => {
-                                    return (
-                                        orderItem.itemPrices.reduce(
-                                            (sum, itemPrices) => {
-                                                return (
-                                                    sum + itemPrices.discount
-                                                );
-                                            },
-                                            sum
-                                        ) + orderItem.discount
-                                    );
-                                }, 0)}
-                                displayType={"text"}
-                                thousandSeparator={true}
-                                style={{ float: "right" }}
-                            />
-                        </strong>
-                    </div>
+                    <span>
+                        {formatCurrency(
+                            orderItems.reduce((sum, orderItem) => {
+                                return (
+                                    orderItem.itemPrices.reduce(
+                                        (sum, itemPrices) => {
+                                            return sum + itemPrices.discount;
+                                        },
+                                        sum
+                                    ) + orderItem.discount
+                                );
+                            }, 0)
+                        )}
+                    </span>
             },
             {
-                title: i18n.__("order-amount"),
-                key: "amount",
+                title: (
+                    <strong>
+                        {i18n.__("order-total")}
+                    </strong>
+                ),
+                key: "total",
                 dataIndex: "orderItems",
                 width: "20%",
                 render: orderItems =>
-                    <div>
-                        <strong>
-                            <span style={{ float: "left" }}>Rp</span>
-                            <NumberFormat
-                                value={orderItems.reduce((sum, orderItem) => {
-                                    return (
-                                        orderItem.itemPrices.reduce(
-                                            (sum, itemPrices) => {
-                                                return (
-                                                    sum +
-                                                    itemPrices.quantity *
-                                                        itemPrices.price -
-                                                    itemPrices.discount
-                                                );
-                                            },
-                                            sum
-                                        ) - orderItem.discount
-                                    );
-                                }, 0)}
-                                displayType={"text"}
-                                thousandSeparator={true}
-                                style={{ float: "right" }}
-                            />
-                        </strong>
-                    </div>
+                    <span>
+                        {formatCurrency(
+                            orderItems.reduce((sum, orderItem) => {
+                                return (
+                                    orderItem.itemPrices.reduce(
+                                        (sum, itemPrices) => {
+                                            return (
+                                                sum +
+                                                itemPrices.quantity *
+                                                    itemPrices.price -
+                                                itemPrices.discount
+                                            );
+                                        },
+                                        sum
+                                    ) - orderItem.discount
+                                );
+                            }, 0)
+                        )}
+                    </span>
             }
         ];
 
@@ -249,10 +249,9 @@ class OrderList extends Component {
             error,
             columns,
             loading,
-            bordered: true,
             dataSource: orders,
             rowKey: "_id",
-            size: "small",
+            size: "middle",
             pagination: {
                 current,
                 total,

@@ -20,3 +20,7 @@ export { default as BrandForm } from "./BrandForm";
 export { default as BrandList } from "./BrandList";
 export { default as BrandHeader } from "./BrandHeader";
 export { default as OrderItemForm } from "./OrderItemForm";
+export { default as AppFooter } from "./AppFooter";
+export { default as UserHeader } from "./UserHeader";
+export { default as UserList } from "./UserList";
+export { default as RegistrationForm } from "./RegistrationForm";

@@ -1,20 +1,21 @@
+import { LoginForm, RegistrationForm } from "../../components";
 import React, { Component } from "react";
+import { login, register } from "../../actions";
 
-import { LoginForm } from "../../components";
+import { Button } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { login } from "../../actions";
 
 const mapStateToProps = store => {
     return store;
 };
 
 const mapDispatchToProps = dispatch => {
-    const { login } = dispatch;
     return {
         actions: bindActionCreators(
             {
-                login
+                login,
+                register
             },
             dispatch
         )
@@ -25,17 +26,31 @@ const mapDispatchToProps = dispatch => {
 class LoginPage extends Component {
     constructor() {
         super();
-        this.login = this.login.bind(this);
+        this.switchLoginState = this.switchLoginState.bind(this);
     }
 
-    login(username, password) {
-        this.props.actions.login(username, password);
+    componentWillMount() {
+        this.setState({ login: true });
+    }
+
+    switchLoginState() {
+        console.dir(this.state.login);
+        this.setState({ login: !this.state.login });
+        console.dir(this.state.login);
     }
 
     render() {
+        const { login, register } = this.props.actions;
+        const showLogin = this.state.login;
         return (
-            <div key="login-form">
-                <LoginForm login={this.login} />
+            <div>
+                <div key="login-form">
+                    {showLogin && <LoginForm login={login} />}
+                </div>
+                <div key="registration-form">
+                    {!showLogin && <RegistrationForm register={register} />}
+                </div>
+                <Button onClick={() => this.switchLoginState()}>test</Button>
             </div>
         );
     }

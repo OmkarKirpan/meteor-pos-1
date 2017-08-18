@@ -11,6 +11,7 @@ const GETCATEGORIES = gql`
             name
             entityStatus
         }
+        categoryCount(filter: $filter)
     }
 `;
 

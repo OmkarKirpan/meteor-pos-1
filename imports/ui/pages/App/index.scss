@@ -1,0 +1,42 @@
+.main-layout {
+    position: relative;
+    height: 100vh;
+
+    &.withnavbar {
+        .main {
+            margin-left: 0;
+        }
+    }
+
+    .main {
+        overflow: auto;
+        width: 100%;
+        transition: all 0.3s ease-out;
+
+        .container {
+            margin: 24px;
+        }
+
+        .content {
+            position: relative;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .main-layout {
+        .main {
+            .container {
+                margin: 12px;
+            }
+
+            .bread {
+                padding: 0 12px;
+            }
+
+            .content {
+                min-height: e("calc(100vh - 160px)");
+            }
+        }
+    }
+}

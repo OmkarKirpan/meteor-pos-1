@@ -1,6 +1,7 @@
 export default `
     input SupplierSearchFilter {
         name: String
+        entityStatus: Int
     }
     
     input CreateSupplierInput {

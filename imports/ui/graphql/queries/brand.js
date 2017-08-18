@@ -7,6 +7,7 @@ const GETBRANDS = gql`
             name
             entityStatus
         }
+        brandCount(filter: $filter)
     }
 `;
 

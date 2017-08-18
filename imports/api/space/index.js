@@ -86,16 +86,16 @@ const ServerApp = Space.Application.extend("Application", {
     },
 
     onStart() {
-        this.injector
-            .get("ProjectionBuilder")
-            .rebuild([
-                ItemProjection,
-                CategoryProjection,
-                SupplierProjection,
-                CustomerProjection,
-                BrandProjection,
-                OrderProjection
-            ]);
+        // this.injector
+        //     .get("ProjectionBuilder")
+        //     .rebuild([
+        //         ItemProjection,
+        //         CategoryProjection,
+        //         SupplierProjection,
+        //         CustomerProjection,
+        //         BrandProjection,
+        //         OrderProjection
+        //     ]);
     }
 });
 

@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { Button, Col, Input, Radio, Row } from "antd";
 import React, { Component } from "react";
 import { compose, withApollo } from "react-apollo";
@@ -28,31 +30,28 @@ class OrderHeader extends Component {
 
         return (
             <div>
-                <Row>
+                <Row className="order-header-status-filter-row">
                     <Radio.Group
                         value={filter.orderStatus}
                         onChange={this.changeOrderStatusFilter}
                     >
                         <Radio.Button value={ORDERSTATUS.INPROGRESS}>
-                            In Progress
-                        </Radio.Button>
-                        <Radio.Button value={ORDERSTATUS.CANCELLED}>
-                            Cancelled
+                            {i18n.__("order-status-inProgress")}
                         </Radio.Button>
                         <Radio.Button value={ORDERSTATUS.FINALIZED}>
-                            Finalized
+                            {i18n.__("order-status-finalized")}
                         </Radio.Button>
                         <Radio.Button value={ORDERSTATUS.COMPLETED}>
-                            Completed
+                            {i18n.__("order-status-completed")}
+                        </Radio.Button>
+                        <Radio.Button value={ORDERSTATUS.CANCELLED}>
+                            {i18n.__("order-status-cancelled")}
                         </Radio.Button>
                     </Radio.Group>
                 </Row>
                 <Row>
                     <Col span={4}>
-                        <Button
-                            className="add-order-button"
-                            onClick={() => newOrderForm({ client })}
-                        >
+                        <Button onClick={() => newOrderForm({ client })}>
                             {i18n.__("order-add")}
                         </Button>
                     </Col>

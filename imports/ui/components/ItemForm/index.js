@@ -1,10 +1,14 @@
+import "./index.scss";
+
 import {
     Button,
+    Col,
     Form,
     Icon,
     Input,
     InputNumber,
     Modal,
+    Row,
     Select,
     Table
 } from "antd";
@@ -12,6 +16,7 @@ import { CREATEITEM, UPDATEITEM } from "../../graphql/mutations/item";
 import React, { Component } from "react";
 import { compose, graphql, withApollo } from "react-apollo";
 
+import { ENTITYSTATUS } from "../../../constants";
 import ItemFormPrices from "../ItemFormPrices";
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
@@ -29,6 +34,10 @@ class ItemForm extends Component {
         this.onOk = this.onOk.bind(this);
         this.onSearchCategories = this.onSearchCategories.bind(this);
         this.onSearchBrands = this.onSearchBrands.bind(this);
+        this.onCategorySelected = this.onCategorySelected.bind(this);
+        this.onBrandSelected = this.onBrandSelected.bind(this);
+        this.validateCategory = this.validateCategory.bind(this);
+        this.validateBrand = this.validateBrand.bind(this);
     }
 
     onOk() {
@@ -84,17 +93,55 @@ class ItemForm extends Component {
     onSearchCategories(searchText) {
         const { searchItemCategories, client } = this.props;
         const filter = {
-            name: searchText
+            name: searchText,
+            entityStatus: ENTITYSTATUS.ACTIVE
         };
         searchItemCategories({ client, filter });
+    }
+
+    onCategorySelected(categoryId, categoryOption) {
+        if (!categoryOption) return;
+        const { form } = this.props;
+        const { setFieldsValue } = form;
+        const { category } = categoryOption.props;
+        setFieldsValue({
+            category
+        });
+    }
+
+    validateCategory(rule, categoryId, callback) {
+        const { form } = this.props;
+        const { getFieldValue } = form;
+        const selectedCategory = getFieldValue("category");
+        if (selectedCategory && selectedCategory._id === categoryId) callback();
+        else callback(new Error());
     }
 
     onSearchBrands(searchText) {
         const { searchItemBrands, client } = this.props;
         const filter = {
-            name: searchText
+            name: searchText,
+            entityStatus: ENTITYSTATUS.ACTIVE
         };
         searchItemBrands({ client, filter });
+    }
+
+    onBrandSelected(brandId, brandOption) {
+        if (!brandOption) return;
+        const { form } = this.props;
+        const { setFieldsValue } = form;
+        const { brand } = brandOption.props;
+        setFieldsValue({
+            brand
+        });
+    }
+
+    validateBrand(rule, brandId, callback) {
+        const { form } = this.props;
+        const { getFieldValue } = form;
+        const selectedBrand = getFieldValue("brand");
+        if (selectedBrand && selectedBrand._id === brandId) callback();
+        else callback(new Error());
     }
 
     render() {
@@ -119,12 +166,37 @@ class ItemForm extends Component {
             okText: i18n.__(isNew ? "create" : "update"),
             cancelText: i18n.__("cancel"),
             onOk: this.onOk,
-            width: 400,
+            width: "70%",
             maskClosable: false
         };
 
+        const formItemProps = {
+            labelCol: { span: 6 },
+            wrapperCol: { span: 14 }
+        };
+
+        const leftSideFormProps = {
+            xs: 24,
+            sm: 24,
+            md: 24,
+            lg: 10,
+            xl: 10
+        };
+
+        const rightSideFormProps = {
+            xs: 24,
+            sm: 24,
+            md: 24,
+            lg: 14,
+            xl: 14
+        };
+
         const categoryOptions = categories.map(category =>
-            <Select.Option key={category._id} text={category.name}>
+            <Select.Option
+                key={category._id}
+                text={category.name}
+                category={category}
+            >
                 <span>
                     {category.name}
                 </span>
@@ -132,7 +204,7 @@ class ItemForm extends Component {
         );
 
         const brandOptions = brands.map(brand =>
-            <Select.Option key={brand._id} text={brand.name}>
+            <Select.Option key={brand._id} text={brand.name} brand={brand}>
                 <span>
                     {brand.name}
                 </span>
@@ -142,149 +214,175 @@ class ItemForm extends Component {
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item className="item-form-item">
-                        {getFieldDecorator("_id")(
-                            <Input style={{ display: "none" }} />
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="item-form-item"
-                        label={i18n.__("item-name")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("name", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__("item-required-field-name")
-                                }
-                            ]
-                        })(
-                            <Input
-                                placeholder={i18n.__("item-name-placeholder")}
-                            />
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="item-form-item"
-                        label={i18n.__("item-brand")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("brandId", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "item-required-field-brand"
-                                    )
-                                }
-                            ]
-                        })(
-                            <Select
-                                placeholder={i18n.__("item-brand-placeholder")}
-                                mode="combobox"
-                                notFoundContent=""
-                                optionLabelProp="text"
-                                defaultActiveFirstOption={false}
-                                filterOption={false}
-                                onSearch={this.onSearchBrands}
-                            >
-                                {brandOptions}
-                            </Select>
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="item-form-item"
-                        label={i18n.__("item-category")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("categoryId", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "item-required-field-category"
-                                    )
-                                }
-                            ]
-                        })(
-                            <Select
-                                placeholder={i18n.__(
-                                    "item-category-placeholder"
+                    <Row>
+                        <Col {...leftSideFormProps}>
+                            <Form.Item>
+                                {getFieldDecorator("_id")(
+                                    <Input style={{ display: "none" }} />
                                 )}
-                                mode="combobox"
-                                notFoundContent=""
-                                optionLabelProp="text"
-                                defaultActiveFirstOption={false}
-                                filterOption={false}
-                                onSearch={this.onSearchCategories}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("item-name")}
+                                hasFeedback
                             >
-                                {categoryOptions}
-                            </Select>
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="item-form-item"
-                        label={i18n.__("item-unit")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("baseUnit", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__("item-required-field-unit")
-                                }
-                            ]
-                        })(
-                            <Input
-                                placeholder={i18n.__("item-unit-placeholder")}
-                            />
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="item-form-item"
-                        label={i18n.__("item-price")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("basePrice", {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "item-required-field-price"
-                                    )
-                                }
-                            ]
-                        })(
-                            <InputNumber
-                                style={{ width: "100%" }}
-                                formatter={value =>
-                                    `Rp ${value
-                                        .toString()
-                                        .replace(
-                                            /\B(?=(\d{3})+(?!\d))/g,
-                                            ","
-                                        )}`}
-                                parser={value =>
-                                    value.toString().replace(/Rp\s?|(,*)/g, "")}
-                                placeholder={i18n.__("item-price-placeholder")}
-                            />
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        className="item-form-item"
-                        label={i18n.__("item-stock")}
-                        hasFeedback
-                    >
-                        {getFieldDecorator("stock")(
-                            <InputNumber
-                                disabled
-                                style={{ width: "100%" }}
-                                placeholder={i18n.__("item-stock-placeholder")}
-                            />
-                        )}
-                    </Form.Item>
-                    <ItemFormPrices itemForm={form} />
+                                {getFieldDecorator("name", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "item-name-required"
+                                            )
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        placeholder={i18n.__(
+                                            "item-name-placeholder"
+                                        )}
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("item-brand")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("brandId", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "item-brand-required"
+                                            ),
+                                            validator: this.validateBrand
+                                        }
+                                    ]
+                                })(
+                                    <Select
+                                        placeholder={i18n.__(
+                                            "item-brand-placeholder"
+                                        )}
+                                        mode="combobox"
+                                        notFoundContent=""
+                                        optionLabelProp="text"
+                                        defaultActiveFirstOption={false}
+                                        filterOption={false}
+                                        onSearch={this.onSearchBrands}
+                                        onSelect={this.onBrandSelected}
+                                    >
+                                        {brandOptions}
+                                    </Select>
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("item-category")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("categoryId", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "item-category-required"
+                                            ),
+                                            validator: this.validateCategory
+                                        }
+                                    ]
+                                })(
+                                    <Select
+                                        placeholder={i18n.__(
+                                            "item-category-placeholder"
+                                        )}
+                                        mode="combobox"
+                                        notFoundContent=""
+                                        optionLabelProp="text"
+                                        defaultActiveFirstOption={false}
+                                        filterOption={false}
+                                        onSearch={this.onSearchCategories}
+                                        onSelect={this.onCategorySelected}
+                                    >
+                                        {categoryOptions}
+                                    </Select>
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("item-unit")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("baseUnit", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "item-baseUnit-required"
+                                            )
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        placeholder={i18n.__(
+                                            "item-unit-placeholder"
+                                        )}
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("item-price")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("basePrice", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: i18n.__(
+                                                "item-basePrice-required"
+                                            )
+                                        }
+                                    ]
+                                })(
+                                    <InputNumber
+                                        style={{ width: "100%" }}
+                                        formatter={value =>
+                                            `Rp ${value
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )}`}
+                                        parser={value =>
+                                            value
+                                                .toString()
+                                                .replace(/Rp\s?|(,*)/g, "")}
+                                        placeholder={i18n.__(
+                                            "item-price-placeholder"
+                                        )}
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item
+                                {...formItemProps}
+                                label={i18n.__("item-stock")}
+                                hasFeedback
+                            >
+                                {getFieldDecorator("stock")(
+                                    <InputNumber
+                                        disabled
+                                        style={{ width: "100%" }}
+                                    />
+                                )}
+                            </Form.Item>
+                        </Col>
+                        <Col
+                            className="item-prices-col"
+                            {...rightSideFormProps}
+                        >
+                            <ItemFormPrices itemForm={form} />
+                        </Col>
+                    </Row>
                 </Form>
             </Modal>
         );
@@ -299,7 +397,9 @@ const mapPropsToFields = ({ editingItem }) => {
     const {
         _id,
         brandId,
+        brand,
         categoryId,
+        category,
         name,
         basePrice,
         baseUnit,
@@ -335,9 +435,11 @@ const mapPropsToFields = ({ editingItem }) => {
         categoryId: {
             value: categoryId
         },
+        category: { value: category },
         brandId: {
             value: brandId
         },
+        brand: { value: brand },
         name: {
             value: name
         },

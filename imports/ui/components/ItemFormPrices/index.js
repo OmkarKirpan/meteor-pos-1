@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { Button, Form, Icon, Input, InputNumber, Select, Table } from "antd";
 import React, { Component } from "react";
 import { compose, graphql, withApollo } from "react-apollo";
@@ -38,6 +40,7 @@ class ItemFormPrices extends Component {
     }
 
     checkDuplicateUnits(rule, unit, callback) {
+        if (unit === undefined) callback();
         const { itemForm } = this.props;
         const baseUnit = itemForm.getFieldValue("baseUnit");
         const itemPrices = itemForm.getFieldValue("itemPrices") || [];
@@ -50,8 +53,8 @@ class ItemFormPrices extends Component {
                     ? 1
                     : 0;
         });
-        if (duplicateUnitCount === 1) callback();
-        else callback(new Error("duplicated"));
+        if (duplicateUnitCount <= 1) callback();
+        else callback(new Error(i18n.__("item-itemPrice-unit-duplicated")));
     }
 
     render() {
@@ -63,22 +66,24 @@ class ItemFormPrices extends Component {
 
         const itemPricesDatasource = (itemPrices || []).map(itemPrice => {
             const { itemPriceId } = itemPrice;
+
             return {
                 itemPriceId,
                 delete: (
                     <Icon
-                        className="dynamic-delete-button"
                         type="minus-circle-o"
                         onClick={() => this.removePrice(itemPriceId)}
                     />
                 ),
                 unit: (
-                    <Form.Item className="item-form-item">
+                    <Form.Item>
                         {getFieldDecorator(`itemPrice-${itemPriceId}-unit`, {
                             rules: [
                                 {
                                     required: true,
-                                    message: i18n.__("item-required-field-unit")
+                                    message: i18n.__(
+                                        "item-itemPrice-unit-required"
+                                    )
                                 },
                                 {
                                     validator: this.checkDuplicateUnits
@@ -86,19 +91,21 @@ class ItemFormPrices extends Component {
                             ]
                         })(
                             <Input
-                                placeholder={i18n.__("item-unit-placeholder")}
+                                placeholder={i18n.__(
+                                    "item-itemPrice-unit-placeholder"
+                                )}
                             />
                         )}
                     </Form.Item>
                 ),
                 price: (
-                    <Form.Item className="item-form-item">
+                    <Form.Item>
                         {getFieldDecorator(`itemPrice-${itemPriceId}-price`, {
                             rules: [
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "item-required-field-price"
+                                        "item-itemPrice-price-required"
                                     )
                                 },
                                 {
@@ -119,13 +126,15 @@ class ItemFormPrices extends Component {
                                         )}`}
                                 parser={value =>
                                     value.toString().replace(/Rp\s?|(,*)/g, "")}
-                                placeholder={i18n.__("item-price-placeholder")}
+                                placeholder={i18n.__(
+                                    "item-itemPrice-price-placeholder"
+                                )}
                             />
                         )}
                     </Form.Item>
                 ),
                 multiplier: (
-                    <Form.Item className="item-form-item">
+                    <Form.Item>
                         {getFieldDecorator(
                             `itemPrice-${itemPriceId}-multiplier`,
                             {
@@ -133,7 +142,7 @@ class ItemFormPrices extends Component {
                                     {
                                         required: true,
                                         message: i18n.__(
-                                            "item-required-field-multiplier"
+                                            "item-itemPrice-multiplier-required"
                                         )
                                     },
                                     {
@@ -147,7 +156,7 @@ class ItemFormPrices extends Component {
                             <InputNumber
                                 style={{ width: "100%" }}
                                 placeholder={i18n.__(
-                                    "item-multiplier-placeholder"
+                                    "item-itemPrice-multiplier-placeholder"
                                 )}
                             />
                         )}
@@ -157,6 +166,10 @@ class ItemFormPrices extends Component {
         });
 
         const itemPricesTableProps = {
+            title: () =>
+                <span>
+                    {i18n.__("item-itemPrices")}
+                </span>,
             rowKey: "itemPriceId",
             pagination: false,
             dataSource: itemPricesDatasource,
@@ -174,7 +187,7 @@ class ItemFormPrices extends Component {
                     width: "30%"
                 },
                 {
-                    title: i18n.__("item-multiplier"),
+                    title: i18n.__("item-itemPrice-multiplier"),
                     dataIndex: "multiplier",
                     key: "multiplier",
                     width: "30%"
@@ -185,19 +198,19 @@ class ItemFormPrices extends Component {
                     width: "10%"
                 }
             ],
-            scroll: { y: 100 }
+            scroll: { y: 200, x: 0 },
+            locale: {
+                emptyText: i18n.__("no-data")
+            }
         };
 
         return (
             <div>
-                <Table
-                    className="item-form-price-table"
-                    {...itemPricesTableProps}
-                />
+                <Table {...itemPricesTableProps} />
                 <Button
+                    className="item-itemPrices-add-button"
                     type="dashed"
                     onClick={this.addPrice}
-                    style={{ width: "60%" }}
                 >
                     <Icon type="plus" />
                     {i18n.__("item-add-item-price")}

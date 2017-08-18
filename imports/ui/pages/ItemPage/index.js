@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { ItemForm, ItemHeader, ItemList } from "../../components";
 import React, { Component } from "react";
 import {
@@ -14,6 +16,7 @@ import { compose, withApollo } from "react-apollo";
 
 import { ApolloClient } from "apollo-client";
 import PropTypes from "prop-types";
+import { Row } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import i18n from "meteor/universe:i18n";
@@ -97,11 +100,17 @@ class ItemPage extends Component {
         };
 
         return (
-            <div>
-                <ItemHeader {...itemHeaderProps} />
-                <ItemList {...itemListProps} />
-                <ItemForm {...itemFormProps} />
-            </div>
+            <Row>
+                <Row className="item-page-header">
+                    <ItemHeader {...itemHeaderProps} />
+                </Row>
+                <Row>
+                    <ItemList {...itemListProps} />
+                </Row>
+                <Row>
+                    <ItemForm {...itemFormProps} />
+                </Row>
+            </Row>
         );
     }
 }

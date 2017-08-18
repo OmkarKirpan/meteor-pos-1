@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { CategoryForm, CategoryHeader, CategoryList } from "../../components";
 import React, { Component } from "react";
 import {
@@ -12,6 +14,7 @@ import { compose, withApollo } from "react-apollo";
 
 import { ApolloClient } from "apollo-client";
 import PropTypes from "prop-types";
+import { Row } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import i18n from "meteor/universe:i18n";
@@ -87,11 +90,17 @@ class CategoryPage extends Component {
         };
 
         return (
-            <div>
-                <CategoryHeader {...categoryHeaderProps} />
-                <CategoryList {...categoryListProps} />
-                <CategoryForm {...categoryFormProps} />
-            </div>
+            <Row>
+                <Row className="category-page-header">
+                    <CategoryHeader {...categoryHeaderProps} />
+                </Row>
+                <Row>
+                    <CategoryList {...categoryListProps} />
+                </Row>
+                <Row>
+                    <CategoryForm {...categoryFormProps} />
+                </Row>
+            </Row>
         );
     }
 }

@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { OrderForm, OrderHeader, OrderList } from "../../components";
 import React, { Component } from "react";
 import {
@@ -19,6 +21,7 @@ import { compose, withApollo } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import OrderItemForm from "../";
 import PropTypes from "prop-types";
+import { Row } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import i18n from "meteor/universe:i18n";
@@ -119,11 +122,17 @@ class OrderPage extends Component {
         };
 
         return (
-            <div>
-                <OrderHeader {...orderHeaderProps} />
-                <OrderList {...orderListProps} />
-                <OrderForm {...orderFormProps} />
-            </div>
+            <Row>
+                <Row className="order-page-header">
+                    <OrderHeader {...orderHeaderProps} />
+                </Row>
+                <Row>
+                    <OrderList {...orderListProps} />
+                </Row>
+                <Row>
+                    <OrderForm {...orderFormProps} />
+                </Row>
+            </Row>
         );
     }
 }

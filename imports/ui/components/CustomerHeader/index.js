@@ -13,10 +13,7 @@ class CustomerHeader extends Component {
         return (
             <Row>
                 <Col span={4}>
-                    <Button
-                        className="add-customer-button"
-                        onClick={() => newCustomerForm({ client })}
-                    >
+                    <Button onClick={() => newCustomerForm({ client })}>
                         {i18n.__("customer-add")}
                     </Button>
                 </Col>

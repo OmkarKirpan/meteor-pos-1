@@ -99,7 +99,11 @@ class BrandList extends Component {
 
         const columns = [
             {
-                title: i18n.__("brand-name"),
+                title: (
+                    <strong>
+                        {i18n.__("brand-name")}
+                    </strong>
+                ),
                 key: "name",
                 dataIndex: "name",
                 width: "100%",
@@ -125,10 +129,9 @@ class BrandList extends Component {
             error,
             columns,
             loading,
-            bordered: true,
             dataSource: brands,
             rowKey: "_id",
-            size: "small",
+            size: "middle",
             pagination: {
                 current,
                 total,

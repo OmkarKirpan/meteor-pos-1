@@ -1,74 +1,210 @@
 _locale: en-US
+
 create: Create
 update: Update
 cancel: Cancel
+activate: Activate
+deactivate: Deactivate
+
 entityStatus: Status
+entityStatus-active: Active
+entityStatus-inactive: Inactive
+action: Action
+
 no-data: No Data
+
+# login
+
+login-title: My Shop
+login-username-placeholder: Username
+login-password-placeholder: Password
+login-username-required: Username is required
+login-password-required: Password is required
+login-duplicate-username: Username already exists
+login-signIn: Login
+
+# customer
 
 customer-add: Add Customer
 customer-update: Update Customer
+
 customer-name: Name
 customer-address: Address
-customer-phoneNumber: Phone
+customer-phoneNumber: Phone number
+customer-cellphoneNumber: Cellphone number
+
 customer-name-placeholder: Customer name
 customer-address-placeholder: Customer address
-customer-phoneNumber-placeholder: Customer phone
-customer-required-field-name: Customer name is required
-customer-required-field-address: Customer address is required
-customer-required-field-phoneNumber: Customer phone number is required
+customer-phoneNumber-placeholder: Customer phone number
+customer-cellphoneNumber-placeholder: Customer cellphone number
+
+customer-name-required: Customer name is required
+customer-address-required: Customer address is required
+customer-phoneNumber-required: Customer phone number is required
+customer-cellphoneNumber-required: Customer cellphone number is required
+
 customer-search: Search customer
+
+# supplier
 
 supplier-add: Add Supplier
 supplier-update: Update Supplier
+
 supplier-name: Name
 supplier-address: Address
-supplier-phoneNumber: Phone
+supplier-phoneNumber: Phone number
+supplier-cellphoneNumber: Cellphone number
+
 supplier-name-placeholder: Supplier name
 supplier-address-placeholder: Supplier address
-supplier-phoneNumber-placeholder: Supplier phone
-supplier-required-field-name: Supplier name is required
-supplier-required-field-address: Supplier address is required
-supplier-required-field-phoneNumber: Supplier phone number is required
+supplier-phoneNumber-placeholder: Supplier phone number
+supplier-cellphoneNumber-placeholder: Supplier cellphone number
+
+supplier-name-required: Supplier name is required
+supplier-address-required: Supplier address is required
+supplier-phoneNumber-required: Supplier phone number is required
+supplier-cellphoneNumber-required: Supplier cellphone number is required
+
 supplier-search: Search supplier
 
-order-add: Add Order
-order-update: Update Order
+# item
 
 item-add: Add Item
 item-update: Update Item
-item-name: Name
-item-price: Price
-item-unit: Unit
-item-stock: Stock
-item-multiplier: Multiplier
-item-category: Category
 item-add-item-price: Add price
+
+item-name: Name
+item-price: Base price
+item-unit: Base unit
+item-stock: Stock
+item-category: Category
+item-brand: Brand
+item-itemPrices: Item prices
+item-itemPrice-unit: Unit
+item-itemPrice-price: Unit price
+item-itemPrice-multiplier: Unit multiplier
+
 item-name-placeholder: Item name
-item-price-placeholder: Item price
-item-unit-placeholder: Item unit
-item-stock-placeholder: Item stock
-item-multiplier-placeholder: Item stock multiplier
+item-price-placeholder: Item base price
+item-unit-placeholder: Item base unit
 item-category-placeholder: Item category 
-item-required-field-name: Item name is required
-item-required-field-price: Item price is required
-item-required-field-unit: Item unit is required
-item-required-field-stock: Item stock is required
-item-required-field-multiplier: Item multiplier is required
-item-required-field-category: Item category is required
+item-brand-placeholder: Item brand
+item-itemPrice-unit-placeholder: Unit
+item-itemPrice-price-placeholder: Unit price
+item-itemPrice-multiplier-placeholder: Unit multiplier
+
+item-name-required: Item name is required
+item-basePrice-required: Item base price is required
+item-baseUnit-required: Item base unit is required
+item-category-required: Item category is required
+item-brand-required: Item brand is required
+item-itemPrice-unit-required: Unit is required
+item-itemPrice-unit-duplicated: Duplicate unit
+item-itemPrice-price-required: Unit price is required
+item-itemPrice-multiplier-required: Unit multiplier is required
+
 item-search: Search item
+
+# category
 
 category-add: Add Category
 category-update: Update Category
-category-name: Name
+
+category-name:  Name
+
 category-name-placeholder: Category name
-category-required-field-name: Category name is required
+
+category-name-required: Category name is required
+
 category-search: Search category
+
+# brand
 
 brand-add: Add Brand
 brand-update: Update Brand
+
 brand-name: Name
+
 brand-name-placeholder: Brand name
-brand-required-field-name: Brand name is required
+
+brand-name-required: Brand name is required
+
 brand-search: Search brand
+
+# order
+
+order-add: Add Order
+order-update: Update Order
+order-items-add: Add Order Item
+order-cancel: Cancel Order
+order-save: Save Order
+order-finalize: Finalize Order
+order-complete: Complete Order
+order-save-finalize: Save and Finalize Order
+order-save-complete: Save and Complete Order
+order-print: Print Order
+order-item-save: Save Item
+order-item-title: Order Item
+order-item-itemPrices-add: Add
+
+order-status-inProgress: In Progress
+order-status-cancelled: Cancelled
+order-status-finalized: Finalized
+order-status-completed: Completed
+
+order-orderNo: Order no
+order-orderDate: Order date
+order-customer: Customer
+order-customer-name: Customer name
+order-shipmentInfo-address: Shipment address
+order-shipmentInfo-phoneNumber: Phone number
+order-shipmentInfo-cellphoneNumber: Cellphone number
+order-subTotal: Sub total
+order-discount: Discount
+order-total: Total
+order-items: Items
+order-item: Item
+order-item-name: Item name
+order-item-quantity: Quantity
+order-item-subTotal: Sub total
+order-item-discount: Discount
+order-item-total: Total
+order-item-itemPrices: Details
+order-item-itemPrice-unit: Unit
+order-item-itemPrice-multiplier: Multiplier
+order-item-itemPrice-price: Price
+order-item-itemPrice-quantity: Quantity
+order-item-itemPrice-discount: Discount
+
+order-customer-placeholder: Customer
+order-shipmentInfo-address-placeholder: Shipment address
+order-shipmentInfo-phoneNumber-placeholder: Phone number
+order-shipmentInfo-cellphoneNumber-placeholder: Cellphone number
+order-item-placeholder: Item
+order-item-itemPrice-unit-placeholder: Unit
+order-item-itemPrice-multiplier-placeholder: Multiplier
+order-item-itemPrice-price-placeholder: Price
+order-item-itemPrice-quantity-placeholder: Quantity
+order-item-itemPrice-discount-placeholder: Discount
+order-item-discount-placeholder: Discount
+
+order-orderDate-required: Order date is required
+order-customer-required: Customer is required
+order-shipmentInfo-address-required: Shipment address is required
+order-shipmentInfo-phoneNumber-required: Phone number is required
+order-shipmentInfo-cellphoneNumber-required: Cellphone number is required
+order-items-required: Order items are required
+order-item-required: Item is required
+order-item-itemPrices-required: Item details are required
+order-item-itemPrice-unit-required: Unit is required
+order-item-itemPrice-multiplier-required: Multiplier is required
+order-item-itemPrice-price-required: Price is required
+order-item-itemPrice-quantity-required: Quantity is required
+order-item-itemPrice-discount-required: Discount is required
+order-item-itemPrice-unit-duplicated: Duplicate unit
+order-item-discount-required: Discount is required
+
+user-username: Username
+user-createdAt: Created at
 
 datepicker-today: Hari ini

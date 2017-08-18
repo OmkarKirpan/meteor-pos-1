@@ -30,9 +30,11 @@ const {
 const queryResolver = {
     Query: {
         customers(_, { filter, skip, pageSize }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
             if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Customers.find(queryFilter, {
                 skip,
                 limit: pageSize,
@@ -42,9 +44,11 @@ const queryResolver = {
             }).fetch();
         },
         customerCount(_, { filter }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
-            if (name) queryFilter["name"] = name;
+            if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Customers.find(queryFilter).count();
         },
         customer(_, { _id }, context) {

@@ -72,20 +72,25 @@ class CustomerForm extends Component {
             okText: i18n.__(isNew ? "create" : "update"),
             cancelText: i18n.__("cancel"),
             onOk: this.onOk,
-            width: 400,
+            width: "30%",
             maskClosable: false
+        };
+
+        const formItemProps = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 14 }
         };
 
         return (
             <Modal {...modalProps}>
                 <Form onSubmit={this.onOk}>
-                    <Form.Item className="item-form-item">
+                    <Form.Item>
                         {getFieldDecorator("_id")(
                             <Input style={{ display: "none" }} />
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="item-form-item"
+                        {...formItemProps}
                         label={i18n.__("customer-name")}
                         hasFeedback
                     >
@@ -93,9 +98,7 @@ class CustomerForm extends Component {
                             rules: [
                                 {
                                     required: true,
-                                    message: i18n.__(
-                                        "customer-required-field-name"
-                                    )
+                                    message: i18n.__("customer-name-required")
                                 }
                             ]
                         })(
@@ -107,7 +110,7 @@ class CustomerForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="item-form-item"
+                        {...formItemProps}
                         label={i18n.__("customer-address")}
                         hasFeedback
                     >
@@ -116,7 +119,7 @@ class CustomerForm extends Component {
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "customer-required-field-address"
+                                        "customer-address-required"
                                     )
                                 }
                             ]
@@ -129,7 +132,7 @@ class CustomerForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="item-form-item"
+                        {...formItemProps}
                         label={i18n.__("customer-phoneNumber")}
                         hasFeedback
                     >
@@ -138,7 +141,7 @@ class CustomerForm extends Component {
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "customer-required-field-phoneNumber"
+                                        "customer-phoneNumber-required"
                                     )
                                 }
                             ]
@@ -151,7 +154,7 @@ class CustomerForm extends Component {
                         )}
                     </Form.Item>
                     <Form.Item
-                        className="item-form-item"
+                        {...formItemProps}
                         label={i18n.__("customer-cellphoneNumber")}
                         hasFeedback
                     >
@@ -160,7 +163,7 @@ class CustomerForm extends Component {
                                 {
                                     required: true,
                                     message: i18n.__(
-                                        "customer-required-field-cellphoneNumber"
+                                        "customer-cellphoneNumber-required"
                                     )
                                 }
                             ]

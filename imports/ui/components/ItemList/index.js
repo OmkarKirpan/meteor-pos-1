@@ -1,4 +1,6 @@
-import { Col, Row, Switch, Table } from "antd";
+import "./index.scss";
+
+import { Button, Col, Row, Switch, Table } from "antd";
 import React, { Component } from "react";
 import { compose, gql, graphql, withApollo } from "react-apollo";
 
@@ -106,7 +108,11 @@ class ItemList extends Component {
 
         const columns = [
             {
-                title: i18n.__("item-name"),
+                title: (
+                    <strong>
+                        {i18n.__("item-name")}
+                    </strong>
+                ),
                 key: "name",
                 dataIndex: "name",
                 width: "20%",
@@ -123,34 +129,42 @@ class ItemList extends Component {
                     </a>
             },
             {
-                title: i18n.__("item-category"),
+                title: (
+                    <strong>
+                        {i18n.__("item-category")}
+                    </strong>
+                ),
                 key: "category",
                 dataIndex: "category",
                 width: "20%",
                 render: category =>
-                    <div>
-                        <strong>
-                            {category ? category.name : ""}
-                        </strong>
-                    </div>
+                    <span>
+                        {category ? category.name : ""}
+                    </span>
             },
             {
-                title: i18n.__("item-brand"),
+                title: (
+                    <strong>
+                        {i18n.__("item-brand")}
+                    </strong>
+                ),
                 key: "brand",
                 dataIndex: "brand",
                 width: "20%",
                 render: brand =>
-                    <div>
-                        <strong>
-                            {brand ? brand.name : ""}
-                        </strong>
-                    </div>
+                    <span>
+                        {brand ? brand.name : ""}
+                    </span>
             },
             {
-                title: i18n.__("item-stock"),
+                title: (
+                    <strong>
+                        {i18n.__("item-stock")}
+                    </strong>
+                ),
                 key: "stock",
                 dataIndex: "stock",
-                width: "30%",
+                width: "20%",
                 render: (stock, record) => {
                     if (!record.allPrices) return <div />;
                     const allPrices = record.allPrices;
@@ -158,7 +172,7 @@ class ItemList extends Component {
                     let itemStock = stock;
                     if (itemStock === 0)
                         return (
-                            <span style={{ float: "right" }}>
+                            <span>
                                 {"0 " + record.baseUnit}
                             </span>
                         );
@@ -180,20 +194,41 @@ class ItemList extends Component {
                 }
             },
             {
-                title: i18n.__("entityStatus"),
+                title: (
+                    <strong>
+                        {i18n.__("entityStatus")}
+                    </strong>
+                ),
                 key: "entityStatus",
                 dataIndex: "entityStatus",
                 width: "10%",
-                render: (entityStatus, item) =>
-                    <Switch
+                render: entityStatus =>
+                    <span
                         className={
-                            "item-entityStatus-" +
+                            "entity-status-" +
                             (entityStatus === ENTITYSTATUS.ACTIVE
                                 ? "active"
                                 : "inactive")
                         }
-                        checked={entityStatus === ENTITYSTATUS.ACTIVE}
-                        onChange={() => {
+                    >
+                        {entityStatus === ENTITYSTATUS.ACTIVE
+                            ? i18n.__("entityStatus-active")
+                            : i18n.__("entityStatus-inactive")}
+                    </span>
+            },
+            {
+                title: (
+                    <strong>
+                        {i18n.__("action")}
+                    </strong>
+                ),
+                key: "action",
+                dataIndex: "entityStatus",
+                width: "10%",
+                render: (entityStatus, item) =>
+                    <Button
+                        style={{ width: "100%" }}
+                        onClick={() => {
                             const { _id } = item;
                             updateItemStatus({
                                 variables: {
@@ -205,7 +240,11 @@ class ItemList extends Component {
                                 }
                             });
                         }}
-                    />
+                    >
+                        {entityStatus === ENTITYSTATUS.ACTIVE
+                            ? i18n.__("deactivate")
+                            : i18n.__("activate")}
+                    </Button>
             }
         ];
 
@@ -214,10 +253,9 @@ class ItemList extends Component {
             columns,
             loading,
             expandedRowRender: item => <ItemListPrices item={item} />,
-            bordered: true,
             dataSource: items,
             rowKey: "_id",
-            size: "small",
+            size: "middle",
             pagination: {
                 current,
                 total,

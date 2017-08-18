@@ -30,9 +30,11 @@ const {
 const queryResolver = {
     Query: {
         categories(_, { filter, skip, pageSize }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
             if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Categories.find(queryFilter, {
                 skip,
                 limit: pageSize,
@@ -42,9 +44,11 @@ const queryResolver = {
             }).fetch();
         },
         categoryCount(_, { filter }, context) {
-            const { name } = filter || {};
+            const { name, entityStatus } = filter || {};
             const queryFilter = {};
-            if (name) queryFilter["name"] = name;
+            if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            if (entityStatus !== undefined)
+                queryFilter["entityStatus"] = { $eq: entityStatus };
             return Categories.find(queryFilter).count();
         },
         category(_, { _id }, context) {

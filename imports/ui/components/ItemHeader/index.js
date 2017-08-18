@@ -13,10 +13,7 @@ class ItemHeader extends Component {
         return (
             <Row>
                 <Col span={4}>
-                    <Button
-                        className="add-item-button"
-                        onClick={() => newItemForm({ client })}
-                    >
+                    <Button onClick={() => newItemForm({ client })}>
                         {i18n.__("item-add")}
                     </Button>
                 </Col>

@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { CustomerForm, CustomerHeader, CustomerList } from "../../components";
 import React, { Component } from "react";
 import {
@@ -12,6 +14,7 @@ import { compose, withApollo } from "react-apollo";
 
 import { ApolloClient } from "apollo-client";
 import PropTypes from "prop-types";
+import { Row } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import i18n from "meteor/universe:i18n";
@@ -87,11 +90,17 @@ class CustomerPage extends Component {
         };
 
         return (
-            <div>
-                <CustomerHeader {...customerHeaderProps} />
-                <CustomerList {...customerListProps} />
-                <CustomerForm {...customerFormProps} />
-            </div>
+            <Row>
+                <Row className="customer-page-header">
+                    <CustomerHeader {...customerHeaderProps} />
+                </Row>
+                <Row>
+                    <CustomerList {...customerListProps} />
+                </Row>
+                <Row>
+                    <CustomerForm {...customerFormProps} />
+                </Row>
+            </Row>
         );
     }
 }
