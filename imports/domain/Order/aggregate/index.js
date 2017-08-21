@@ -119,7 +119,6 @@ const Order = Space.eventSourcing.Aggregate.extend("Order", {
     },
 
     _onOrderCancelled(event) {
-        this._assignFields(event);
         if (this.paymentStatus === PAYMENTSTATUS.UNPAID) {
             this.orderStatus = ORDERSTATUS.CANCELLED;
         }
@@ -127,7 +126,6 @@ const Order = Space.eventSourcing.Aggregate.extend("Order", {
 
     _onOrderFinalized(event) {
         if (this.orderStatus === ORDERSTATUS.INPROGRESS) {
-            this._assignFields(event);
             this.orderStatus = ORDERSTATUS.FINALIZED;
         }
     },
@@ -137,7 +135,6 @@ const Order = Space.eventSourcing.Aggregate.extend("Order", {
             this.orderStatus === ORDERSTATUS.FINALIZED ||
             this.orderStatus === ORDERSTATUS.INPROGRESS
         ) {
-            this._assignFields(event);
             this.orderStatus = ORDERSTATUS.COMPLETED;
         }
     }

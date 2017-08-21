@@ -1,4 +1,4 @@
-import commands from "../../../domain/ItemAdjustment/commands";
+import commands from "../../../domain/SupplyOrder/commands";
 
 const { CreateSupplyOrder } = commands;
 

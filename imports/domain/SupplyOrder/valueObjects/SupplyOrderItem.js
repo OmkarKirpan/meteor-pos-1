@@ -1,6 +1,6 @@
 const SupplyOrderItem = Space.domain.ValueObject.extend("SupplyOrderItem", {
-    Constructor({ itemId, quantity, price, discount }) {
-        const data = { itemId, quantity, price, discount };
+    Constructor({ itemId, quantity, price }) {
+        const data = { itemId, quantity, price };
         Space.domain.ValueObject.call(this, data);
         Object.freeze(this);
     },
@@ -8,8 +8,7 @@ const SupplyOrderItem = Space.domain.ValueObject.extend("SupplyOrderItem", {
         return {
             itemId: String,
             quantity: Number,
-            price: Number,
-            discount: Number
+            price: Number
         };
     }
 });

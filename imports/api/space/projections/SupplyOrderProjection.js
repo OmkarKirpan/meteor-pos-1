@@ -23,6 +23,8 @@ const SupplyOrderProjection = Space.eventSourcing.Projection.extend(
             event.entityStatus = ENTITYSTATUS.ACTIVE;
             const {
                 _id,
+                supplierId,
+                orderNo,
                 orderDate,
                 supplyItems,
                 discount,
@@ -30,12 +32,14 @@ const SupplyOrderProjection = Space.eventSourcing.Projection.extend(
                 updatedAt,
                 entityStatus
             } = event;
-            this.items.insert({
+            this.supplyOrders.insert({
                 _id,
+                supplierId,
+                orderNo,
                 orderDate,
                 supplyItems: supplyItems.map(supplyItem => {
                     return {
-                        itemId: supplyItem.unit,
+                        itemId: supplyItem.itemId,
                         quantity: supplyItem.quantity,
                         price: supplyItem.price
                     };

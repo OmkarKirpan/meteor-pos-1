@@ -23,6 +23,7 @@ const ItemAdjustmentProjection = Space.eventSourcing.Projection.extend(
             event.entityStatus = ENTITYSTATUS.ACTIVE;
             const {
                 _id,
+                adjustmentNo,
                 adjustmentDate,
                 adjustmentItems,
                 reason,
@@ -30,12 +31,13 @@ const ItemAdjustmentProjection = Space.eventSourcing.Projection.extend(
                 updatedAt,
                 entityStatus
             } = event;
-            this.items.insert({
+            this.itemAdjustments.insert({
                 _id,
+                adjustmentNo,
                 adjustmentDate,
                 adjustmentItems: adjustmentItems.map(adjustmentItem => {
                     return {
-                        itemId: adjustmentItem.unit,
+                        itemId: adjustmentItem.itemId,
                         quantity: adjustmentItem.quantity
                     };
                 }),

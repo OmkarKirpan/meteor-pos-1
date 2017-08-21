@@ -1,6 +1,8 @@
 import { ENTITYSTATUS } from "../../../constants";
+import Orders from "../../../domain/Order/repository";
 import events from "../../../domain/Item/events";
 import itemAdjustmentEvents from "../../../domain/ItemAdjustment/events";
+import orderEvents from "../../../domain/Order/events";
 import pubsub from "../../graphql/pubsub";
 import supplyOrderEvents from "../../../domain/SupplyOrder/events";
 
@@ -9,6 +11,8 @@ const { ItemCreated, ItemUpdated, ItemActivated, ItemDeactivated } = events;
 const { SupplyOrderCreated } = supplyOrderEvents;
 
 const { ItemAdjustmentCreated } = itemAdjustmentEvents;
+
+const { OrderFinalized } = orderEvents;
 
 const ItemProjection = Space.eventSourcing.Projection.extend("ItemProjection", {
     collections: {
@@ -23,7 +27,8 @@ const ItemProjection = Space.eventSourcing.Projection.extend("ItemProjection", {
                 [ItemActivated]: this._onItemActivated,
                 [ItemDeactivated]: this._onItemDeactivated,
                 [SupplyOrderCreated]: this._onSupplyOrderCreated,
-                [ItemAdjustmentCreated]: this._onItemAdjustmentCreated
+                [ItemAdjustmentCreated]: this._onItemAdjustmentCreated,
+                [OrderFinalized]: this._onOrderFinalized
             }
         ];
     },
@@ -123,6 +128,21 @@ const ItemProjection = Space.eventSourcing.Projection.extend("ItemProjection", {
         event.adjustmentItems.forEach(adjustmentItem => {
             const { itemId, quantity } = adjustmentItem;
             this.items.update(itemId, { $inc: { stock: quantity } });
+        });
+    },
+
+    _onOrderFinalized(event) {
+        const { _id, orderItems } = event;
+        orderItems.forEach(orderItem => {
+            const soldQuantity = orderItem.itemPrices.reduce(
+                (sum, itemPrice) => {
+                    return sum + itemPrice.multiplier * itemPrice.quantity;
+                },
+                0
+            );
+            this.items.update(orderItem.itemId, {
+                $inc: { stock: -soldQuantity }
+            });
         });
     }
 });

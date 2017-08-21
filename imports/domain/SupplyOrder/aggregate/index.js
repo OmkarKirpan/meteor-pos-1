@@ -10,6 +10,7 @@ const { SupplyOrderCreated } = events;
 const SupplyOrder = Space.eventSourcing.Aggregate.extend("SupplyOrder", {
     fields: {
         _id: String,
+        orderNo: String,
         supplierId: String,
         orderDate: Date,
         supplyItems: [SupplyOrderItem],

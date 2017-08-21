@@ -2,6 +2,8 @@ import { ENTITYSTATUS } from "../../../constants";
 import { ItemPrice } from "../valueObjects";
 import commands from "../commands/";
 import events from "../events";
+import itemAdjustmentEvents from "../../ItemAdjustment/events";
+import orderEvents from "../../Order/events";
 import supplyOrderEvents from "../../SupplyOrder/events";
 
 const { CreateItem, UpdateItem, ActivateItem, DeactivateItem } = commands;
@@ -9,6 +11,10 @@ const { CreateItem, UpdateItem, ActivateItem, DeactivateItem } = commands;
 const { ItemCreated, ItemUpdated, ItemActivated, ItemDeactivated } = events;
 
 const { SupplyOrderCreated } = supplyOrderEvents;
+
+const { OrderFinalized } = orderEvents;
+
+const { ItemAdjustmentCreated } = itemAdjustmentEvents;
 
 const Item = Space.eventSourcing.Aggregate.extend("Item", {
     fields: {
@@ -40,7 +46,9 @@ const Item = Space.eventSourcing.Aggregate.extend("Item", {
             [ItemUpdated]: this._onItemUpdated,
             [ItemActivated]: this._onItemActivated,
             [ItemDeactivated]: this._onItemDeactivated,
-            [SupplyOrderCreated]: this._onSupplyOrderCreated
+            [SupplyOrderCreated]: this._onSupplyOrderCreated,
+            [OrderFinalized]: this._onOrderFinalized,
+            [ItemAdjustmentCreated]: this._onItemAdjustmentCreated
         };
     },
 
@@ -106,11 +114,37 @@ const Item = Space.eventSourcing.Aggregate.extend("Item", {
     },
 
     _onSupplyOrderCreated(event) {
-        const { items } = event;
-        items.forEach(item => {
+        const { supplyItems } = event;
+        supplyItems.forEach(item => {
             const { itemId, quantity } = item;
             if (itemId === this._id) {
                 this.stock += quantity;
+            }
+        });
+    },
+
+    _onItemAdjustmentCreated(event) {
+        const { adjustmentItems } = event;
+        adjustmentItems.forEach(item => {
+            const { itemId, quantity } = item;
+            if (itemId === this._id) {
+                this.stock += quantity;
+            }
+        });
+    },
+
+    _onOrderFinalized(event) {
+        const { _id, orderItems } = event;
+        orderItems.forEach(orderItem => {
+            const { itemId } = orderItem;
+            if (itemId === this._id) {
+                const soldQuantity = orderItem.itemPrices.reduce(
+                    (sum, itemPrice) => {
+                        return sum + itemPrice.multiplier * itemPrice.quantity;
+                    },
+                    0
+                );
+                this.stock -= soldQuantity;
             }
         });
     }

@@ -2,33 +2,41 @@ import {
     BrandApi,
     CategoryApi,
     CustomerApi,
+    ItemAdjustmentApi,
     ItemApi,
     OrderApi,
-    SupplierApi
+    SupplierApi,
+    SupplyOrderApi
 } from "./apis";
 import {
     BrandHandler,
     CategoryHandler,
     CustomerHandler,
+    ItemAdjustmentHandler,
     ItemHandler,
     OrderHandler,
-    SupplierHandler
+    SupplierHandler,
+    SupplyOrderHandler
 } from "./commandHandlers";
 import {
     BrandProjection,
     CategoryProjection,
     CustomerProjection,
+    ItemAdjustmentProjection,
     ItemProjection,
     OrderProjection,
-    SupplierProjection
+    SupplierProjection,
+    SupplyOrderProjection
 } from "./projections";
 
 import Brands from "../../domain/Brand/repository";
 import Categories from "../../domain/Category/repository";
 import Customers from "../../domain/Customer/repository";
+import ItemAdjustments from "../../domain/ItemAdjustment/repository";
 import Items from "../../domain/Item/repository";
 import Orders from "../../domain/Order/repository";
 import Suppliers from "../../domain/Supplier/repository";
+import SupplyOrders from "../../domain/SupplyOrder/repository";
 
 const ServerApp = Space.Application.extend("Application", {
     configuration: {
@@ -61,7 +69,13 @@ const ServerApp = Space.Application.extend("Application", {
         BrandProjection,
         OrderHandler,
         OrderApi,
-        OrderProjection
+        OrderProjection,
+        ItemAdjustmentHandler,
+        ItemAdjustmentApi,
+        ItemAdjustmentProjection,
+        SupplyOrderHandler,
+        SupplyOrderApi,
+        SupplyOrderProjection
     ],
 
     onInitialize() {
@@ -74,6 +88,8 @@ const ServerApp = Space.Application.extend("Application", {
         this.injector.map("Customers").to(Customers);
         this.injector.map("Brands").to(Brands);
         this.injector.map("Orders").to(Orders);
+        this.injector.map("ItemAdjustments").to(ItemAdjustments);
+        this.injector.map("SupplyOrders").to(SupplyOrders);
     },
 
     onReset() {
@@ -83,6 +99,8 @@ const ServerApp = Space.Application.extend("Application", {
         this.injector.get("Customers").remove({});
         this.injector.get("Brands").remove({});
         this.injector.get("Orders").remove({});
+        this.injector.get("ItemAdjustments").remove({});
+        this.injector.get("SupplyOrders").remove({});
     },
 
     onStart() {
@@ -94,7 +112,9 @@ const ServerApp = Space.Application.extend("Application", {
         //         SupplierProjection,
         //         CustomerProjection,
         //         BrandProjection,
-        //         OrderProjection
+        //         OrderProjection,
+        //         ItemAdjustmentProjection,
+        //         SupplyOrderProjection
         //     ]);
     }
 });

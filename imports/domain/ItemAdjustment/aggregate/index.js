@@ -7,9 +7,10 @@ const { CreateItemAdjustment } = commands;
 
 const { ItemAdjustmentCreated } = events;
 
-const SupplyOrder = Space.eventSourcing.Aggregate.extend("SupplyOrder", {
+const ItemAdjustment = Space.eventSourcing.Aggregate.extend("ItemAdjustment", {
     fields: {
         _id: String,
+        adjustmentNo: String,
         adjustmentDate: Date,
         adjustmentItems: [ItemAdjustmentItem],
         reason: String,
@@ -50,6 +51,6 @@ const SupplyOrder = Space.eventSourcing.Aggregate.extend("SupplyOrder", {
     }
 });
 
-SupplyOrder.registerSnapshotType("SupplyOrderSnapshot");
+ItemAdjustment.registerSnapshotType("ItemAdjustment");
 
-export default SupplyOrder;
+export default ItemAdjustment;

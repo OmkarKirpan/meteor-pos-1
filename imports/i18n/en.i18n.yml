@@ -1,17 +1,37 @@
 _locale: en-US
 
+# misc
+
 create: Create
 update: Update
 cancel: Cancel
 activate: Activate
 deactivate: Deactivate
+sign-out: Sign out
+sign-in: Login
+sign-up: Register
+change-password: Change password
 
+change-password-title: Change password
 entityStatus: Status
 entityStatus-active: Active
 entityStatus-inactive: Inactive
 action: Action
 
+change-password-placeholder: New password
+change-password-required: Password is required
+
 no-data: No Data
+
+login-here: Login here
+register-here: Register here
+
+login-failed: Login failed
+registration-success: Registration succeed, please login
+registration-failed: User already exists
+logout-failed: Logout failed
+
+datepicker-today: Hari ini
 
 # login
 
@@ -21,7 +41,15 @@ login-password-placeholder: Password
 login-username-required: Username is required
 login-password-required: Password is required
 login-duplicate-username: Username already exists
-login-signIn: Login
+
+# registration
+
+registration-title: Register
+registration-username-placeholder: Username
+registration-password-placeholder: Password
+registration-username-required: Username is required
+registration-password-required: Password is required
+registration-duplicate-username: Username already exists
 
 # customer
 
@@ -152,6 +180,8 @@ order-status-cancelled: Cancelled
 order-status-finalized: Finalized
 order-status-completed: Completed
 
+order-date-filter: Date filter
+
 order-orderNo: Order no
 order-orderDate: Order date
 order-customer: Customer
@@ -202,9 +232,85 @@ order-item-itemPrice-price-required: Price is required
 order-item-itemPrice-quantity-required: Quantity is required
 order-item-itemPrice-discount-required: Discount is required
 order-item-itemPrice-unit-duplicated: Duplicate unit
+order-item-itemPrice-quantity-invalid: Invalid quantity
+order-item-itemPrice-discount-invalid: Invalid discount
 order-item-discount-required: Discount is required
+order-item-discount-invalid: Invalid discount
+
+order-save-error: Failed to save order
+order-finalize-error: Failed to finalize order, order is saved
+order-complete-error: Failed to complete order
+order-save-complete-error: Failed to complete order, order is saved and finalized
+order-cancel-error: Failed to cancel order
+order-print-error: Failed to print order
+
+# user
 
 user-username: Username
 user-createdAt: Created at
 
-datepicker-today: Hari ini
+# item adjustment
+
+itemAdjustment-add: Add adjustment
+itemAdjustment-adjustmentItems-add: Add item
+
+itemAdjustment-adjustmentNo: Adjustment no
+itemAdjustment-adjustmentDate: Adjustment date
+itemAdjustment-reason: Reason
+itemAdjustment-adjustmentItems: Adjustment items
+itemAdjustment-adjustmentItem-item: Item
+itemAdjustment-adjustmentItem-quantity: Quantity
+
+itemAdjustment-adjustmentDate-placeholder: Adjustment date
+itemAdjustment-reason-placeholder: Reason
+itemAdjustment-adjustmentItem-item-placeholder: Item
+itemAdjustment-adjustmentItem-quantity-placeholder: Quantity
+
+itemAdjustment-adjustmentDate-required: Adjustment date is required
+itemAdjustment-reason-required: Reason is required
+itemAdjustment-adjustmentItems-required: Adjustment items are required
+itemAdjustment-adjustmentItem-item-required: Item is required
+itemAdjustment-adjustmentItem-item-duplicated: Duplicate item
+itemAdjustment-adjustmentItem-quantity-required: Quantity is required
+itemAdjustment-adjustmentItem-quantity-invalid: Invalid quantity
+
+itemAdjustment-date-filter: Date filter
+
+# supply order
+
+supplyOrder-add: Add supply order
+supplyOrder-supplyItems-add: Add item
+
+supplyOrder-orderNo: Order no
+supplyOrder-orderDate: Order date
+supplyOrder-discount: Discount
+supplyOrder-supplyItems: Order items
+supplyOrder-supplyItem-item: Item
+supplyOrder-supplyItem-quantity: Quantity
+supplyOrder-supplyItem-price: Price
+supplyOrder-supplyItem-total: Total
+supplyOrder-supplier: Supplier
+supplyOrder-subTotal: Sub total
+supplyOrder-total: Total
+
+supplyOrder-orderDate-placeholder: Order date
+supplyOrder-discount-placeholder: Discount
+supplyOrder-supplyItem-item-placeholder: Item
+supplyOrder-supplyItem-quantity-placeholder: Quantity
+supplyOrder-supplier-placeholder: Supplier
+supplyOrder-supplyItem-price-placeholder: Price
+supplyOrder-supplyItem-total-placeholder: Total
+
+supplyOrder-orderDate-required: Order date is required
+supplyOrder-discount-required: Discount is required
+supplyOrder-discount-invalid: Invalid discount
+supplyOrder-supplyItems-required: Order items are required
+supplyOrder-supplyItem-item-required: Item is required
+supplyOrder-supplyItem-item-duplicated: Duplicate item
+supplyOrder-supplyItem-quantity-required: Quantity is required
+supplyOrder-supplyItem-quantity-invalid: Invalid quantity
+supplyOrder-supplier-required: Supplier is required
+supplyOrder-supplyItem-price-required: Price is required
+supplyOrder-supplyItem-price-invalid: Invalid price
+
+supplyOrder-date-filter: Date filter
