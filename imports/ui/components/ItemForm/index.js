@@ -52,7 +52,7 @@ class ItemForm extends Component {
 
         form.validateFields((errors, item) => {
             if (!errors) {
-                const itemPrices = form.getFieldValue("itemPrices");
+                const itemPrices = form.getFieldValue("itemPrices") || [];
                 const itemPriceIds = itemPrices.map(
                     itemPrice => itemPrice.itemPriceId
                 );
@@ -415,15 +415,23 @@ const mapPropsToFields = ({ editingItem }) => {
         itemPrices.forEach(itemPrice => {
             const { itemPriceId, unit, multiplier, price } = itemPrice;
             itemPriceData[`itemPrice-${itemPriceId}-unit`] = {
-                value: editingItem[`itemPrice-${itemPriceId}-unit`] || unit
+                value:
+                    editingItem[`itemPrice-${itemPriceId}-unit`] !== undefined
+                        ? editingItem[`itemPrice-${itemPriceId}-unit`]
+                        : unit
             };
             itemPriceData[`itemPrice-${itemPriceId}-multiplier`] = {
                 value:
-                    editingItem[`itemPrice-${itemPriceId}-multiplier`] ||
-                    multiplier
+                    editingItem[`itemPrice-${itemPriceId}-multiplier`] !==
+                    undefined
+                        ? editingItem[`itemPrice-${itemPriceId}-multiplier`]
+                        : multiplier
             };
             itemPriceData[`itemPrice-${itemPriceId}-price`] = {
-                value: editingItem[`itemPrice-${itemPriceId}-price`] || price
+                value:
+                    editingItem[`itemPrice-${itemPriceId}-price`] !== undefined
+                        ? editingItem[`itemPrice-${itemPriceId}-price`]
+                        : price
             };
         });
     }

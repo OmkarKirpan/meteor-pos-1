@@ -168,6 +168,8 @@ class OrderItemForm extends Component {
             maskClosable: false
         };
 
+        if (editDisabled) modalProps.footer = [];
+
         const itemPrices = getFieldValue("itemPrices");
 
         const itemOptions = items.map(item =>
@@ -232,6 +234,16 @@ class OrderItemForm extends Component {
                                     message: i18n.__(
                                         "order-item-discount-required"
                                     )
+                                },
+                                {
+                                    message: i18n.__(
+                                        "order-item-discount-invalid"
+                                    ),
+                                    validator: (_, value, callback) => {
+                                        value === undefined || value >= 0
+                                            ? callback()
+                                            : callback(new Error());
+                                    }
                                 }
                             ]
                         })(
@@ -261,9 +273,7 @@ class OrderItemForm extends Component {
 }
 
 OrderItemForm.propTypes = {
-    saveOrderItem: PropTypes.func.isRequired,
-    changeOrderItemForm: PropTypes.func.isRequired,
-    searchItems: PropTypes.func.isRequired
+    changeOrderItemForm: PropTypes.func.isRequired
 };
 
 const mapPropsToFields = ({ editingOrderItem }) => {
@@ -292,22 +302,33 @@ const mapPropsToFields = ({ editingOrderItem }) => {
             };
             itemPriceData[`itemPrice-${itemPriceId}-quantity`] = {
                 value:
-                    editingOrderItem[`itemPrice-${itemPriceId}-quantity`] ||
-                    quantity
+                    editingOrderItem[`itemPrice-${itemPriceId}-quantity`] !==
+                    undefined
+                        ? editingOrderItem[`itemPrice-${itemPriceId}-quantity`]
+                        : quantity
             };
             itemPriceData[`itemPrice-${itemPriceId}-price`] = {
                 value:
-                    editingOrderItem[`itemPrice-${itemPriceId}-price`] || price
+                    editingOrderItem[`itemPrice-${itemPriceId}-price`] !==
+                    undefined
+                        ? editingOrderItem[`itemPrice-${itemPriceId}-price`]
+                        : price
             };
             itemPriceData[`itemPrice-${itemPriceId}-discount`] = {
                 value:
-                    editingOrderItem[`itemPrice-${itemPriceId}-discount`] ||
-                    discount
+                    editingOrderItem[`itemPrice-${itemPriceId}-discount`] !==
+                    undefined
+                        ? editingOrderItem[`itemPrice-${itemPriceId}-discount`]
+                        : discount
             };
             itemPriceData[`itemPrice-${itemPriceId}-multiplier`] = {
                 value:
-                    editingOrderItem[`itemPrice-${itemPriceId}-multiplier`] ||
-                    multiplier
+                    editingOrderItem[`itemPrice-${itemPriceId}-multiplier`] !==
+                    undefined
+                        ? editingOrderItem[
+                              `itemPrice-${itemPriceId}-multiplier`
+                          ]
+                        : multiplier
             };
         });
     }

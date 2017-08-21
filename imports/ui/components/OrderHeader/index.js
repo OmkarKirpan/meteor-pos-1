@@ -1,9 +1,10 @@
 import "./index.scss";
 
-import { Button, Col, Input, Radio, Row } from "antd";
+import { Button, Col, DatePicker, Input, Radio, Row } from "antd";
 import React, { Component } from "react";
 import { compose, withApollo } from "react-apollo";
 
+import { LOCALE } from "../../configs";
 import { ORDERSTATUS } from "../../../constants";
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
@@ -13,6 +14,7 @@ class OrderHeader extends Component {
     constructor() {
         super();
         this.changeOrderStatusFilter = this.changeOrderStatusFilter.bind(this);
+        this.searchOrders = this.searchOrders.bind(this);
     }
 
     changeOrderStatusFilter(e) {
@@ -21,6 +23,15 @@ class OrderHeader extends Component {
         searchOrders({
             filter: {
                 orderStatus
+            }
+        });
+    }
+
+    searchOrders(orderDate) {
+        const { searchOrders } = this.props;
+        searchOrders({
+            filter: {
+                orderDate
             }
         });
     }
@@ -56,15 +67,13 @@ class OrderHeader extends Component {
                         </Button>
                     </Col>
                     <Col span={4} offset={16}>
-                        <Input.Search
-                            placeholder={i18n.__("order-search")}
-                            onSearch={value => {
-                                searchOrders({
-                                    client,
-                                    filter: {
-                                        name: value
-                                    }
-                                });
+                        <DatePicker
+                            placeholder={i18n.__("order-date-filter")}
+                            locale={LOCALE.DATEPICKER}
+                            format="DD-MM-YYYY"
+                            value={filter.orderDate}
+                            onChange={value => {
+                                this.searchOrders(value);
                             }}
                         />
                     </Col>

@@ -1,4 +1,5 @@
-import { CATEGORY } from "../../actions/actionTypes";
+import { CATEGORY, SESSION } from "../../actions/actionTypes";
+
 import update from "react-addons-update";
 
 const initialState = {
@@ -51,6 +52,9 @@ const CategoryReducer = (state = initialState, { type, payload = {} }) => {
                     editingCategory: { $merge: payload.category }
                 }
             });
+        case SESSION.LOGGED_IN:
+        case SESSION.LOGGED_OUT:
+            return initialState;
         default:
             return state;
     }

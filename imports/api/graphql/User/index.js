@@ -29,6 +29,11 @@ const mutationResolver = {
         async createUser(_, { user }, context) {
             const { username, password } = user;
             return Accounts.createUser({ username, password });
+        },
+        async changePassword(_, { newPassword }, context) {
+            const { userId } = context;
+            Accounts.setPassword(userId, newPassword, { logout: false });
+            return userId;
         }
     }
 };

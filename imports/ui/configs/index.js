@@ -13,7 +13,7 @@ const MENUS = [
     },
     {
         name: "Transaction",
-        icon: "database",
+        icon: "shop",
         exact: false,
         subMenus: [
             {
@@ -37,26 +37,38 @@ const MENUS = [
         subMenus: [
             {
                 name: "Brand",
-                icon: "database",
+                icon: "copyright",
                 path: "/brands",
                 exact: true
             },
             {
                 name: "Category",
-                icon: "database",
+                icon: "tag-o",
                 path: "/categories",
                 exact: true
             },
             {
                 name: "Item",
-                icon: "database",
+                icon: "barcode",
                 path: "/items",
                 exact: true
             },
             {
+                name: "Item Adjustment",
+                icon: "bars",
+                path: "/adjustments",
+                exact: true
+            },
+            {
                 name: "Supplier",
-                icon: "database",
+                icon: "idcard",
                 path: "/suppliers",
+                exact: true
+            },
+            {
+                name: "Supply Order",
+                icon: "car",
+                path: "/supplyOrders",
                 exact: true
             }
         ]

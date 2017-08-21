@@ -63,7 +63,6 @@ class OrderForm extends Component {
         this.printOrder = this.printOrder.bind(this);
         this.onSearchCustomers = this.onSearchCustomers.bind(this);
         this.onCustomerSelected = this.onCustomerSelected.bind(this);
-        this.validateCustomer = this.validateCustomer.bind(this);
     }
 
     saveOrder(callback) {
@@ -107,20 +106,22 @@ class OrderForm extends Component {
                 const orderData = {
                     _id: order._id,
                     shipmentInfo: {
-                        address: form.getFieldValue("shipmentInfo-address"),
-                        phoneNumber: form.getFieldValue(
-                            "shipmentInfo-phoneNumber"
-                        ),
-                        cellphoneNumber: form.getFieldValue(
-                            "shipmentInfo-cellphoneNumber"
-                        )
+                        address:
+                            form.getFieldValue("shipmentInfo-address") || "",
+                        phoneNumber:
+                            form.getFieldValue("shipmentInfo-phoneNumber") ||
+                            "",
+                        cellphoneNumber:
+                            form.getFieldValue(
+                                "shipmentInfo-cellphoneNumber"
+                            ) || ""
                     },
                     orderItems: orderItemsData
                 };
 
                 if (isNew) {
                     orderData.orderDate = order.orderDate;
-                    orderData.customerId = order.customerId;
+                    orderData.customerId = order.customerId || "";
                 }
 
                 const mutation = isNew
@@ -143,7 +144,11 @@ class OrderForm extends Component {
                             callback();
                         }
                     })
-                    .then(() => closeOrderForm());
+                    .then(() => closeOrderForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({ title: i18n.__("order-save-error") });
+                    });
             }
         });
     }
@@ -151,33 +156,86 @@ class OrderForm extends Component {
     cancelOrder() {
         const { cancelOrder, closeOrderForm, form, isNew } = this.props;
         const _id = form.getFieldValue("_id");
-        cancelOrder({ variables: { _id } }).then(
-            isNew ? () => {} : () => closeOrderForm()
-        );
+        cancelOrder({ variables: { _id } })
+            .then(isNew ? () => {} : () => closeOrderForm())
+            .catch(err => {
+                console.error(err);
+                Modal.error({ title: i18n.__("order-cancel-error") });
+            });
     }
 
     finalizeOrder() {
         const { finalizeOrder, closeOrderForm, form, isNew } = this.props;
         const _id = form.getFieldValue("_id");
-        finalizeOrder({ variables: { _id } }).then(
-            isNew ? () => {} : () => closeOrderForm()
-        );
+        finalizeOrder({ variables: { _id } })
+            .then(isNew ? () => {} : () => closeOrderForm())
+            .catch(err => {
+                console.error(err);
+                Modal.error({ title: i18n.__("order-finalize-error") });
+            });
     }
 
     completeOrder() {
-        const { completeOrder, closeOrderForm, form, isNew } = this.props;
+        const {
+            finalizeOrder,
+            completeOrder,
+            closeOrderForm,
+            printOrder,
+            form,
+            isNew
+        } = this.props;
         const _id = form.getFieldValue("_id");
-        completeOrder({ variables: { _id } }).then(
-            isNew ? () => {} : () => closeOrderForm()
-        );
+        if (isNew) {
+            finalizeOrder({ variables: { _id } })
+                .then(() =>
+                    completeOrder({ variables: { _id } })
+                        .then(() =>
+                            printOrder({ variables: { _id } })
+                                .then(() => closeOrderForm())
+                                .catch(err => {
+                                    console.error(err);
+                                    alert(i18n.__("order-print-error"));
+                                })
+                        )
+                        .catch(err => {
+                            console.error(err);
+                            Modal.error({
+                                title: i18n.__("order-complete-error")
+                            });
+                        })
+                )
+                .catch(err => {
+                    console.error(err);
+                    Modal.error({ title: i18n.__("order-finalize-error") });
+                });
+        } else {
+            completeOrder({ variables: { _id } })
+                .then(() =>
+                    printOrder({ variables: { _id } })
+                        .then(() => closeOrderForm())
+                        .catch(err => {
+                            console.error(err);
+                            Modal.error({
+                                title: i18n.__("order-print-error")
+                            });
+                        })
+                )
+                .catch(err => {
+                    console.error(err);
+                    Modal.error({ title: i18n.__("order-complete-error") });
+                });
+        }
     }
 
     printOrder() {
         const { printOrder, closeOrderForm, form, isNew } = this.props;
         const _id = form.getFieldValue("_id");
-        printOrder({ variables: { _id } }).then(
-            isNew ? () => {} : () => closeOrderForm()
-        );
+        printOrder({ variables: { _id } })
+            .then(isNew ? () => {} : () => closeOrderForm())
+            .catch(err => {
+                console.error(err);
+                Modal.error({ title: i18n.__("order-print-error") });
+            });
     }
 
     onSearchCustomers(searchText) {
@@ -198,14 +256,6 @@ class OrderForm extends Component {
             "shipmentInfo-phoneNumber": customer.phoneNumber,
             "shipmentInfo-cellphoneNumber": customer.cellphoneNumber
         });
-    }
-
-    validateCustomer(rule, customerId, callback) {
-        const { form } = this.props;
-        const { getFieldValue } = form;
-        const selectedCustomer = getFieldValue("customer");
-        if (selectedCustomer && selectedCustomer._id === customerId) callback();
-        else callback(new Error());
     }
 
     render() {
@@ -254,80 +304,66 @@ class OrderForm extends Component {
             width: "80%",
             maskClosable: false,
             footer: [
-                <Row type="flex" justify="end">
-                    <Col>
+                <Row type="flex" justify="end" key="order-form-footer">
+                    <Col key="cancel">
                         <Button
                             className="order-save-button"
-                            key="cancel"
                             onClick={closeOrderForm}
                         >
                             {i18n.__("cancel")}
                         </Button>
                     </Col>
-                    <Col>
-                        {(orderStatus === ORDERSTATUS.INPROGRESS ||
-                            orderStatus === ORDERSTATUS.FINALIZED) &&
+                    <Col key="cancelOrder">
+                        {orderStatus === ORDERSTATUS.INPROGRESS &&
                             <Button
                                 className="order-save-button"
-                                key="cancelOrder"
                                 onClick={() => this.cancelOrder()}
                             >
                                 {i18n.__("order-cancel")}
                             </Button>}
                     </Col>
-                    <Col>
-                        {(orderStatus === ORDERSTATUS.INPROGRESS ||
-                            !orderStatus) &&
+                    <Col key="saveOrder">
+                        {(orderStatus === ORDERSTATUS.INPROGRESS || isNew) &&
                             <Button
                                 className="order-save-button"
-                                key="saveOrder"
                                 onClick={() => this.saveOrder()}
                             >
                                 {i18n.__("order-save")}
                             </Button>}
                     </Col>
-                    <Col>
-                        {(orderStatus === ORDERSTATUS.INPROGRESS ||
-                            !orderStatus) &&
+                    <Col key="finalizeOrder">
+                        {(orderStatus === ORDERSTATUS.INPROGRESS || isNew) &&
                             <Button
                                 className="order-save-button"
-                                key="finalizeOrder"
-                                onClick={
-                                    isNew
-                                        ? () =>
-                                              this.saveOrder(this.finalizeOrder)
-                                        : () => this.finalizeOrder()
-                                }
+                                onClick={() =>
+                                    this.saveOrder(this.finalizeOrder)}
                             >
-                                {isNew
-                                    ? i18n.__("order-save-finalize")
-                                    : i18n.__("order-finalize")}
+                                {i18n.__("order-save-finalize")}
                             </Button>}
                     </Col>
-                    <Col>
+                    <Col key="completeOrder">
                         {(orderStatus === ORDERSTATUS.INPROGRESS ||
                             orderStatus === ORDERSTATUS.FINALIZED ||
-                            !orderStatus) &&
+                            isNew) &&
                             <Button
                                 className="order-save-button"
-                                key="completeOrder"
                                 onClick={
-                                    isNew
+                                    isNew ||
+                                    orderStatus === ORDERSTATUS.INPROGRESS
                                         ? () =>
                                               this.saveOrder(this.completeOrder)
                                         : () => this.completeOrder()
                                 }
                             >
-                                {isNew
+                                {isNew || orderStatus === ORDERSTATUS.INPROGRESS
                                     ? i18n.__("order-save-complete")
-                                    : i18n.__("order-save")}
+                                    : i18n.__("order-complete")}
                             </Button>}
                     </Col>
-                    <Col>
+                    <Col key="printOrder">
                         {orderStatus === ORDERSTATUS.COMPLETED &&
                             <Button
                                 className="order-save-button"
-                                key="printOrder"
                                 onClick={
                                     isNew
                                         ? () => this.saveOrder(this.printOrder)
@@ -415,10 +451,10 @@ class OrderForm extends Component {
                                     ]
                                 })(
                                     <DatePicker
+                                        style={{ width: "100%" }}
                                         disabled={!isNew}
                                         locale={LOCALE.DATEPICKER}
                                         format="DD-MM-YYYY"
-                                        allowClear={false}
                                         disabledDate={currentDate => {
                                             return currentDate > moment();
                                         }}
@@ -431,15 +467,7 @@ class OrderForm extends Component {
                                 hasFeedback
                             >
                                 {getFieldDecorator("customerId", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: i18n.__(
-                                                "order-customer-required"
-                                            ),
-                                            validator: this.validateCustomer
-                                        }
-                                    ]
+                                    rules: []
                                 })(
                                     <Select
                                         disabled={!isNew}
@@ -464,14 +492,7 @@ class OrderForm extends Component {
                                 hasFeedback
                             >
                                 {getFieldDecorator("shipmentInfo-address", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: i18n.__(
-                                                "order-shipmentInfo-address-required"
-                                            )
-                                        }
-                                    ]
+                                    rules: []
                                 })(
                                     <Input
                                         placeholder={i18n.__(
@@ -489,14 +510,7 @@ class OrderForm extends Component {
                                 hasFeedback
                             >
                                 {getFieldDecorator("shipmentInfo-phoneNumber", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: i18n.__(
-                                                "order-shipmentInfo-phoneNumber-required"
-                                            )
-                                        }
-                                    ]
+                                    rules: []
                                 })(
                                     <Input
                                         placeholder={i18n.__(
@@ -516,14 +530,7 @@ class OrderForm extends Component {
                                 {getFieldDecorator(
                                     "shipmentInfo-cellphoneNumber",
                                     {
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: i18n.__(
-                                                    "order-shipmentInfo-cellphoneNumber-required"
-                                                )
-                                            }
-                                        ]
+                                        rules: []
                                     }
                                 )(
                                     <Input

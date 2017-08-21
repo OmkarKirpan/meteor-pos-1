@@ -39,7 +39,8 @@ import i18n from "meteor/universe:i18n";
                 skip: (current - 1) * pageSize,
                 pageSize,
                 filter: filter || {}
-            }
+            },
+            fetchPolicy: "network-only"
         };
     }
 })
@@ -117,16 +118,20 @@ class ItemList extends Component {
                 dataIndex: "name",
                 width: "20%",
                 render: (name, item) =>
-                    <a
-                        onClick={() => {
-                            const { _id } = item;
-                            editItemForm({ client, _id });
-                        }}
-                    >
-                        <strong>
-                            {name}
-                        </strong>
-                    </a>
+                    item.entityStatus === ENTITYSTATUS.ACTIVE
+                        ? <a
+                              onClick={() => {
+                                  const { _id } = item;
+                                  editItemForm({ client, _id });
+                              }}
+                          >
+                              <strong>
+                                  {name}
+                              </strong>
+                          </a>
+                        : <strong>
+                              {name}
+                          </strong>
             },
             {
                 title: (
@@ -170,10 +175,10 @@ class ItemList extends Component {
                     const allPrices = record.allPrices;
                     const stockStr = [];
                     let itemStock = stock;
-                    if (itemStock === 0)
+                    if (itemStock <= 0)
                         return (
-                            <span>
-                                {"0 " + record.baseUnit}
+                            <span className="item-stock-warning">
+                                {`${itemStock} ${record.baseUnit}`}
                             </span>
                         );
                     allPrices.forEach(itemPrice => {
@@ -187,7 +192,7 @@ class ItemList extends Component {
                         }
                     });
                     return (
-                        <span style={{ float: "right" }}>
+                        <span>
                             {stockStr.join(" ")}
                         </span>
                     );

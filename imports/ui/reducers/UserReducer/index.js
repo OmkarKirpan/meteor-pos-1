@@ -1,4 +1,5 @@
-import { USER } from "../../actions/actionTypes";
+import { SESSION, USER } from "../../actions/actionTypes";
+
 import update from "react-addons-update";
 
 const initialState = {
@@ -25,6 +26,9 @@ const UserReducer = (state = initialState, { type, payload = {} }) => {
                     filter: { $merge: payload.filter }
                 }
             });
+        case SESSION.LOGGED_IN:
+        case SESSION.LOGGED_OUT:
+            return initialState;
         default:
             return state;
     }

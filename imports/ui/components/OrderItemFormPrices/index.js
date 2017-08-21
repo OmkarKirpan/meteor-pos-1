@@ -100,6 +100,7 @@ class OrderItemFormPrices extends Component {
                     <div>
                         {!editDisabled &&
                             <Icon
+                                className="order-item-price-delete-button"
                                 type="minus-circle-o"
                                 onClick={() =>
                                     this.removeItemPrice(itemPriceId)}
@@ -126,7 +127,6 @@ class OrderItemFormPrices extends Component {
                                 placeholder={i18n.__(
                                     "order-item-itemPrice-unit-placeholder"
                                 )}
-                                mode="combobox"
                                 notFoundContent=""
                                 optionLabelProp="text"
                                 defaultActiveFirstOption={false}
@@ -157,14 +157,7 @@ class OrderItemFormPrices extends Component {
                         {getFieldDecorator(
                             `itemPrice-${itemPriceId}-multiplier`,
                             {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: i18n.__(
-                                            "order-item-itemPrice-multiplier-required"
-                                        )
-                                    }
-                                ]
+                                rules: []
                             }
                         )(
                             <InputNumber
@@ -180,14 +173,7 @@ class OrderItemFormPrices extends Component {
                 price: (
                     <Form.Item>
                         {getFieldDecorator(`itemPrice-${itemPriceId}-price`, {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: i18n.__(
-                                        "order-item-itemPrice-price-required"
-                                    )
-                                }
-                            ]
+                            rules: []
                         })(
                             <InputNumber
                                 placeholder={i18n.__(
@@ -219,6 +205,16 @@ class OrderItemFormPrices extends Component {
                                         message: i18n.__(
                                             "order-item-itemPrice-quantity-required"
                                         )
+                                    },
+                                    {
+                                        message: i18n.__(
+                                            "order-item-itemPrice-quantity-invalid"
+                                        ),
+                                        validator: (_, value, callback) => {
+                                            value === undefined || value > 0
+                                                ? callback()
+                                                : callback(new Error());
+                                        }
                                     }
                                 ]
                             }
@@ -244,6 +240,16 @@ class OrderItemFormPrices extends Component {
                                         message: i18n.__(
                                             "order-item-itemPrice-discount-required"
                                         )
+                                    },
+                                    {
+                                        message: i18n.__(
+                                            "order-item-itemPrice-discount-invalid"
+                                        ),
+                                        validator: (_, value, callback) => {
+                                            value === undefined || value >= 0
+                                                ? callback()
+                                                : callback(new Error());
+                                        }
                                     }
                                 ]
                             }
@@ -289,13 +295,13 @@ class OrderItemFormPrices extends Component {
                     title: i18n.__("order-item-itemPrice-unit"),
                     dataIndex: "unit",
                     key: "unit",
-                    width: "20%"
+                    width: "25%"
                 },
                 {
                     title: i18n.__("order-item-itemPrice-multiplier"),
                     dataIndex: "multiplier",
                     key: "multiplier",
-                    width: "15%"
+                    width: "10%"
                 },
                 {
                     title: i18n.__("order-item-itemPrice-price"),
@@ -307,7 +313,7 @@ class OrderItemFormPrices extends Component {
                     title: i18n.__("order-item-itemPrice-quantity"),
                     dataIndex: "quantity",
                     key: "quantity",
-                    width: "15%"
+                    width: "20%"
                 },
                 {
                     title: i18n.__("order-item-itemPrice-discount"),
@@ -318,7 +324,7 @@ class OrderItemFormPrices extends Component {
                 {
                     dataIndex: "delete",
                     key: "delete",
-                    width: "10%"
+                    width: "5%"
                 }
             ],
             scroll: { y: 200 },

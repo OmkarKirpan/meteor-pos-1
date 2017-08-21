@@ -37,7 +37,8 @@ import i18n from "meteor/universe:i18n";
                 skip: (current - 1) * pageSize,
                 pageSize,
                 filter: filter || {}
-            }
+            },
+            fetchPolicy: "network-only"
         };
     }
 })

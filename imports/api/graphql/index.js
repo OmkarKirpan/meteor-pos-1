@@ -7,6 +7,10 @@ import {
     resolver as customerResolver,
     typeDefs as customerTypeDefs
 } from "./Customer";
+import {
+    resolver as itemAdjustmentResolver,
+    typeDefs as itemAdjustmentTypeDefs
+} from "./ItemAdjustment";
 import { resolver as itemResolver, typeDefs as itemTypeDefs } from "./Item";
 import { mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 import { resolver as orderResolver, typeDefs as orderTypeDefs } from "./Order";
@@ -14,6 +18,10 @@ import {
     resolver as supplierResolver,
     typeDefs as supplierTypeDefs
 } from "./Supplier";
+import {
+    resolver as supplyOrderResolver,
+    typeDefs as supplyOrderTypeDefs
+} from "./SupplyOrder";
 import { resolver as userResolver, typeDefs as userTypeDefs } from "./User";
 
 import { GraphQLScalarType } from "graphql";
@@ -51,7 +59,9 @@ export const typeDefs = mergeTypes([
     brandTypeDefs,
     orderTypeDefs,
     scalarTypeDefs,
-    userTypeDefs
+    userTypeDefs,
+    itemAdjustmentTypeDefs,
+    supplyOrderTypeDefs
 ]);
 
 export const resolvers = mergeResolvers([
@@ -62,5 +72,7 @@ export const resolvers = mergeResolvers([
     brandResolver,
     orderResolver,
     scalarTypeResolver,
-    userResolver
+    userResolver,
+    itemAdjustmentResolver,
+    supplyOrderResolver
 ]);

@@ -3,11 +3,28 @@ import "./index.scss";
 import { Icon, Menu } from "antd";
 import React, { Component } from "react";
 
+import ChangePasswordForm from "../ChangePasswordForm";
 import PropTypes from "prop-types";
+import i18n from "meteor/universe:i18n";
 
 class AppHeader extends Component {
     render() {
-        const { user, logout, toggleSidebar, sidebarCollapsed } = this.props;
+        const {
+            currentUser,
+            changePasswordFormVisible,
+            logout,
+            toggleSidebar,
+            sidebarCollapsed,
+            openChangePasswordForm,
+            closeChangePasswordForm
+        } = this.props;
+
+        const changePasswordFormProps = {
+            visible: changePasswordFormVisible,
+            closeChangePasswordForm,
+            logout
+        };
+
         return (
             <div className="header">
                 <div className="button" onClick={toggleSidebar}>
@@ -18,7 +35,11 @@ class AppHeader extends Component {
                 <div className="rightWrapper">
                     <Menu
                         mode="horizontal"
-                        onClick={e => e.key === "logout" && logout()}
+                        onClick={e => {
+                            e.key === "logout" && logout();
+                            e.key === "changePassword" &&
+                                openChangePasswordForm();
+                        }}
                     >
                         <Menu.SubMenu
                             style={{
@@ -27,17 +48,20 @@ class AppHeader extends Component {
                             title={
                                 <span>
                                     <Icon type="user" />
-                                    {user ? user.username : ""}
+                                    {currentUser ? currentUser.username : ""}
                                 </span>
                             }
                         >
                             <Menu.Item key="changePassword">
-                                Change password
+                                {i18n.__("change-password")}
                             </Menu.Item>
-                            <Menu.Item key="logout">Sign out</Menu.Item>
+                            <Menu.Item key="logout">
+                                {i18n.__("sign-out")}
+                            </Menu.Item>
                         </Menu.SubMenu>
                     </Menu>
                 </div>
+                <ChangePasswordForm {...changePasswordFormProps} />
             </div>
         );
     }

@@ -31,10 +31,18 @@ const queryResolver = {
     Query: {
         customers(_, { filter, skip, pageSize }, context) {
             const { name, entityStatus } = filter || {};
-            const queryFilter = {};
-            if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            const filters = [];
+            if (name)
+                filters.push({
+                    $or: [
+                        { name: { $regex: ".*" + name + ".*" } },
+                        { phoneNumber: { $regex: ".*" + name + ".*" } },
+                        { cellphoneNumber: { $regex: ".*" + name + ".*" } }
+                    ]
+                });
             if (entityStatus !== undefined)
-                queryFilter["entityStatus"] = { $eq: entityStatus };
+                filters.push({ entityStatus: { $eq: entityStatus } });
+            const queryFilter = filters.length > 0 ? { $and: filters } : {};
             return Customers.find(queryFilter, {
                 skip,
                 limit: pageSize,
@@ -45,10 +53,18 @@ const queryResolver = {
         },
         customerCount(_, { filter }, context) {
             const { name, entityStatus } = filter || {};
-            const queryFilter = {};
-            if (name) queryFilter["name"] = { $regex: ".*" + name + ".*" };
+            const filters = [];
+            if (name)
+                filters.push({
+                    $or: [
+                        { name: { $regex: ".*" + name + ".*" } },
+                        { phoneNumber: { $regex: ".*" + name + ".*" } },
+                        { cellphoneNumber: { $regex: ".*" + name + ".*" } }
+                    ]
+                });
             if (entityStatus !== undefined)
-                queryFilter["entityStatus"] = { $eq: entityStatus };
+                filters.push({ entityStatus: { $eq: entityStatus } });
+            const queryFilter = filters.length > 0 ? { $and: filters } : {};
             return Customers.find(queryFilter).count();
         },
         customer(_, { _id }, context) {

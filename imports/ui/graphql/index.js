@@ -9,7 +9,9 @@ import {
 
 import ApolloClient from "apollo-client";
 
-const networkInterface = createMeteorNetworkInterface();
+const networkInterface = createMeteorNetworkInterface({
+    useMeteorAccounts: true
+});
 
 const websocketUri = Meteor.absoluteUrl("subscriptions").replace(/^http/, "ws");
 

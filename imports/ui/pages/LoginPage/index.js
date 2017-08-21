@@ -5,6 +5,7 @@ import { login, register } from "../../actions";
 import { Button } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import i18n from "meteor/universe:i18n";
 
 const mapStateToProps = store => {
     return store;
@@ -34,23 +35,33 @@ class LoginPage extends Component {
     }
 
     switchLoginState() {
-        console.dir(this.state.login);
         this.setState({ login: !this.state.login });
-        console.dir(this.state.login);
     }
 
     render() {
         const { login, register } = this.props.actions;
         const showLogin = this.state.login;
+        const switchButton = (
+            <Button
+                style={{ marginTop: "10px" }}
+                onClick={() => this.switchLoginState()}
+            >
+                {i18n.__(showLogin ? "register-here" : "login-here")}
+            </Button>
+        );
         return (
             <div>
                 <div key="login-form">
-                    {showLogin && <LoginForm login={login} />}
+                    {showLogin &&
+                        <LoginForm login={login} switchButton={switchButton} />}
                 </div>
                 <div key="registration-form">
-                    {!showLogin && <RegistrationForm register={register} />}
+                    {!showLogin &&
+                        <RegistrationForm
+                            register={register}
+                            switchButton={switchButton}
+                        />}
                 </div>
-                <Button onClick={() => this.switchLoginState()}>test</Button>
             </div>
         );
     }

@@ -6,4 +6,10 @@ const CREATEUSER = gql`
     }
 `;
 
-export { CREATEUSER };
+const CHANGEPASSWORD = gql`
+    mutation changePassword($newPassword: String) {
+        changePassword(newPassword: $newPassword)
+    }
+`;
+
+export { CREATEUSER, CHANGEPASSWORD };

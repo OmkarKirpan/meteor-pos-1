@@ -1,4 +1,5 @@
-import { APP } from "../../actions/actionTypes";
+import { APP, SESSION } from "../../actions/actionTypes";
+
 import update from "react-addons-update";
 
 const initialState = {
@@ -17,6 +18,9 @@ const AppReducer = (state = initialState, { type, payload }) => {
             return update(state, {
                 userMenuOpened: { $set: !state.userMenuOpened }
             });
+        case SESSION.LOGGED_IN:
+        case SESSION.LOGGED_OUT:
+            return initialState;
         default:
             return state;
     }

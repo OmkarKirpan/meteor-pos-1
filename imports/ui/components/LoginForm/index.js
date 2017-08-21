@@ -23,7 +23,7 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { form } = this.props;
+        const { form, switchButton } = this.props;
         const { getFieldDecorator } = form;
         return (
             <div className="form">
@@ -75,8 +75,11 @@ class LoginForm extends Component {
                             size="large"
                             onClick={this.login}
                         >
-                            {i18n.__("login-signIn")}
+                            {i18n.__("sign-in")}
                         </Button>
+                    </Row>
+                    <Row>
+                        {switchButton}
                     </Row>
                 </Form>
             </div>

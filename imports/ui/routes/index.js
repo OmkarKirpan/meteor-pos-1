@@ -4,10 +4,12 @@ import {
     CategoryPage,
     CustomerPage,
     DashboardPage,
+    ItemAdjustmentPage,
     ItemPage,
     LoginPage,
     OrderPage,
     SupplierPage,
+    SupplyOrderPage,
     UserPage
 } from "../pages";
 import React, { Component } from "react";
@@ -66,6 +68,18 @@ const appRoutes = [
         path: "/users",
         name: "Users",
         component: UserPage,
+        exact: true
+    },
+    {
+        path: "/adjustments",
+        name: "Item Adjustments",
+        component: ItemAdjustmentPage,
+        exact: true
+    },
+    {
+        path: "/supplyOrders",
+        name: "Supply Orders",
+        component: SupplyOrderPage,
         exact: true
     }
 ];

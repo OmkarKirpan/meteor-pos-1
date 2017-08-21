@@ -71,6 +71,7 @@ class ItemFormPrices extends Component {
                 itemPriceId,
                 delete: (
                     <Icon
+                        className="item-price-delete-button"
                         type="minus-circle-o"
                         onClick={() => this.removePrice(itemPriceId)}
                     />
@@ -167,9 +168,13 @@ class ItemFormPrices extends Component {
 
         const itemPricesTableProps = {
             title: () =>
-                <span>
-                    {i18n.__("item-itemPrices")}
-                </span>,
+                <Form.Item>
+                    {getFieldDecorator("itemPrices")(
+                        <span>
+                            {i18n.__("item-itemPrices")}
+                        </span>
+                    )}
+                </Form.Item>,
             rowKey: "itemPriceId",
             pagination: false,
             dataSource: itemPricesDatasource,

@@ -24,7 +24,6 @@ class OrderFormItems extends Component {
         this.addOrderItem = this.addOrderItem.bind(this);
         this.editOrderItem = this.editOrderItem.bind(this);
         this.removeOrderItem = this.removeOrderItem.bind(this);
-        this.addOrderItem = this.addOrderItem.bind(this);
         this.validateOrderItems = this.validateOrderItems.bind(this);
     }
 
@@ -80,6 +79,7 @@ class OrderFormItems extends Component {
                     <div>
                         {!editDisabled &&
                             <Icon
+                                class="order-form-item-delete-button"
                                 type="minus-circle-o"
                                 onClick={() => this.removeOrderItem(itemId)}
                             />}
@@ -121,7 +121,10 @@ class OrderFormItems extends Component {
                     <span>
                         {formatCurrency(
                             (itemPrices || []).reduce((sum, itemPrice) => {
-                                return sum + itemPrice.discount;
+                                return (
+                                    sum +
+                                    itemPrice.discount * itemPrice.quantity
+                                );
                             }, discount)
                         )}
                     </span>
@@ -165,7 +168,7 @@ class OrderFormItems extends Component {
                     title: i18n.__("order-item-name"),
                     dataIndex: "itemName",
                     key: "itemName",
-                    width: "15%"
+                    width: "20%"
                 },
                 {
                     title: i18n.__("order-item-quantity"),
@@ -194,7 +197,7 @@ class OrderFormItems extends Component {
                 {
                     dataIndex: "delete",
                     key: "delete",
-                    width: "10%"
+                    width: "5%"
                 }
             ],
             scroll: { y: 100 },
@@ -259,7 +262,11 @@ class OrderFormItems extends Component {
                                 return (
                                     (orderItem.itemPrices || [])
                                         .reduce((sum, itemPrice) => {
-                                            return sum + itemPrice.discount;
+                                            return (
+                                                sum +
+                                                itemPrice.discount *
+                                                    itemPrice.quantity
+                                            );
                                         }, sum) + orderItem.discount
                                 );
                             }, 0)
@@ -279,8 +286,8 @@ class OrderFormItems extends Component {
                                             return (
                                                 sum +
                                                 itemPrice.quantity *
-                                                    itemPrice.price -
-                                                itemPrice.discount
+                                                    (itemPrice.price -
+                                                        itemPrice.discount)
                                             );
                                         }, sum) - orderItem.discount
                                 );

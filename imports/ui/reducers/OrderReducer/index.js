@@ -1,4 +1,5 @@
-import { ORDER } from "../../actions/actionTypes";
+import { ORDER, SESSION } from "../../actions/actionTypes";
+
 import { ORDERSTATUS } from "../../../constants";
 import { cloneDeep } from "lodash";
 import moment from "moment";
@@ -81,7 +82,7 @@ const OrderReducer = (state = initialState, { type, payload = {} }) => {
             });
         case ORDER.ORDER_ITEM_FORM_OPEN:
             let itemPriceCount = 0;
-            let orderItem = { itemPriceCount };
+            let orderItem = { itemPriceCount, discount: 0 };
             if (!payload.isNew) {
                 orderItem = state.orderForm.editingOrder.orderItems.find(
                     item => item.itemId === payload.itemId
@@ -120,6 +121,9 @@ const OrderReducer = (state = initialState, { type, payload = {} }) => {
                     items: { $set: payload.items }
                 }
             });
+        case SESSION.LOGGED_IN:
+        case SESSION.LOGGED_OUT:
+            return initialState;
         default:
             return state;
     }

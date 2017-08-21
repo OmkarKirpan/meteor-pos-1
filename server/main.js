@@ -20,7 +20,10 @@ createApolloServer(
         schema,
         context
     },
-    { configServer: expressServer => expressServer.use(cors()) }
+    {
+        configServer: expressServer => expressServer.use(cors()),
+        graphiql: false
+    }
 );
 
 SubscriptionServer.create(

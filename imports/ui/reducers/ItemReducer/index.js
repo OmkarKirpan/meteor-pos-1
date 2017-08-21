@@ -1,4 +1,5 @@
-import { ITEM } from "../../actions/actionTypes";
+import { ITEM, SESSION } from "../../actions/actionTypes";
+
 import { cloneDeep } from "lodash";
 import update from "react-addons-update";
 const initialState = {
@@ -71,6 +72,9 @@ const ItemReducer = (state = initialState, { type, payload = {} }) => {
                     editingItem: { $merge: payload.item }
                 }
             });
+        case SESSION.LOGGED_IN:
+        case SESSION.LOGGED_OUT:
+            return initialState;
         default:
             return state;
     }

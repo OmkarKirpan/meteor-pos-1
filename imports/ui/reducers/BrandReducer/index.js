@@ -1,4 +1,5 @@
-import { BRAND } from "../../actions/actionTypes";
+import { BRAND, SESSION } from "../../actions/actionTypes";
+
 import update from "react-addons-update";
 
 const initialState = {
@@ -51,6 +52,9 @@ const BrandReducer = (state = initialState, { type, payload = {} }) => {
                     editingBrand: { $merge: payload.brand }
                 }
             });
+        case SESSION.LOGGED_IN:
+        case SESSION.LOGGED_OUT:
+            return initialState;
         default:
             return state;
     }

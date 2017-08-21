@@ -4,14 +4,19 @@
     display: flex;
     justify-content: space-between;
     height: 47px;
-    background-color: #fff;
+    background-color: #3e3e3e;
+    color: white;
 
     .rightWrapper {
         display: flex;
         padding-right: 50px;
 
         .ant-menu-horizontal {
+            font-weight: bold;
             z-index: 999;
+            color: white;
+            background: #3e3e3e;
+            border-bottom-color: #3e3e3e;
         }
     }
 

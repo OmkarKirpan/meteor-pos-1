@@ -1,6 +1,7 @@
 export default `
     input OrderSearchFilter {
         orderStatus: Int
+        orderDate: Date
     }
     
     input ShipmentInfoInput {

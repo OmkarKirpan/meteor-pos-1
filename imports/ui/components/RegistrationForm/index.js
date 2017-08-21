@@ -1,10 +1,11 @@
 import "./index.scss";
 
-import { Button, Form, Input, Row } from "antd";
+import { Button, Form, Input, Modal, Row } from "antd";
 import React, { Component } from "react";
 
 import { CREATEUSER } from "../../graphql/mutations/user";
 import { graphql } from "react-apollo";
+import i18n from "meteor/universe:i18n";
 
 @graphql(CREATEUSER, {
     name: "createUser"
@@ -21,20 +22,28 @@ class RegistrationForm extends Component {
         validateFields((err, registrationData) => {
             if (!err) {
                 const { username, password } = registrationData;
-                createUser({ variables: { user: { username, password } } });
+                createUser({ variables: { user: { username, password } } })
+                    .then(() =>
+                        Modal.success({
+                            title: i18n.__("registration-success")
+                        })
+                    )
+                    .catch(() =>
+                        Modal.error({ title: i18n.__("registration-failed") })
+                    );
             }
         });
     }
 
     render() {
-        const { form } = this.props;
+        const { form, switchButton } = this.props;
         const { getFieldDecorator } = form;
         return (
             <div className="form">
                 <div className="logo">
                     <img alt={"logo"} src="/logo.png" />
                     <span>
-                        {i18n.__("login-title")}
+                        {i18n.__("registration-title")}
                     </span>
                 </div>
                 <Form>
@@ -43,13 +52,15 @@ class RegistrationForm extends Component {
                             rules: [
                                 {
                                     required: true,
-                                    message: i18n.__("login-username-required")
+                                    message: i18n.__(
+                                        "registration-username-required"
+                                    )
                                 }
                             ]
                         })(
                             <Input
                                 placeholder={i18n.__(
-                                    "login-username-placeholder"
+                                    "registration-username-placeholder"
                                 )}
                                 size="large"
                             />
@@ -60,13 +71,15 @@ class RegistrationForm extends Component {
                             rules: [
                                 {
                                     required: true,
-                                    message: i18n.__("login-password-required")
+                                    message: i18n.__(
+                                        "registration-password-required"
+                                    )
                                 }
                             ]
                         })(
                             <Input
                                 placeholder={i18n.__(
-                                    "login-password-placeholder"
+                                    "registration-password-placeholder"
                                 )}
                                 size="large"
                                 type="password"
@@ -79,8 +92,11 @@ class RegistrationForm extends Component {
                             size="large"
                             onClick={this.register}
                         >
-                            {i18n.__("registration-signUp")}
+                            {i18n.__("sign-up")}
                         </Button>
+                    </Row>
+                    <Row>
+                        {switchButton}
                     </Row>
                 </Form>
             </div>

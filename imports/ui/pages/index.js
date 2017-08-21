@@ -8,3 +8,5 @@ export { default as SupplierPage } from "./SupplierPage";
 export { default as CategoryPage } from "./CategoryPage";
 export { default as BrandPage } from "./BrandPage";
 export { default as UserPage } from "./UserPage";
+export { default as ItemAdjustmentPage } from "./ItemAdjustmentPage";
+export { default as SupplyOrderPage } from "./SupplyOrderPage";

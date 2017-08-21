@@ -38,10 +38,24 @@ const {
 const queryResolver = {
     Query: {
         orders(_, { filter, skip, pageSize }, context) {
-            const { orderStatus } = filter || {};
+            const { orderStatus, orderDate } = filter || {};
             const queryFilter = {};
             if (orderStatus !== undefined)
                 queryFilter["orderStatus"] = { $eq: orderStatus };
+            if (orderDate)
+                queryFilter["orderDate"] = {
+                    $gte: moment(orderDate)
+                        .hour(0)
+                        .minute(0)
+                        .second(0)
+                        .toDate(),
+                    $lt: moment(orderDate)
+                        .hour(0)
+                        .minute(0)
+                        .second(0)
+                        .add(1, "days")
+                        .toDate()
+                };
             return Orders.find(queryFilter, {
                 skip,
                 limit: pageSize,
@@ -51,10 +65,24 @@ const queryResolver = {
             }).fetch();
         },
         orderCount(_, { filter }, context) {
-            const { orderStatus } = filter || {};
+            const { orderStatus, orderDate } = filter || {};
             const queryFilter = {};
             if (orderStatus !== undefined)
                 queryFilter["orderStatus"] = { $eq: orderStatus };
+            if (orderDate)
+                queryFilter["orderDate"] = {
+                    $gte: moment(orderDate)
+                        .hour(0)
+                        .minute(0)
+                        .second(0)
+                        .toDate(),
+                    $lt: moment(orderDate)
+                        .hour(0)
+                        .minute(0)
+                        .second(0)
+                        .add(1, "days")
+                        .toDate()
+                };
             return Orders.find(queryFilter).count();
         },
         order(_, { _id }, context) {
@@ -67,10 +95,10 @@ const mutationResolver = {
     Mutation: {
         async createOrder(_, { order }, context) {
             const pastOrderCount = Orders.find().count() % 10000;
-            const orderNo =
-                moment(new Date()).format("YYMMDD") +
-                "-" +
-                ("0000" + pastOrderCount).slice(-4);
+            const orderNo = `ORD-${moment(new Date()).format(
+                "YYMMDD"
+            )}-${("0000" + pastOrderCount).slice(-4)}`;
+
             const { orderDate, customerId, shipmentInfo, orderItems } = order;
             const _id = uuid.v4();
             const orderItemVOs = (orderItems || [])
@@ -121,9 +149,16 @@ const mutationResolver = {
             return _id;
         },
         async finalizeOrder(_, { _id }, context) {
+            const relatedOrder = Orders.findOne({ _id });
+            const orderItemVOs = (relatedOrder.orderItems || [])
+                .map(
+                    ({ itemId, itemPrices, discount }) =>
+                        new OrderItem({ itemId, itemPrices, discount })
+                );
             const finalizeOrderCommand = new FinalizeOrder({
                 targetId: _id,
                 _id,
+                orderItems: orderItemVOs,
                 updatedAt: new Date()
             });
             OrderApi.send(finalizeOrderCommand);

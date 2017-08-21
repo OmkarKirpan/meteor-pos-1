@@ -43,52 +43,49 @@ import moment from "moment";
 @compose(withApollo)
 class OrderList extends Component {
     componentWillReceiveProps(newProps) {
-        if (!newProps.loading) {
-            if (this.unsubscribe) {
-                if (newProps.orders !== this.props.orders) {
-                    this.unsubscribe();
-                } else {
-                    return;
-                }
+        if (this.unsubscribe) {
+            if (newProps.orders !== this.props.orders) {
+                this.unsubscribe();
+            } else {
+                return;
             }
-
-            const orderIds = newProps.orders.map(({ _id }) => _id);
-
-            this.unsubscribe = newProps.subscribeToMore({
-                document: ORDEREVENTSUBSCRIPTION,
-                variables: { orderIds },
-                updateQuery: (previousResult, { subscriptionData }) => {
-                    const { data } = subscriptionData;
-                    const { orderEvent } = data;
-                    const {
-                        OrderCreated,
-                        OrderCancelled,
-                        OrderFinalized,
-                        OrderCompleted
-                    } = orderEvent;
-
-                    if (
-                        OrderCreated ||
-                        OrderCancelled ||
-                        OrderFinalized ||
-                        OrderCompleted
-                    ) {
-                        newProps.refetch({
-                            fetchPolicy: "network-only",
-                            variables: {
-                                skip:
-                                    (newProps.current - 1) * newProps.pageSize,
-                                pageSize: newProps.pageSize,
-                                filter: newProps.filter || {}
-                            }
-                        });
-                    }
-
-                    return previousResult;
-                },
-                onError: err => console.error(err)
-            });
         }
+
+        const orderIds = newProps.orders.map(({ _id }) => _id);
+
+        this.unsubscribe = newProps.subscribeToMore({
+            document: ORDEREVENTSUBSCRIPTION,
+            variables: { orderIds },
+            updateQuery: (previousResult, { subscriptionData }) => {
+                const { data } = subscriptionData;
+                const { orderEvent } = data;
+                const {
+                    OrderCreated,
+                    OrderCancelled,
+                    OrderFinalized,
+                    OrderCompleted
+                } = orderEvent;
+
+                if (
+                    OrderCreated ||
+                    OrderCancelled ||
+                    OrderFinalized ||
+                    OrderCompleted
+                ) {
+                    newProps.refetch({
+                        fetchPolicy: "network-only",
+                        variables: {
+                            skip: (newProps.current - 1) * newProps.pageSize,
+                            pageSize: newProps.pageSize,
+                            filter: newProps.filter || {}
+                        }
+                    });
+                }
+
+                return previousResult;
+            },
+            onError: err => console.error(err)
+        });
     }
 
     componentWillUnmount() {
@@ -158,7 +155,7 @@ class OrderList extends Component {
                 width: "15%",
                 render: customer =>
                     <span>
-                        {customer.name}
+                        {customer ? customer.name : ""}
                     </span>
             },
             {

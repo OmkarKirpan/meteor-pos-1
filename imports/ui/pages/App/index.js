@@ -2,7 +2,12 @@ import "./index.scss";
 
 import { AppFooter, AppHeader, AppSidebar } from "../../components";
 import React, { Component } from "react";
-import { logout, toggleSidebar } from "../../actions";
+import {
+    closeChangePasswordForm,
+    logout,
+    openChangePasswordForm,
+    toggleSidebar
+} from "../../actions";
 
 import { Layout } from "antd";
 import { MENUS } from "../../configs";
@@ -12,8 +17,8 @@ import { connect } from "react-redux";
 
 class AuthenticatedWrapper extends Component {}
 
-const mapStateToProps = ({ app }) => {
-    return { app };
+const mapStateToProps = ({ app, session }) => {
+    return { app, session };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -21,7 +26,9 @@ const mapDispatchToProps = dispatch => {
         actions: bindActionCreators(
             {
                 toggleSidebar,
-                logout
+                logout,
+                openChangePasswordForm,
+                closeChangePasswordForm
             },
             dispatch
         )
@@ -30,22 +37,33 @@ const mapDispatchToProps = dispatch => {
 @connect(mapStateToProps, mapDispatchToProps)
 class App extends Component {
     render() {
-        const { logout, toggleSidebar } = this.props.actions;
-        const { app } = this.props;
+        const {
+            logout,
+            toggleSidebar,
+            openChangePasswordForm,
+            closeChangePasswordForm
+        } = this.props.actions;
+        const { app, session, location } = this.props;
+        const { changePasswordForm } = session;
         const { sidebarCollapsed } = app;
-        const user = Meteor.user();
+
+        const currentUser = Meteor.user();
 
         const headerProps = {
-            user,
+            currentUser,
             logout,
             sidebarCollapsed,
-            toggleSidebar
+            toggleSidebar,
+            changePasswordFormVisible: changePasswordForm.visible,
+            openChangePasswordForm,
+            closeChangePasswordForm
         };
 
         const sidebarProps = {
             menu: MENUS,
             sidebarCollapsed,
-            toggleSidebar
+            toggleSidebar,
+            location
         };
 
         return (

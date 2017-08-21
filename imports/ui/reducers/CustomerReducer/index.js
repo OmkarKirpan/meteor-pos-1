@@ -1,4 +1,5 @@
-import { CUSTOMER } from "../../actions/actionTypes";
+import { CUSTOMER, SESSION } from "../../actions/actionTypes";
+
 import update from "react-addons-update";
 
 const initialState = {
@@ -51,6 +52,9 @@ const CustomerReducer = (state = initialState, { type, payload = {} }) => {
                     editingCustomer: { $merge: payload.customer }
                 }
             });
+        case SESSION.LOGGED_IN:
+        case SESSION.LOGGED_OUT:
+            return initialState;
         default:
             return state;
     }
