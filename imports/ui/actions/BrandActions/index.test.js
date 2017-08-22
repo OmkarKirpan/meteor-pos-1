@@ -47,8 +47,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change brand page action", function() {
-        it("dispatched action has a type of BRAND.CHANGE_BRAND_PAGE", function() {
+    describe("Brand actions", function() {
+        it("changeBrandsPage should dispatch an action with type BRAND.CHANGE_BRAND_PAGE", function() {
             const expectedActions = [
                 {
                     type: BRAND.CHANGE_BRAND_PAGE,
@@ -60,10 +60,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search brands action", function() {
-        it("dispatched action has a type of BRAND.SEARCH_BRANDS", function() {
+        it("searchBrands should dispatch an action with type BRAND.SEARCH_BRANDS", function() {
             const expectedActions = [
                 {
                     type: BRAND.SEARCH_BRANDS,
@@ -75,10 +73,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New brand form action", function() {
-        it("dispatched action has a BRAND of BRAND.BRAND_FORM_OPEN", function() {
+        it("newBrandForm should dispatch an action with type BRAND.BRAND_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: BRAND.BRAND_FORM_OPEN,
@@ -93,10 +89,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Edit brand form action", function() {
-        it("dispatched action has a BRAND of BRAND.BRAND_FORM_OPEN", function() {
+        it("editBrandForm should dispatch an action with type BRAND.BRAND_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: BRAND.BRAND_FORM_OPEN,
@@ -117,10 +111,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
-    });
 
-    describe("Close brand form action", function() {
-        it("dispatched action has a type of BRAND.BRAND_FORM_CLOSE", function() {
+        it("closeBrandForm should dispatch an action with type BRAND.BRAND_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: BRAND.BRAND_FORM_CLOSE
@@ -131,10 +123,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change brand form action", function() {
-        it("dispatched action has a type of BRAND.BRAND_FORM_CHANGED", function() {
+        it("changeBrandForm should dispatch an action with type BRAND.BRAND_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: BRAND.BRAND_FORM_CHANGED,

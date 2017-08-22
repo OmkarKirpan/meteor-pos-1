@@ -48,8 +48,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change supply order page action", function() {
-        it("dispatched action has a type of ITEM_ADJUSTMENT.CHANGE_ITEM_ADJUSTMENT_PAGE", function() {
+    describe("Item adjustment actions", function() {
+        it("changeItemAdjustmentsPage should dispatch an action with type ITEM_ADJUSTMENT.CHANGE_ITEM_ADJUSTMENT_PAGE", function() {
             const expectedActions = [
                 {
                     type: ITEM_ADJUSTMENT.CHANGE_ITEM_ADJUSTMENT_PAGE,
@@ -61,10 +61,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search supply order action", function() {
-        it("dispatched action has a type of ITEM_ADJUSTMENT.SEARCH_ITEM_ADJUSTMENTS", function() {
+        it("searchItemAdjustments should dispatch an action with type ITEM_ADJUSTMENT.SEARCH_ITEM_ADJUSTMENTS", function() {
             const expectedActions = [
                 {
                     type: ITEM_ADJUSTMENT.SEARCH_ITEM_ADJUSTMENTS,
@@ -76,10 +74,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New supply order form action", function() {
-        it("dispatched action has a ITEM_ADJUSTMENT of ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_OPEN", function() {
+        it("newItemAdjustmentForm should dispatch an action with type ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_OPEN", function() {
             const expectedActions = [ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_OPEN];
 
             store.dispatch(newItemAdjustmentForm());
@@ -88,10 +84,8 @@ if (Meteor.isClient) {
                 expectedActions
             );
         });
-    });
 
-    describe("Close supply order form action", function() {
-        it("dispatched action has a type of ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_CLOSE", function() {
+        it("closeItemAdjustmentForm should dispatch an action with type ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_CLOSE
@@ -102,10 +96,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change supply order form action", function() {
-        it("dispatched action has a type of ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_CHANGED", function() {
+        it("changeItemAdjustmentForm should dispatch an action with type ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_CHANGED,
@@ -117,10 +109,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Refresh supply order items action", function() {
-        it("dispatched action has a type of ITEM_ADJUSTMENT.REFRESH_ITEMS", function() {
+        it("searchItemAdjustmentItems should dispatch an action with type ITEM_ADJUSTMENT.REFRESH_ITEMS", function() {
             const expectedActions = [
                 {
                     type: ITEM_ADJUSTMENT.REFRESH_ITEMS,

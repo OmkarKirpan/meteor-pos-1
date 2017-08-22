@@ -50,8 +50,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change supplier page action", function() {
-        it("dispatched action has a type of SUPPLIER.CHANGE_SUPPLIER_PAGE", function() {
+    describe("Supplier actions", function() {
+        it("changeSuppliersPage should dispatch an action with type SUPPLIER.CHANGE_SUPPLIER_PAGE", function() {
             const expectedActions = [
                 {
                     type: SUPPLIER.CHANGE_SUPPLIER_PAGE,
@@ -63,10 +63,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search suppliers action", function() {
-        it("dispatched action has a type of SUPPLIER.SEARCH_SUPPLIERS", function() {
+        it("searchSuppliers should dispatch an action with type SUPPLIER.SEARCH_SUPPLIERS", function() {
             const expectedActions = [
                 {
                     type: SUPPLIER.SEARCH_SUPPLIERS,
@@ -78,10 +76,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New supplier form action", function() {
-        it("dispatched action has a SUPPLIER of SUPPLIER.SUPPLIER_FORM_OPEN", function() {
+        it("newSupplierForm should dispatch an action with type SUPPLIER.SUPPLIER_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: SUPPLIER.SUPPLIER_FORM_OPEN,
@@ -96,10 +92,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Edit supplier form action", function() {
-        it("dispatched action has a SUPPLIER of SUPPLIER.SUPPLIER_FORM_OPEN", function() {
+        it("editSupplierForm should dispatch an action with type SUPPLIER.SUPPLIER_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: SUPPLIER.SUPPLIER_FORM_OPEN,
@@ -123,10 +117,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
-    });
 
-    describe("Close supplier form action", function() {
-        it("dispatched action has a type of SUPPLIER.SUPPLIER_FORM_CLOSE", function() {
+        it("closeSupplierForm should dispatch an action with type SUPPLIER.SUPPLIER_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: SUPPLIER.SUPPLIER_FORM_CLOSE
@@ -137,9 +129,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
-    describe("Change supplier form action", function() {
-        it("dispatched action has a type of SUPPLIER.SUPPLIER_FORM_CHANGED", function() {
+
+        it("changeSupplierForm should dispatch an action with type SUPPLIER.SUPPLIER_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: SUPPLIER.SUPPLIER_FORM_CHANGED,

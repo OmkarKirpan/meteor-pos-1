@@ -50,8 +50,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change customer page action", function() {
-        it("dispatched action has a type of CUSTOMER.CHANGE_CUSTOMER_PAGE", function() {
+    describe("Customer actions", function() {
+        it("changeCustomersPage should dispatch an action with type CUSTOMER.CHANGE_CUSTOMER_PAGE", function() {
             const expectedActions = [
                 {
                     type: CUSTOMER.CHANGE_CUSTOMER_PAGE,
@@ -63,10 +63,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search customers action", function() {
-        it("dispatched action has a type of CUSTOMER.SEARCH_CUSTOMERS", function() {
+        it("searchCustomers should dispatch an action with type CUSTOMER.SEARCH_CUSTOMERS", function() {
             const expectedActions = [
                 {
                     type: CUSTOMER.SEARCH_CUSTOMERS,
@@ -78,10 +76,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New customer form action", function() {
-        it("dispatched action has a CUSTOMER of CUSTOMER.CUSTOMER_FORM_OPEN", function() {
+        it("newCustomerForm should dispatch an action with type CUSTOMER.CUSTOMER_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: CUSTOMER.CUSTOMER_FORM_OPEN,
@@ -96,10 +92,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Edit customer form action", function() {
-        it("dispatched action has a CUSTOMER of CUSTOMER.CUSTOMER_FORM_OPEN", function() {
+        it("editCustomerForm should dispatch an action with type CUSTOMER.CUSTOMER_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: CUSTOMER.CUSTOMER_FORM_OPEN,
@@ -123,10 +117,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
-    });
 
-    describe("Close customer form action", function() {
-        it("dispatched action has a type of CUSTOMER.CUSTOMER_FORM_CLOSE", function() {
+        it("closeCustomerForm should dispatch an action with type CUSTOMER.CUSTOMER_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: CUSTOMER.CUSTOMER_FORM_CLOSE
@@ -137,10 +129,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change customer form action", function() {
-        it("dispatched action has a type of CUSTOMER.CUSTOMER_FORM_CHANGED", function() {
+        it("changeCustomerForm should dispatch an action with type CUSTOMER.CUSTOMER_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: CUSTOMER.CUSTOMER_FORM_CHANGED,

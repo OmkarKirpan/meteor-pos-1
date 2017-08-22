@@ -107,8 +107,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change order page action", function() {
-        it("dispatched action has a type of ORDER.CHANGE_ORDER_PAGE", function() {
+    describe("Order actions", function() {
+        it("changeOrdersPage should dispatch an action with type ORDER.CHANGE_ORDER_PAGE", function() {
             const expectedActions = [
                 {
                     type: ORDER.CHANGE_ORDER_PAGE,
@@ -120,10 +120,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search orders action", function() {
-        it("dispatched action has a type of ORDER.SEARCH_ORDERS", function() {
+        it("searchOrders should dispatch an action with type ORDER.SEARCH_ORDERS", function() {
             const expectedActions = [
                 {
                     type: ORDER.SEARCH_ORDERS,
@@ -135,10 +133,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New order form action", function() {
-        it("dispatched action has a ORDER of ORDER.ORDER_FORM_OPEN", function() {
+        it("newOrderForm should dispatch an action with type ORDER.ORDER_FORM_OPEN", function() {
             const expectedActions = [ORDER.ORDER_FORM_OPEN];
 
             store.dispatch(newOrderForm());
@@ -147,10 +143,8 @@ if (Meteor.isClient) {
                 expectedActions
             );
         });
-    });
 
-    describe("Edit order form action", function() {
-        it("dispatched action has a ORDER of ORDER.ORDER_FORM_OPEN", function() {
+        it("editOrderForm should dispatch an action with type ORDER.ORDER_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: ORDER.ORDER_FORM_OPEN,
@@ -189,10 +183,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
-    });
 
-    describe("Close order form action", function() {
-        it("dispatched action has a type of ORDER.ORDER_FORM_CLOSE", function() {
+        it("closeOrderForm should dispatch an action with type ORDER.ORDER_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: ORDER.ORDER_FORM_CLOSE
@@ -203,10 +195,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change order form action", function() {
-        it("dispatched action has a type of ORDER.ORDER_FORM_CHANGED", function() {
+        it("changeOrderForm should dispatch an action with type ORDER.ORDER_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: ORDER.ORDER_FORM_CHANGED,
@@ -218,10 +208,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Refresh order customers action", function() {
-        it("dispatched action has a type of ORDER.REFRESH_CUSTOMERS", function() {
+        it("searchOrderCustomers should dispatch an action with type ORDER.REFRESH_CUSTOMERS", function() {
             const expectedActions = [
                 {
                     type: ORDER.REFRESH_CUSTOMERS,
@@ -235,10 +223,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions)
                 );
         });
-    });
 
-    describe("Refresh order items action", function() {
-        it("dispatched action has a type of ORDER.REFRESH_ITEMS", function() {
+        it("searchOrderItems should dispatch an action with type ORDER.REFRESH_ITEMS", function() {
             const expectedActions = [
                 {
                     type: ORDER.REFRESH_ITEMS,
@@ -252,10 +238,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions)
                 );
         });
-    });
 
-    describe("New order item form action", function() {
-        it("dispatched action has a ORDER of ORDER.ORDER_ITEM_FORM_OPEN", function() {
+        it("newOrderItemForm should dispatch an action with type ORDER.ORDER_ITEM_FORM_OPEN", function() {
             const expectedActions = [
                 { type: ORDER.ORDER_ITEM_FORM_OPEN, payload: { isNew: true } }
             ];
@@ -264,10 +248,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Edit order item form action", function() {
-        it("dispatched action has a ORDER of ORDER.ORDER_ITEM_FORM_OPEN", function() {
+        it("editOrderItemForm should dispatch an action with type ORDER.ORDER_ITEM_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: ORDER.ORDER_ITEM_FORM_OPEN,
@@ -279,20 +261,16 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Close order item form action", function() {
-        it("dispatched action has a ORDER of ORDER.ORDER_ITEM_FORM_CLOSE", function() {
+        it("closeOrderItemForm should dispatch an action with type ORDER.ORDER_ITEM_FORM_CLOSE", function() {
             const expectedActions = [{ type: ORDER.ORDER_ITEM_FORM_CLOSE }];
 
             store.dispatch(closeOrderItemForm());
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change order item form action", function() {
-        it("dispatched action has a ORDER of ORDER.ORDER_ITEM_FORM_CHANGED", function() {
+        it("changeOrderItemForm should dispatch an action with type ORDER.ORDER_ITEM_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: ORDER.ORDER_ITEM_FORM_CHANGED,

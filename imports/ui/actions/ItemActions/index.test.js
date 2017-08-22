@@ -97,8 +97,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change item page action", function() {
-        it("dispatched action has a type of ITEM.CHANGE_ITEM_PAGE", function() {
+    describe("Item actions", function() {
+        it("changeItemsPage should dispatch an action with type ITEM.CHANGE_ITEM_PAGE", function() {
             const expectedActions = [
                 {
                     type: ITEM.CHANGE_ITEM_PAGE,
@@ -110,10 +110,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search items action", function() {
-        it("dispatched action has a type of ITEM.SEARCH_ITEMS", function() {
+        it("searchItems should dispatch an action with type ITEM.SEARCH_ITEMS", function() {
             const expectedActions = [
                 {
                     type: ITEM.SEARCH_ITEMS,
@@ -125,10 +123,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New item form action", function() {
-        it("dispatched action has a ITEM of ITEM.ITEM_FORM_OPEN", function() {
+        it("newItemForm should dispatch an action with type ITEM.ITEM_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: ITEM.ITEM_FORM_OPEN,
@@ -143,10 +139,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Edit item form action", function() {
-        it("dispatched action has a ITEM of ITEM.ITEM_FORM_OPEN", function() {
+        it("editItemForm should dispatch an action with type ITEM.ITEM_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: ITEM.ITEM_FORM_OPEN,
@@ -181,10 +175,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
-    });
 
-    describe("Close item form action", function() {
-        it("dispatched action has a type of ITEM.ITEM_FORM_CLOSE", function() {
+        it("closeItemForm should dispatch an action with type ITEM.ITEM_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: ITEM.ITEM_FORM_CLOSE
@@ -195,10 +187,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change item form action", function() {
-        it("dispatched action has a type of ITEM.ITEM_FORM_CHANGED", function() {
+        it("changeItemForm should dispatch an action with type ITEM.ITEM_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: ITEM.ITEM_FORM_CHANGED,
@@ -210,10 +200,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Refresh item brands action", function() {
-        it("dispatched action has a type of ITEM.REFRESH_BRANDS", function() {
+        it("searchItemBrands should dispatch an action with type ITEM.REFRESH_BRANDS", function() {
             const expectedActions = [
                 {
                     type: ITEM.REFRESH_BRANDS,
@@ -227,10 +215,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions)
                 );
         });
-    });
 
-    describe("Refresh item categories action", function() {
-        it("dispatched action has a type of ITEM.REFRESH_CATEGORIES", function() {
+        it("searchItemCategories should dispatch an action with type ITEM.REFRESH_CATEGORIES", function() {
             const expectedActions = [
                 {
                     type: ITEM.REFRESH_CATEGORIES,

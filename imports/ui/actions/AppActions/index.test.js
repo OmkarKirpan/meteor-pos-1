@@ -5,11 +5,11 @@ import thunk from "redux-thunk";
 import { toggleSidebar } from ".";
 
 if (Meteor.isClient) {
-    describe("Toggle sidebar action", function() {
+    describe("App actions", function() {
         const mockStore = configureMockStore([thunk]);
         const store = mockStore({});
 
-        it("dispatched action has a type of APP.TOGGLE_SIDEBAR", function() {
+        it("toggleSidebar should dispatch an action with type APP.TOGGLE_SIDEBAR", function() {
             const expectedActions = [
                 {
                     type: APP.TOGGLE_SIDEBAR

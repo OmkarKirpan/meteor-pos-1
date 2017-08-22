@@ -14,8 +14,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Open change password action", function() {
-        it("dispatched action has a type of SESSION.OPEN_CHANGE_PASSWORD_FORM", function() {
+    describe("Session actions", function() {
+        it("openChangePasswordForm should dispatch an action with type SESSION.OPEN_CHANGE_PASSWORD_FORM", function() {
             const expectedActions = [
                 {
                     type: SESSION.OPEN_CHANGE_PASSWORD_FORM
@@ -26,10 +26,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Open change password action", function() {
-        it("dispatched action has a type of SESSION.CLOSE_CHANGE_PASSWORD_FORM", function() {
+        it("closeChangePasswordForm should dispatch an action with type SESSION.CLOSE_CHANGE_PASSWORD_FORM", function() {
             const expectedActions = [
                 {
                     type: SESSION.CLOSE_CHANGE_PASSWORD_FORM

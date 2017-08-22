@@ -47,8 +47,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change category page action", function() {
-        it("dispatched action has a type of CATEGORY.CHANGE_CATEGORY_PAGE", function() {
+    describe("Category actions", function() {
+        it("changeCategoriesPage should dispatch an action with type CATEGORY.CHANGE_CATEGORY_PAGE", function() {
             const expectedActions = [
                 {
                     type: CATEGORY.CHANGE_CATEGORY_PAGE,
@@ -60,10 +60,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search categories action", function() {
-        it("dispatched action has a type of CATEGORY.SEARCH_CATEGORYS", function() {
+        it("searchCategories should dispatch an action with type CATEGORY.SEARCH_CATEGORIES", function() {
             const expectedActions = [
                 {
                     type: CATEGORY.SEARCH_CATEGORIES,
@@ -75,10 +73,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New category form action", function() {
-        it("dispatched action has a CATEGORY of CATEGORY.CATEGORY_FORM_OPEN", function() {
+        it("newCategoryForm should dispatch an action with type CATEGORY.CATEGORY_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: CATEGORY.CATEGORY_FORM_OPEN,
@@ -93,10 +89,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Edit category form action", function() {
-        it("dispatched action has a CATEGORY of CATEGORY.CATEGORY_FORM_OPEN", function() {
+        it("editCategoryForm should dispatch an action with type CATEGORY.CATEGORY_FORM_OPEN", function() {
             const expectedActions = [
                 {
                     type: CATEGORY.CATEGORY_FORM_OPEN,
@@ -117,10 +111,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
-    });
 
-    describe("Close category form action", function() {
-        it("dispatched action has a type of CATEGORY.CATEGORY_FORM_CLOSE", function() {
+        it("closeCategoryForm should dispatch an action with type CATEGORY.CATEGORY_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: CATEGORY.CATEGORY_FORM_CLOSE
@@ -131,10 +123,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change category form action", function() {
-        it("dispatched action has a type of CATEGORY.CATEGORY_FORM_CHANGED", function() {
+        it("changeCategoryForm should dispatch an action with type CATEGORY.CATEGORY_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: CATEGORY.CATEGORY_FORM_CHANGED,

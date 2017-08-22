@@ -66,8 +66,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change supply order page action", function() {
-        it("dispatched action has a type of SUPPLY_ORDER.CHANGE_SUPPLY_ORDER_PAGE", function() {
+    describe("Supply order actions", function() {
+        it("changeSupplyOrdersPage should dispatch an action with type SUPPLY_ORDER.CHANGE_SUPPLY_ORDER_PAGE", function() {
             const expectedActions = [
                 {
                     type: SUPPLY_ORDER.CHANGE_SUPPLY_ORDER_PAGE,
@@ -79,10 +79,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search supply order action", function() {
-        it("dispatched action has a type of SUPPLY_ORDER.SEARCH_SUPPLY_ORDERS", function() {
+        it("searchSupplyOrders should dispatch an action with type SUPPLY_ORDER.SEARCH_SUPPLY_ORDERS", function() {
             const expectedActions = [
                 {
                     type: SUPPLY_ORDER.SEARCH_SUPPLY_ORDERS,
@@ -94,10 +92,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("New supply order form action", function() {
-        it("dispatched action has a SUPPLY_ORDER of SUPPLY_ORDER.SUPPLY_ORDER_FORM_OPEN", function() {
+        it("newSupplyOrderForm should dispatch an action with type SUPPLY_ORDER.SUPPLY_ORDER_FORM_OPEN", function() {
             const expectedActions = [SUPPLY_ORDER.SUPPLY_ORDER_FORM_OPEN];
 
             store.dispatch(newSupplyOrderForm());
@@ -106,10 +102,8 @@ if (Meteor.isClient) {
                 expectedActions
             );
         });
-    });
 
-    describe("Close supply order form action", function() {
-        it("dispatched action has a type of SUPPLY_ORDER.SUPPLY_ORDER_FORM_CLOSE", function() {
+        it("closeSupplyOrderForm should dispatch an action with type SUPPLY_ORDER.SUPPLY_ORDER_FORM_CLOSE", function() {
             const expectedActions = [
                 {
                     type: SUPPLY_ORDER.SUPPLY_ORDER_FORM_CLOSE
@@ -120,10 +114,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Change supply order form action", function() {
-        it("dispatched action has a type of SUPPLY_ORDER.SUPPLY_ORDER_FORM_CHANGED", function() {
+        it("changeSupplyOrderForm should dispatch an action with type SUPPLY_ORDER.SUPPLY_ORDER_FORM_CHANGED", function() {
             const expectedActions = [
                 {
                     type: SUPPLY_ORDER.SUPPLY_ORDER_FORM_CHANGED,
@@ -135,10 +127,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Refresh supply order suppliers action", function() {
-        it("dispatched action has a type of SUPPLY_ORDER.REFRESH_SUPLLIERS", function() {
+        it("searchSupplyOrderSuppliers should dispatch an action with type SUPPLY_ORDER.REFRESH_SUPPLIERS", function() {
             const expectedActions = [
                 {
                     type: SUPPLY_ORDER.REFRESH_SUPPLIERS,
@@ -152,10 +142,8 @@ if (Meteor.isClient) {
                     expect(store.getActions()).toEqual(expectedActions)
                 );
         });
-    });
 
-    describe("Refresh supply order items action", function() {
-        it("dispatched action has a type of SUPPLY_ORDER.REFRESH_ITEMS", function() {
+        it("searchSupplyOrderItems should dispatch an action with type SUPPLY_ORDER.CHANGE_ORDER_PAGE", function() {
             const expectedActions = [
                 {
                     type: SUPPLY_ORDER.REFRESH_ITEMS,

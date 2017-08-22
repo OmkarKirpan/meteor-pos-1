@@ -14,8 +14,8 @@ if (Meteor.isClient) {
         store.clearActions();
     });
 
-    describe("Change user page action", function() {
-        it("dispatched action has a type of USER.CHANGE_USER_PAGE", function() {
+    describe("User actions", function() {
+        it("changeUsersPage should dispatch an action with type USER.CHANGE_USER_PAGE", function() {
             const expectedActions = [
                 {
                     type: USER.CHANGE_USER_PAGE,
@@ -27,10 +27,8 @@ if (Meteor.isClient) {
 
             expect(store.getActions()).toEqual(expectedActions);
         });
-    });
 
-    describe("Search users action", function() {
-        it("dispatched action has a type of USER.SEARCH_USERS", function() {
+        it("searchUsers should dispatch an action with type USER.SEARCH_USERS", function() {
             const expectedActions = [
                 {
                     type: USER.SEARCH_USERS,
