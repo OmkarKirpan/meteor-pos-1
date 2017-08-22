@@ -2,7 +2,8 @@ import { ITEM, SESSION } from "../../actions/actionTypes";
 
 import { cloneDeep } from "lodash";
 import update from "react-addons-update";
-const initialState = {
+
+export const initialState = {
     itemList: {
         current: 1,
         pageSize: 10,
@@ -44,7 +45,13 @@ const ItemReducer = (state = initialState, { type, payload = {} }) => {
                 itemForm: {
                     isNew: { $set: payload.isNew },
                     editingItem: { $set: editingItem },
-                    visible: { $set: true }
+                    visible: { $set: true },
+                    categories: {
+                        $set: editingItem.category ? [editingItem.category] : []
+                    },
+                    brands: {
+                        $set: editingItem.brand ? [editingItem.brand] : []
+                    }
                 }
             });
         case ITEM.ITEM_FORM_CLOSE:

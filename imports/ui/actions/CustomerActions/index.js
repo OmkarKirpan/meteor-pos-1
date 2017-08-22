@@ -3,7 +3,7 @@ import { GETCUSTOMER, GETCUSTOMERS } from "../../graphql/queries/customer";
 import { CUSTOMER } from "../actionTypes";
 import { gql } from "react-apollo";
 
-const changeCustomersPage = ({ client, current }) => (dispatch, getState) => {
+const changeCustomersPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: CUSTOMER.CHANGE_CUSTOMER_PAGE,
         payload: {
@@ -12,7 +12,7 @@ const changeCustomersPage = ({ client, current }) => (dispatch, getState) => {
     });
 };
 
-const searchCustomers = ({ client, filter }) => dispatch => {
+const searchCustomers = ({ filter }) => dispatch => {
     dispatch({
         type: CUSTOMER.SEARCH_CUSTOMERS,
         payload: {
@@ -21,7 +21,7 @@ const searchCustomers = ({ client, filter }) => dispatch => {
     });
 };
 
-const newCustomerForm = ({ client }) => dispatch => {
+const newCustomerForm = () => dispatch => {
     dispatch({
         type: CUSTOMER.CUSTOMER_FORM_OPEN,
         payload: {
@@ -32,7 +32,7 @@ const newCustomerForm = ({ client }) => dispatch => {
 };
 
 const editCustomerForm = ({ client, _id }) => dispatch => {
-    client
+    return client
         .query({
             query: GETCUSTOMER,
             fetchPolicy: "network-only",

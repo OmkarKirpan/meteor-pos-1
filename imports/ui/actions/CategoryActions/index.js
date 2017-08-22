@@ -3,7 +3,7 @@ import { GETCATEGORIES, GETCATEGORY } from "../../graphql/queries/category";
 import { CATEGORY } from "../actionTypes";
 import { gql } from "react-apollo";
 
-const changeCategoriesPage = ({ client, current }) => (dispatch, getState) => {
+const changeCategoriesPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: CATEGORY.CHANGE_CATEGORY_PAGE,
         payload: {
@@ -12,7 +12,7 @@ const changeCategoriesPage = ({ client, current }) => (dispatch, getState) => {
     });
 };
 
-const searchCategories = ({ client, filter }) => dispatch => {
+const searchCategories = ({ filter }) => dispatch => {
     dispatch({
         type: CATEGORY.SEARCH_CATEGORIES,
         payload: {
@@ -21,7 +21,7 @@ const searchCategories = ({ client, filter }) => dispatch => {
     });
 };
 
-const newCategoryForm = ({ client }) => dispatch => {
+const newCategoryForm = () => dispatch => {
     dispatch({
         type: CATEGORY.CATEGORY_FORM_OPEN,
         payload: {
@@ -32,7 +32,7 @@ const newCategoryForm = ({ client }) => dispatch => {
 };
 
 const editCategoryForm = ({ client, _id }) => dispatch => {
-    client
+    return client
         .query({
             query: GETCATEGORY,
             fetchPolicy: "network-only",

@@ -2,7 +2,7 @@ import { SESSION, USER } from "../../actions/actionTypes";
 
 import update from "react-addons-update";
 
-const initialState = {
+export const initialState = {
     userList: {
         current: 1,
         pageSize: 10,

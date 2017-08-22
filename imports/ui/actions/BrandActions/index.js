@@ -3,7 +3,7 @@ import { GETBRAND, GETBRANDS } from "../../graphql/queries/brand";
 import { BRAND } from "../actionTypes";
 import { gql } from "react-apollo";
 
-const changeBrandsPage = ({ client, current }) => (dispatch, getState) => {
+const changeBrandsPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: BRAND.CHANGE_BRAND_PAGE,
         payload: {
@@ -12,7 +12,7 @@ const changeBrandsPage = ({ client, current }) => (dispatch, getState) => {
     });
 };
 
-const searchBrands = ({ client, filter }) => dispatch => {
+const searchBrands = ({ filter }) => dispatch => {
     dispatch({
         type: BRAND.SEARCH_BRANDS,
         payload: {
@@ -21,7 +21,7 @@ const searchBrands = ({ client, filter }) => dispatch => {
     });
 };
 
-const newBrandForm = ({ client }) => dispatch => {
+const newBrandForm = () => dispatch => {
     dispatch({
         type: BRAND.BRAND_FORM_OPEN,
         payload: {
@@ -32,7 +32,7 @@ const newBrandForm = ({ client }) => dispatch => {
 };
 
 const editBrandForm = ({ client, _id }) => dispatch => {
-    client
+    return client
         .query({
             query: GETBRAND,
             fetchPolicy: "network-only",

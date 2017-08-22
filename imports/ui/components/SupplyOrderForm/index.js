@@ -45,7 +45,6 @@ class SupplyOrderForm extends Component {
         } = this.props;
 
         form.validateFields((errors, supplyOrder) => {
-            console.dir(supplyOrder);
             if (!errors) {
                 const supplyItems = form.getFieldValue("supplyItems") || [];
                 const supplyItemIds = supplyItems.map(
@@ -84,7 +83,6 @@ class SupplyOrderForm extends Component {
             name: searchText,
             entityStatus: ENTITYSTATUS.ACTIVE
         };
-        console.dir(searchSupplyOrderSuppliers);
         searchSupplyOrderSuppliers({ client, filter });
     }
 

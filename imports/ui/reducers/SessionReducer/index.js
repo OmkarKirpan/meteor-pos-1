@@ -1,7 +1,7 @@
 import { SESSION } from "../../actions/actionTypes";
 import update from "react-addons-update";
 
-const initialState = {
+export const initialState = {
     changePasswordForm: {
         visible: false
     }

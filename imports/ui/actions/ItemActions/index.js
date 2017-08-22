@@ -4,7 +4,7 @@ import { GETITEM } from "../../graphql/queries/item";
 import { ITEM } from "../actionTypes";
 import { gql } from "react-apollo";
 
-const changeItemsPage = ({ client, current }) => (dispatch, getState) => {
+const changeItemsPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: ITEM.CHANGE_ITEM_PAGE,
         payload: {
@@ -13,7 +13,7 @@ const changeItemsPage = ({ client, current }) => (dispatch, getState) => {
     });
 };
 
-const searchItems = ({ client, filter }) => dispatch => {
+const searchItems = ({ filter }) => dispatch => {
     dispatch({
         type: ITEM.SEARCH_ITEMS,
         payload: {
@@ -23,7 +23,7 @@ const searchItems = ({ client, filter }) => dispatch => {
 };
 
 const searchItemCategories = ({ client, filter }) => dispatch => {
-    client
+    return client
         .query({
             query: GETCATEGORIES,
             fetchPolicy: "network-only",
@@ -41,15 +41,16 @@ const searchItemCategories = ({ client, filter }) => dispatch => {
                 payload: { categories: categories }
             });
         })
-        .catch(error =>
+        .catch(error => {
+            console.error(error);
             dispatch({
                 type: ITEM.REFRESH_CATEGORIES_FAILED
-            })
-        );
+            });
+        });
 };
 
 const searchItemBrands = ({ client, filter }) => dispatch => {
-    client
+    return client
         .query({
             query: GETBRANDS,
             fetchPolicy: "network-only",
@@ -67,14 +68,15 @@ const searchItemBrands = ({ client, filter }) => dispatch => {
                 payload: { brands: brands }
             });
         })
-        .catch(error =>
+        .catch(error => {
+            console.error(error);
             dispatch({
                 type: ITEM.REFRESH_BRANDS_FAILED
-            })
-        );
+            });
+        });
 };
 
-const newItemForm = ({ client }) => dispatch => {
+const newItemForm = () => dispatch => {
     dispatch({
         type: ITEM.ITEM_FORM_OPEN,
         payload: {
@@ -85,7 +87,7 @@ const newItemForm = ({ client }) => dispatch => {
 };
 
 const editItemForm = ({ client, _id }) => dispatch => {
-    client
+    return client
         .query({
             query: GETITEM,
             fetchPolicy: "network-only",
@@ -96,20 +98,6 @@ const editItemForm = ({ client, _id }) => dispatch => {
         .then(response => {
             const { data } = response;
             const { item } = data;
-            item.category &&
-                dispatch({
-                    type: ITEM.REFRESH_CATEGORIES,
-                    payload: {
-                        categories: [item.category]
-                    }
-                });
-            item.brand &&
-                dispatch({
-                    type: ITEM.REFRESH_BRANDS,
-                    payload: {
-                        brands: [item.brand]
-                    }
-                });
             dispatch({
                 type: ITEM.ITEM_FORM_OPEN,
                 payload: {

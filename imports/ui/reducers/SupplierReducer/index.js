@@ -2,7 +2,7 @@ import { SESSION, SUPPLIER } from "../../actions/actionTypes";
 
 import update from "react-addons-update";
 
-const initialState = {
+export const initialState = {
     supplierList: {
         current: 1,
         pageSize: 10,

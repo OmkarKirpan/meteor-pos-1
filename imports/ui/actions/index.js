@@ -1,4 +1,4 @@
-export { toggleSidebar, toggleUserMenu, selectMenu } from "./AppActions";
+export { toggleSidebar } from "./AppActions";
 
 export {
     changeCustomerForm,

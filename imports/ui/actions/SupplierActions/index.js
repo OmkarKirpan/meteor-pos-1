@@ -3,7 +3,7 @@ import { GETSUPPLIER, GETSUPPLIERS } from "../../graphql/queries/supplier";
 import { SUPPLIER } from "../actionTypes";
 import { gql } from "react-apollo";
 
-const changeSuppliersPage = ({ client, current }) => (dispatch, getState) => {
+const changeSuppliersPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: SUPPLIER.CHANGE_SUPPLIER_PAGE,
         payload: {
@@ -12,7 +12,7 @@ const changeSuppliersPage = ({ client, current }) => (dispatch, getState) => {
     });
 };
 
-const searchSuppliers = ({ client, filter }) => dispatch => {
+const searchSuppliers = ({ filter }) => dispatch => {
     dispatch({
         type: SUPPLIER.SEARCH_SUPPLIERS,
         payload: {
@@ -21,7 +21,7 @@ const searchSuppliers = ({ client, filter }) => dispatch => {
     });
 };
 
-const newSupplierForm = ({ client }) => dispatch => {
+const newSupplierForm = () => dispatch => {
     dispatch({
         type: SUPPLIER.SUPPLIER_FORM_OPEN,
         payload: {
@@ -32,7 +32,7 @@ const newSupplierForm = ({ client }) => dispatch => {
 };
 
 const editSupplierForm = ({ client, _id }) => dispatch => {
-    client
+    return client
         .query({
             query: GETSUPPLIER,
             fetchPolicy: "network-only",

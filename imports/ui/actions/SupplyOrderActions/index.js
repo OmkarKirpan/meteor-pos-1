@@ -4,10 +4,7 @@ import { SUPPLY_ORDER } from "../actionTypes";
 import { gql } from "react-apollo";
 import moment from "moment";
 
-const changeSupplyOrdersPage = ({ client, current }) => (
-    dispatch,
-    getState
-) => {
+const changeSupplyOrdersPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: SUPPLY_ORDER.CHANGE_SUPPLY_ORDER_PAGE,
         payload: {
@@ -16,7 +13,7 @@ const changeSupplyOrdersPage = ({ client, current }) => (
     });
 };
 
-const searchSupplyOrders = ({ client, filter }) => dispatch => {
+const searchSupplyOrders = ({ filter }) => dispatch => {
     dispatch({
         type: SUPPLY_ORDER.SEARCH_SUPPLY_ORDERS,
         payload: {
@@ -26,7 +23,7 @@ const searchSupplyOrders = ({ client, filter }) => dispatch => {
 };
 
 const searchSupplyOrderSuppliers = ({ client, filter }) => dispatch => {
-    client
+    return client
         .query({
             query: GETSUPPLIERS,
             fetchPolicy: "network-only",
@@ -52,7 +49,7 @@ const searchSupplyOrderSuppliers = ({ client, filter }) => dispatch => {
 };
 
 const searchSupplyOrderItems = ({ client, filter }) => dispatch => {
-    client
+    return client
         .query({
             query: GETITEMS,
             fetchPolicy: "network-only",
@@ -77,7 +74,7 @@ const searchSupplyOrderItems = ({ client, filter }) => dispatch => {
         );
 };
 
-const newSupplyOrderForm = ({ client }) => dispatch => {
+const newSupplyOrderForm = () => dispatch => {
     dispatch({
         type: SUPPLY_ORDER.SUPPLY_ORDER_FORM_OPEN,
         payload: {

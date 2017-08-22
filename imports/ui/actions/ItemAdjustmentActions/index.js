@@ -3,10 +3,7 @@ import { ITEM_ADJUSTMENT } from "../actionTypes";
 import { gql } from "react-apollo";
 import moment from "moment";
 
-const changeItemAdjustmentsPage = ({ client, current }) => (
-    dispatch,
-    getState
-) => {
+const changeItemAdjustmentsPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: ITEM_ADJUSTMENT.CHANGE_ITEM_ADJUSTMENT_PAGE,
         payload: {
@@ -15,7 +12,7 @@ const changeItemAdjustmentsPage = ({ client, current }) => (
     });
 };
 
-const searchItemAdjustments = ({ client, filter }) => dispatch => {
+const searchItemAdjustments = ({ filter }) => dispatch => {
     dispatch({
         type: ITEM_ADJUSTMENT.SEARCH_ITEM_ADJUSTMENTS,
         payload: {
@@ -25,7 +22,7 @@ const searchItemAdjustments = ({ client, filter }) => dispatch => {
 };
 
 const searchItemAdjustmentItems = ({ client, filter }) => dispatch => {
-    client
+    return client
         .query({
             query: GETITEMS,
             fetchPolicy: "network-only",
@@ -50,7 +47,7 @@ const searchItemAdjustmentItems = ({ client, filter }) => dispatch => {
         );
 };
 
-const newItemAdjustmentForm = ({ client }) => dispatch => {
+const newItemAdjustmentForm = () => dispatch => {
     dispatch({
         type: ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_OPEN,
         payload: {

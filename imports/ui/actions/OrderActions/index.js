@@ -5,7 +5,7 @@ import { ORDER } from "../actionTypes";
 import { gql } from "react-apollo";
 import moment from "moment";
 
-const changeOrdersPage = ({ client, current }) => (dispatch, getState) => {
+const changeOrdersPage = ({ current }) => (dispatch, getState) => {
     dispatch({
         type: ORDER.CHANGE_ORDER_PAGE,
         payload: {
@@ -14,7 +14,7 @@ const changeOrdersPage = ({ client, current }) => (dispatch, getState) => {
     });
 };
 
-const searchOrders = ({ client, filter }) => dispatch => {
+const searchOrders = ({ filter }) => dispatch => {
     dispatch({
         type: ORDER.SEARCH_ORDERS,
         payload: {
@@ -24,7 +24,7 @@ const searchOrders = ({ client, filter }) => dispatch => {
 };
 
 const searchOrderCustomers = ({ client, filter }) => dispatch => {
-    client
+    return client
         .query({
             query: GETCUSTOMERS,
             fetchPolicy: "network-only",
@@ -50,7 +50,7 @@ const searchOrderCustomers = ({ client, filter }) => dispatch => {
 };
 
 const searchOrderItems = ({ client, filter }) => dispatch => {
-    client
+    return client
         .query({
             query: GETITEMS,
             fetchPolicy: "network-only",
@@ -75,7 +75,7 @@ const searchOrderItems = ({ client, filter }) => dispatch => {
         );
 };
 
-const newOrderForm = ({ client }) => dispatch => {
+const newOrderForm = () => dispatch => {
     dispatch({
         type: ORDER.ORDER_FORM_OPEN,
         payload: {
@@ -86,7 +86,7 @@ const newOrderForm = ({ client }) => dispatch => {
 };
 
 const editOrderForm = ({ client, _id }) => dispatch => {
-    client
+    return client
         .query({
             query: GETORDER,
             fetchPolicy: "network-only",

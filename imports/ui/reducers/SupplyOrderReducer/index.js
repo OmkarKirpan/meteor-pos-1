@@ -4,7 +4,7 @@ import { cloneDeep } from "lodash";
 import moment from "moment";
 import update from "react-addons-update";
 
-const initialState = {
+export const initialState = {
     supplyOrderList: {
         current: 1,
         pageSize: 10,
