@@ -63,7 +63,7 @@ class ItemListPrices extends Component {
 }
 
 ItemListPrices.propTypes = {
-    item: PropTypes.object.isRequired
+    item: PropTypes.object
 };
 
 export default ItemListPrices;

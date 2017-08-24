@@ -1,29 +1,20 @@
-import { Col, Row, Switch, Table } from "antd";
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { BRANDEVENTSUBSCRIPTION } from "../../graphql/subscriptions/brand";
 import { ENTITYSTATUS } from "../../../constants";
 import { GETBRANDS } from "../../graphql/queries/brand";
 import PropTypes from "prop-types";
-import { cloneDeep } from "lodash";
+import { Table } from "antd";
 import i18n from "meteor/universe:i18n";
 
 @graphql(GETBRANDS, {
     props: ({ data }) => {
-        const {
-            brands,
-            brandCount,
-            loading,
-            error,
-            subscribeToMore,
-            refetch
-        } = data;
+        const { brands, brandCount, loading, subscribeToMore, refetch } = data;
         return {
             brands,
             total: brandCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         };
@@ -88,7 +79,6 @@ class BrandList extends Component {
     render() {
         const {
             loading,
-            error,
             brands,
             total,
             client,
@@ -127,7 +117,6 @@ class BrandList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             dataSource: brands,
@@ -138,7 +127,7 @@ class BrandList extends Component {
                 total,
                 pageSize,
                 onChange: page => {
-                    changeItemsPage({ client, current: page });
+                    changeItemsPage({ current: page });
                 }
             },
             locale: {
@@ -151,8 +140,14 @@ class BrandList extends Component {
 }
 
 BrandList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    loading: PropTypes.bool,
+    brands: PropTypes.array,
+    total: PropTypes.number,
+    client: PropTypes.instanceOf(ApolloClient),
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changeItemsPage: PropTypes.func,
+    editBrandForm: PropTypes.func
 };
 
 export default BrandList;

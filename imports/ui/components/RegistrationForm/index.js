@@ -4,6 +4,7 @@ import { Button, Form, Input, Modal, Row } from "antd";
 import React, { Component } from "react";
 
 import { CREATEUSER } from "../../graphql/mutations/user";
+import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 
@@ -103,5 +104,10 @@ class RegistrationForm extends Component {
         );
     }
 }
+
+RegistrationForm.propTypes = {
+    form: PropTypes.object,
+    switchButton: PropTypes.element
+};
 
 export default Form.create()(RegistrationForm);

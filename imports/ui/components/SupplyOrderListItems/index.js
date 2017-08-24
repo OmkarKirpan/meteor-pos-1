@@ -62,7 +62,7 @@ class SupplyOrderListItems extends Component {
 }
 
 SupplyOrderListItems.propTypes = {
-    SupplyOrder: PropTypes.object.isRequired
+    supplyOrder: PropTypes.object
 };
 
 export default SupplyOrderListItems;

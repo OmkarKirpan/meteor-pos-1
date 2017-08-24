@@ -1,5 +1,5 @@
+import { ApolloClient, compose, gql, graphql, withApollo } from "react-apollo";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { GETITEMADJUSTMENTS } from "../../graphql/queries/itemAdjustment";
 import { ITEMADJUSTMENTEVENTSUBSCRIPTION } from "../../graphql/subscriptions/itemAdjustment";
@@ -15,7 +15,6 @@ import moment from "moment";
             itemAdjustments,
             itemAdjustmentCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         } = data;
@@ -23,7 +22,6 @@ import moment from "moment";
             itemAdjustments,
             total: itemAdjustmentCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         };
@@ -90,9 +88,7 @@ class ItemAdjustmentList extends Component {
 
     render() {
         const {
-            filter,
             loading,
-            error,
             itemAdjustments,
             total,
             client,
@@ -147,7 +143,6 @@ class ItemAdjustmentList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             dataSource: itemAdjustments,
@@ -173,8 +168,13 @@ class ItemAdjustmentList extends Component {
 }
 
 ItemAdjustmentList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    loading: PropTypes.bool,
+    itemAdjustments: PropTypes.array,
+    total: PropTypes.number,
+    client: PropTypes.instanceOf(ApolloClient),
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changeItemAdjustmentsPage: PropTypes.func
 };
 
 export default ItemAdjustmentList;

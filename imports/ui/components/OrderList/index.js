@@ -1,9 +1,8 @@
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { GETORDERS } from "../../graphql/queries/order";
 import { ORDEREVENTSUBSCRIPTION } from "../../graphql/subscriptions/order";
-import { ORDERSTATUS } from "../../../constants";
 import PropTypes from "prop-types";
 import { Table } from "antd";
 import { formatCurrency } from "../../../util/currency";
@@ -12,19 +11,11 @@ import moment from "moment";
 
 @graphql(GETORDERS, {
     props: ({ data }) => {
-        const {
-            orders,
-            orderCount,
-            loading,
-            error,
-            subscribeToMore,
-            refetch
-        } = data;
+        const { orders, orderCount, loading, subscribeToMore, refetch } = data;
         return {
             orders,
             total: orderCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         };
@@ -96,9 +87,7 @@ class OrderList extends Component {
 
     render() {
         const {
-            filter,
             loading,
-            error,
             orders,
             total,
             client,
@@ -243,7 +232,6 @@ class OrderList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             dataSource: orders,
@@ -267,8 +255,14 @@ class OrderList extends Component {
 }
 
 OrderList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    orders: PropTypes.array,
+    loading: PropTypes.bool,
+    total: PropTypes.number,
+    client: PropTypes.instanceOf(ApolloClient),
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changeOrdersPage: PropTypes.func,
+    editOrderForm: PropTypes.func
 };
 
 export default OrderList;

@@ -1,19 +1,17 @@
 import { Button, Col, Input, Row } from "antd";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
-@compose(withApollo)
 class ItemHeader extends Component {
     render() {
-        const { client, newItemForm, searchItems } = this.props;
+        const { newItemForm, searchItems } = this.props;
 
         return (
             <Row>
                 <Col span={4}>
-                    <Button onClick={() => newItemForm({ client })}>
+                    <Button onClick={() => newItemForm()}>
                         {i18n.__("item-add")}
                     </Button>
                 </Col>
@@ -22,7 +20,6 @@ class ItemHeader extends Component {
                         placeholder={i18n.__("item-search")}
                         onSearch={value => {
                             searchItems({
-                                client,
                                 filter: {
                                     name: value
                                 }
@@ -36,8 +33,8 @@ class ItemHeader extends Component {
 }
 
 ItemHeader.propTypes = {
-    newItemForm: PropTypes.func.isRequired,
-    searchItems: PropTypes.func.isRequired
+    newItemForm: PropTypes.func,
+    searchItems: PropTypes.func
 };
 
 export default ItemHeader;

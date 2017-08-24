@@ -1,5 +1,5 @@
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { GETSUPPLYORDERS } from "../../graphql/queries/supplyOrder";
 import PropTypes from "prop-types";
@@ -16,7 +16,6 @@ import moment from "moment";
             supplyOrders,
             supplyOrderCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         } = data;
@@ -24,7 +23,6 @@ import moment from "moment";
             supplyOrders,
             total: supplyOrderCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         };
@@ -87,9 +85,7 @@ class SupplyOrderList extends Component {
 
     render() {
         const {
-            filter,
             loading,
-            error,
             supplyOrders,
             total,
             client,
@@ -184,7 +180,6 @@ class SupplyOrderList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             dataSource: supplyOrders,
@@ -210,8 +205,13 @@ class SupplyOrderList extends Component {
 }
 
 SupplyOrderList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    supplyOrders: PropTypes.array,
+    loading: PropTypes.bool,
+    total: PropTypes.number,
+    client: PropTypes.instanceOf(ApolloClient),
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changesupplyOrdersPage: PropTypes.func
 };
 
 export default SupplyOrderList;

@@ -1,18 +1,7 @@
 import "./index.scss";
 
-import {
-    Button,
-    Col,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Row,
-    Select,
-    Table
-} from "antd";
+import { Button, Col, Form, Icon, Input, Row, Table } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import { formatCurrency } from "../../../util/currency";
@@ -300,6 +289,11 @@ class OrderFormItems extends Component {
     }
 }
 
-OrderFormItems.propTypes = {};
+OrderFormItems.propTypes = {
+    newOrderItemForm: PropTypes.func,
+    editDisabled: PropTypes.bool,
+    editOrderItemForm: PropTypes.func,
+    orderForm: PropTypes.object
+};
 
 export default OrderFormItems;

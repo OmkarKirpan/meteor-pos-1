@@ -1,13 +1,10 @@
-import { Button, Col, DatePicker, Input, Radio, Row } from "antd";
+import { Button, Col, DatePicker, Row } from "antd";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
 
-import { ITEMADJUSTMENTSTATUS } from "../../../constants";
 import { LOCALE } from "../../configs";
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
-@compose(withApollo)
 class ItemAdjustmentHeader extends Component {
     constructor() {
         super();
@@ -24,17 +21,12 @@ class ItemAdjustmentHeader extends Component {
     }
 
     render() {
-        const {
-            client,
-            newItemAdjustmentForm,
-            searchItemAdjustments,
-            filter
-        } = this.props;
+        const { newItemAdjustmentForm, filter } = this.props;
 
         return (
             <Row>
                 <Col span={4}>
-                    <Button onClick={() => newItemAdjustmentForm({ client })}>
+                    <Button onClick={() => newItemAdjustmentForm()}>
                         {i18n.__("itemAdjustment-add")}
                     </Button>
                 </Col>
@@ -55,8 +47,9 @@ class ItemAdjustmentHeader extends Component {
 }
 
 ItemAdjustmentHeader.propTypes = {
-    newItemAdjustmentForm: PropTypes.func.isRequired,
-    searchItemAdjustments: PropTypes.func.isRequired
+    newItemAdjustmentForm: PropTypes.func,
+    searchItemAdjustments: PropTypes.func,
+    filter: PropTypes.object
 };
 
 export default ItemAdjustmentHeader;

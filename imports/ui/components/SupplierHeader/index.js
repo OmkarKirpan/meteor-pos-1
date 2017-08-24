@@ -1,19 +1,17 @@
 import { Button, Col, Input, Row } from "antd";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
-@compose(withApollo)
 class SupplierHeader extends Component {
     render() {
-        const { client, newSupplierForm, searchSuppliers } = this.props;
+        const { newSupplierForm, searchSuppliers } = this.props;
 
         return (
             <Row>
                 <Col span={4}>
-                    <Button onClick={() => newSupplierForm({ client })}>
+                    <Button onClick={() => newSupplierForm()}>
                         {i18n.__("supplier-add")}
                     </Button>
                 </Col>
@@ -22,7 +20,6 @@ class SupplierHeader extends Component {
                         placeholder={i18n.__("supplier-search")}
                         onSearch={value => {
                             searchSuppliers({
-                                client,
                                 filter: {
                                     name: value
                                 }
@@ -36,8 +33,8 @@ class SupplierHeader extends Component {
 }
 
 SupplierHeader.propTypes = {
-    newSupplierForm: PropTypes.func.isRequired,
-    searchSuppliers: PropTypes.func.isRequired
+    newSupplierForm: PropTypes.func,
+    searchSuppliers: PropTypes.func
 };
 
 export default SupplierHeader;

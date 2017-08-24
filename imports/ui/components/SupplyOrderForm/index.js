@@ -1,19 +1,15 @@
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
 import {
-    Button,
-    Checkbox,
     Col,
     DatePicker,
     Form,
-    Icon,
     Input,
     InputNumber,
     Modal,
     Row,
-    Select,
-    Table
+    Select
 } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import { CREATESUPPLYORDER } from "../../graphql/mutations/supplyOrder";
 import { ENTITYSTATUS } from "../../../constants";
@@ -72,7 +68,14 @@ class SupplyOrderForm extends Component {
                     variables: {
                         supplyOrder: supplyOrderData
                     }
-                }).then(() => closeSupplyOrderForm());
+                })
+                    .then(() => closeSupplyOrderForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({
+                            title: i18n.__("supplyOrder-save-failed")
+                        });
+                    });
             }
         });
     }
@@ -316,7 +319,14 @@ class SupplyOrderForm extends Component {
 }
 
 SupplyOrderForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    isNew: PropTypes.bool,
+    closeSupplyOrderForm: PropTypes.func,
+    searchSupplyOrderSuppliers: PropTypes.func,
+    client: PropTypes.instanceOf(ApolloClient),
+    visible: PropTypes.bool,
+    items: PropTypes.array,
+    searchSupplyOrderItems: PropTypes.func
 };
 
 const mapPropsToFields = ({ editingSupplyOrder }) => {

@@ -1,19 +1,17 @@
 import { Button, Col, Input, Row } from "antd";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
-@compose(withApollo)
 class BrandHeader extends Component {
     render() {
-        const { client, newBrandForm, searchBrands } = this.props;
+        const { newBrandForm, searchBrands } = this.props;
 
         return (
             <Row>
                 <Col span={4}>
-                    <Button onClick={() => newBrandForm({ client })}>
+                    <Button onClick={() => newBrandForm()}>
                         {i18n.__("brand-add")}
                     </Button>
                 </Col>
@@ -22,7 +20,6 @@ class BrandHeader extends Component {
                         placeholder={i18n.__("brand-search")}
                         onSearch={value => {
                             searchBrands({
-                                client,
                                 filter: {
                                     name: value
                                 }
@@ -36,8 +33,8 @@ class BrandHeader extends Component {
 }
 
 BrandHeader.propTypes = {
-    newBrandForm: PropTypes.func.isRequired,
-    searchBrands: PropTypes.func.isRequired
+    newBrandForm: PropTypes.func,
+    searchBrands: PropTypes.func
 };
 
 export default BrandHeader;

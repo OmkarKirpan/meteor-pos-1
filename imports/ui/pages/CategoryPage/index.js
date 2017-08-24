@@ -106,7 +106,7 @@ class CategoryPage extends Component {
 }
 
 CategoryPage.proptypes = {
-    client: PropTypes.instanceOf(ApolloClient).isRequired
+    client: PropTypes.instanceOf(ApolloClient)
 };
 
 export default CategoryPage;

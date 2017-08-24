@@ -1,15 +1,14 @@
 import "./index.scss";
 
-import { Button, Col, Row, Switch, Table } from "antd";
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
+import { Button, Table } from "antd";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { CATEGORYEVENTSUBSCRIPTION } from "../../graphql/subscriptions/category";
 import { ENTITYSTATUS } from "../../../constants";
 import { GETCATEGORIES } from "../../graphql/queries/category";
 import PropTypes from "prop-types";
 import { UPDATECATEGORYSTATUS } from "../../graphql/mutations/category";
-import { cloneDeep } from "lodash";
 import i18n from "meteor/universe:i18n";
 
 @graphql(GETCATEGORIES, {
@@ -18,7 +17,6 @@ import i18n from "meteor/universe:i18n";
             categories,
             categoryCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         } = data;
@@ -26,7 +24,6 @@ import i18n from "meteor/universe:i18n";
             categories,
             total: categoryCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         };
@@ -94,7 +91,6 @@ class CategoryList extends Component {
     render() {
         const {
             loading,
-            error,
             categories,
             total,
             client,
@@ -114,7 +110,7 @@ class CategoryList extends Component {
                 ),
                 key: "name",
                 dataIndex: "name",
-                width: "90%",
+                width: "80%",
                 render: (name, category) =>
                     category.entityStatus === ENTITYSTATUS.ACTIVE
                         ? <a
@@ -179,7 +175,6 @@ class CategoryList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             dataSource: categories,
@@ -203,8 +198,15 @@ class CategoryList extends Component {
 }
 
 CategoryList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    loading: PropTypes.bool,
+    categories: PropTypes.array,
+    total: PropTypes.number,
+    client: PropTypes.instanceOf(ApolloClient),
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changeItemsPage: PropTypes.func,
+    editCategoryForm: PropTypes.func,
+    updateCategoryStatus: PropTypes.func
 };
 
 export default CategoryList;

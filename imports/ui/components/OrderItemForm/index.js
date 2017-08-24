@@ -1,15 +1,6 @@
-import {
-    Button,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Modal,
-    Select,
-    Table
-} from "antd";
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
+import { Form, Input, InputNumber, Modal, Select } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import { ENTITYSTATUS } from "../../../constants";
 import OrderItemFormPrices from "../OrderItemFormPrices";
@@ -273,7 +264,15 @@ class OrderItemForm extends Component {
 }
 
 OrderItemForm.propTypes = {
-    changeOrderItemForm: PropTypes.func.isRequired
+    orderForm: PropTypes.object,
+    isNew: PropTypes.bool,
+    form: PropTypes.object,
+    searchOrderItems: PropTypes.func,
+    client: PropTypes.instanceOf(ApolloClient),
+    closeOrderItemForm: PropTypes.func,
+    visible: PropTypes.bool,
+    items: PropTypes.array,
+    editDisabled: PropTypes.bool
 };
 
 const mapPropsToFields = ({ editingOrderItem }) => {

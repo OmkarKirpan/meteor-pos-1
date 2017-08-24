@@ -1,21 +1,12 @@
 import {
-    Button,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Modal,
-    Select,
-    Table
-} from "antd";
-import {
     CREATESUPPLIER,
     UPDATESUPPLIER
 } from "../../graphql/mutations/supplier";
+import { Form, Input, Modal } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 
 @graphql(CREATESUPPLIER, {
@@ -24,7 +15,6 @@ import i18n from "meteor/universe:i18n";
 @graphql(UPDATESUPPLIER, {
     name: "updateSupplier"
 })
-@compose(withApollo)
 class SupplierForm extends Component {
     constructor() {
         super();
@@ -56,7 +46,12 @@ class SupplierForm extends Component {
                             ...supplier
                         }
                     }
-                }).then(() => closeSupplierForm());
+                })
+                    .then(() => closeSupplierForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({ title: i18n.__("supplier-save-failed") });
+                    });
             }
         });
     }
@@ -182,7 +177,10 @@ class SupplierForm extends Component {
 }
 
 SupplierForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    isNew: PropTypes.bool,
+    closeSupplierForm: PropTypes.func,
+    visible: PropTypes.bool
 };
 
 const mapPropsToFields = ({ editingSupplier }) => {

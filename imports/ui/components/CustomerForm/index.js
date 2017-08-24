@@ -1,21 +1,12 @@
 import {
-    Button,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Modal,
-    Select,
-    Table
-} from "antd";
-import {
     CREATECUSTOMER,
     UPDATECUSTOMER
 } from "../../graphql/mutations/customer";
+import { Form, Input, Modal } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 
 @graphql(CREATECUSTOMER, {
@@ -24,7 +15,6 @@ import i18n from "meteor/universe:i18n";
 @graphql(UPDATECUSTOMER, {
     name: "updateCustomer"
 })
-@compose(withApollo)
 class CustomerForm extends Component {
     constructor() {
         super();
@@ -56,7 +46,12 @@ class CustomerForm extends Component {
                             ...customer
                         }
                     }
-                }).then(() => closeCustomerForm());
+                })
+                    .then(() => closeCustomerForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({ title: i18n.__("customer-save-failed") });
+                    });
             }
         });
     }
@@ -182,7 +177,10 @@ class CustomerForm extends Component {
 }
 
 CustomerForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    visible: PropTypes.bool,
+    isNew: PropTypes.bool,
+    closeCustomerForm: PropTypes.func
 };
 
 const mapPropsToFields = ({ editingCustomer }) => {

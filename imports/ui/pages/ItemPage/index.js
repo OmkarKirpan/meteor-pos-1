@@ -116,7 +116,7 @@ class ItemPage extends Component {
 }
 
 ItemPage.proptypes = {
-    client: PropTypes.instanceOf(ApolloClient).isRequired
+    client: PropTypes.instanceOf(ApolloClient)
 };
 
 export default ItemPage;

@@ -1,19 +1,17 @@
 import { Button, Col, Input, Row } from "antd";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
-@compose(withApollo)
 class CategoryHeader extends Component {
     render() {
-        const { client, newCategoryForm, searchCategories } = this.props;
+        const { newCategoryForm, searchCategories } = this.props;
 
         return (
             <Row>
                 <Col span={4}>
-                    <Button onClick={() => newCategoryForm({ client })}>
+                    <Button onClick={() => newCategoryForm()}>
                         {i18n.__("category-add")}
                     </Button>
                 </Col>
@@ -22,7 +20,6 @@ class CategoryHeader extends Component {
                         placeholder={i18n.__("category-search")}
                         onSearch={value => {
                             searchCategories({
-                                client,
                                 filter: {
                                     name: value
                                 }
@@ -36,8 +33,8 @@ class CategoryHeader extends Component {
 }
 
 CategoryHeader.propTypes = {
-    newCategoryForm: PropTypes.func.isRequired,
-    searchCategories: PropTypes.func.isRequired
+    newCategoryForm: PropTypes.func,
+    searchCategories: PropTypes.func
 };
 
 export default CategoryHeader;

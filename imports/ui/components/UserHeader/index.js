@@ -1,4 +1,4 @@
-import { Button, Col, Input, Row } from "antd";
+import { Col, Input, Row } from "antd";
 import React, { Component } from "react";
 
 import PropTypes from "prop-types";
@@ -6,7 +6,7 @@ import i18n from "meteor/universe:i18n";
 
 class UserHeader extends Component {
     render() {
-        const { client, searchUsers } = this.props;
+        const { searchUsers } = this.props;
 
         return (
             <Row>
@@ -15,7 +15,6 @@ class UserHeader extends Component {
                         placeholder={i18n.__("user-search")}
                         onSearch={value => {
                             searchUsers({
-                                client,
                                 filter: {
                                     name: value
                                 }
@@ -29,7 +28,7 @@ class UserHeader extends Component {
 }
 
 UserHeader.propTypes = {
-    searchUsers: PropTypes.func.isRequired
+    searchUsers: PropTypes.func
 };
 
 export default UserHeader;

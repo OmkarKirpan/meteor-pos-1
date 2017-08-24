@@ -124,7 +124,7 @@ class SupplyOrderPage extends Component {
 }
 
 SupplyOrderPage.proptypes = {
-    client: PropTypes.instanceOf(ApolloClient).isRequired
+    client: PropTypes.instanceOf(ApolloClient)
 };
 
 export default SupplyOrderPage;

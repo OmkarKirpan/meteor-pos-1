@@ -47,7 +47,7 @@ class ItemAdjustmentListItems extends Component {
 }
 
 ItemAdjustmentListItems.propTypes = {
-    itemAdjustment: PropTypes.object.isRequired
+    itemAdjustment: PropTypes.object
 };
 
 export default ItemAdjustmentListItems;

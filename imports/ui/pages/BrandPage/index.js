@@ -106,7 +106,7 @@ class BrandPage extends Component {
 }
 
 BrandPage.proptypes = {
-    client: PropTypes.instanceOf(ApolloClient).isRequired
+    client: PropTypes.instanceOf(ApolloClient)
 };
 
 export default BrandPage;

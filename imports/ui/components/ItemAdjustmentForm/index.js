@@ -1,31 +1,17 @@
-import {
-    Button,
-    Checkbox,
-    Col,
-    DatePicker,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Modal,
-    Row,
-    Select,
-    Table
-} from "antd";
+import { Col, DatePicker, Form, Input, Modal, Row } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import { CREATEITEMADJUSTMENT } from "../../graphql/mutations/itemAdjustment";
 import ItemAdjustmentFormItems from "../ItemAdjustmentFormItems";
 import { LOCALE } from "../../configs";
 import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 import moment from "moment";
 
 @graphql(CREATEITEMADJUSTMENT, {
     name: "createItemAdjustment"
 })
-@compose(withApollo)
 class ItemAdjustmentForm extends Component {
     constructor() {
         super();
@@ -73,7 +59,14 @@ class ItemAdjustmentForm extends Component {
                     variables: {
                         itemAdjustment: itemAdjustmentData
                     }
-                }).then(() => closeItemAdjustmentForm());
+                })
+                    .then(() => closeItemAdjustmentForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({
+                            title: i18n.__("itemAdjustment-save-failed")
+                        });
+                    });
             }
         });
     }
@@ -223,7 +216,12 @@ class ItemAdjustmentForm extends Component {
 }
 
 ItemAdjustmentForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    isNew: PropTypes.bool,
+    visible: PropTypes.bool,
+    items: PropTypes.array,
+    closeItemAdjustmentForm: PropTypes.func,
+    searchItemAdjustmentItems: PropTypes.func
 };
 
 const mapPropsToFields = ({ editingItemAdjustment }) => {

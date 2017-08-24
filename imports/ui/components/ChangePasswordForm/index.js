@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal, Row } from "antd";
 import React, { Component } from "react";
 
 import { CHANGEPASSWORD } from "../../graphql/mutations/user";
+import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 
@@ -72,5 +73,13 @@ class ChangePasswordForm extends Component {
         );
     }
 }
+
+ChangePasswordForm.propTypes = {
+    form: PropTypes.object,
+    closeChangePasswordForm: PropTypes.func,
+    changePassword: PropTypes.func,
+    logout: PropTypes.func,
+    visible: PropTypes.bool
+};
 
 export default Form.create()(ChangePasswordForm);

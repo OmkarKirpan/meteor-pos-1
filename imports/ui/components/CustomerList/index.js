@@ -1,15 +1,14 @@
 import "./index.scss";
 
-import { Button, Col, Row, Switch, Table } from "antd";
+import { ApolloClient, compose, gql, graphql, withApollo } from "react-apollo";
+import { Button, Table } from "antd";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { CUSTOMEREVENTSUBSCRIPTION } from "../../graphql/subscriptions/customer";
 import { ENTITYSTATUS } from "../../../constants";
 import { GETCUSTOMERS } from "../../graphql/queries/customer";
 import PropTypes from "prop-types";
 import { UPDATECUSTOMERSTATUS } from "../../graphql/mutations/customer";
-import { cloneDeep } from "lodash";
 import i18n from "meteor/universe:i18n";
 
 @graphql(GETCUSTOMERS, {
@@ -18,7 +17,6 @@ import i18n from "meteor/universe:i18n";
             customers,
             customerCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         } = data;
@@ -26,7 +24,6 @@ import i18n from "meteor/universe:i18n";
             customers,
             total: customerCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         };
@@ -94,7 +91,6 @@ class CustomerList extends Component {
     render() {
         const {
             loading,
-            error,
             customers,
             total,
             client,
@@ -229,7 +225,6 @@ class CustomerList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             dataSource: customers,
@@ -253,8 +248,15 @@ class CustomerList extends Component {
 }
 
 CustomerList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    loading: PropTypes.bool,
+    customers: PropTypes.array,
+    total: PropTypes.number,
+    client: PropTypes.instanceOf(ApolloClient),
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changeItemsPage: PropTypes.func,
+    editCustomerForm: PropTypes.func,
+    updateCustomerStatus: PropTypes.func
 };
 
 export default CustomerList;

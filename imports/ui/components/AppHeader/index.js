@@ -68,9 +68,12 @@ class AppHeader extends Component {
 }
 
 AppHeader.propTypes = {
-    user: PropTypes.object,
+    currentUser: PropTypes.object,
+    changePasswordFormVisible: PropTypes.bool,
     logout: PropTypes.func,
-    toggleSidebar: PropTypes.func
+    sidebarCollapsed: PropTypes.bool,
+    openChangePasswordForm: PropTypes.func,
+    closeChangePasswordForm: PropTypes.func
 };
 
 export default AppHeader;

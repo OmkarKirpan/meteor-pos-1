@@ -1,8 +1,7 @@
 import "./index.scss";
 
-import { Button, Form, Icon, Input, InputNumber, Select, Table } from "antd";
+import { Button, Form, Icon, Input, InputNumber, Table } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
@@ -226,7 +225,7 @@ class ItemFormPrices extends Component {
 }
 
 ItemFormPrices.propTypes = {
-    itemForm: PropTypes.object.isRequired
+    itemForm: PropTypes.object
 };
 
 export default ItemFormPrices;

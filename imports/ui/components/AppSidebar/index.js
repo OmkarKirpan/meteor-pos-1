@@ -78,7 +78,9 @@ const AppSidebar = ({ sidebarCollapsed, toggleSidebar, menu, location }) => {
 
 AppSidebar.propTypes = {
     menu: PropTypes.array,
-    sidebarCollapsed: PropTypes.bool
+    sidebarCollapsed: PropTypes.bool,
+    toggleSidebar: PropTypes.func,
+    location: PropTypes.object
 };
 
 AppSidebar.__ANT_LAYOUT_SIDER = true;

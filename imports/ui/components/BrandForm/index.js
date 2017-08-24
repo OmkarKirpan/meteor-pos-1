@@ -1,18 +1,9 @@
-import {
-    Button,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Modal,
-    Select,
-    Table
-} from "antd";
 import { CREATEBRAND, UPDATEBRAND } from "../../graphql/mutations/brand";
+import { Form, Input, Modal } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 
 @graphql(CREATEBRAND, {
@@ -21,7 +12,6 @@ import i18n from "meteor/universe:i18n";
 @graphql(UPDATEBRAND, {
     name: "updateBrand"
 })
-@compose(withApollo)
 class BrandForm extends Component {
     constructor() {
         super();
@@ -53,7 +43,12 @@ class BrandForm extends Component {
                             ...brand
                         }
                     }
-                }).then(() => closeBrandForm());
+                })
+                    .then(() => closeBrandForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({ title: i18n.__("brand-save-failed") });
+                    });
             }
         });
     }
@@ -111,7 +106,10 @@ class BrandForm extends Component {
 }
 
 BrandForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    closeBrandForm: PropTypes.func,
+    isNew: PropTypes.bool,
+    visible: PropTypes.bool
 };
 
 const mapPropsToFields = ({ editingBrand }) => {

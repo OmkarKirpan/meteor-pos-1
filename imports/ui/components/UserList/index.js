@@ -1,20 +1,19 @@
-import { Button, Col, Row, Switch, Table } from "antd";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { GETUSERS } from "../../graphql/queries/user";
 import PropTypes from "prop-types";
+import { Table } from "antd";
+import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 import moment from "moment";
 
 @graphql(GETUSERS, {
     props: ({ data }) => {
-        const { users, userCount, loading, error, refetch } = data;
+        const { users, userCount, loading, refetch } = data;
         return {
             users,
             total: userCount,
             loading,
-            error,
             refetch
         };
     },
@@ -32,7 +31,6 @@ class UserList extends Component {
     render() {
         const {
             loading,
-            error,
             users,
             total,
             current,
@@ -72,7 +70,6 @@ class UserList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             dataSource: users,
@@ -96,8 +93,12 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    loading: PropTypes.bool,
+    users: PropTypes.array,
+    total: PropTypes.number,
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changeUsersPage: PropTypes.func
 };
 
 export default UserList;

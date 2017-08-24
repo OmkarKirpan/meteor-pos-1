@@ -1,15 +1,13 @@
 import "./index.scss";
 
-import { Button, Col, DatePicker, Input, Radio, Row } from "antd";
+import { Button, Col, DatePicker, Radio, Row } from "antd";
 import React, { Component } from "react";
-import { compose, withApollo } from "react-apollo";
 
 import { LOCALE } from "../../configs";
 import { ORDERSTATUS } from "../../../constants";
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
-@compose(withApollo)
 class OrderHeader extends Component {
     constructor() {
         super();
@@ -84,8 +82,9 @@ class OrderHeader extends Component {
 }
 
 OrderHeader.propTypes = {
-    newOrderForm: PropTypes.func.isRequired,
-    searchOrders: PropTypes.func.isRequired
+    newOrderForm: PropTypes.func,
+    searchOrders: PropTypes.func,
+    filter: PropTypes.object
 };
 
 export default OrderHeader;

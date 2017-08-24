@@ -3,6 +3,7 @@ import "./index.scss";
 import { Button, Form, Input, Row } from "antd";
 import React, { Component } from "react";
 
+import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
 
 class LoginForm extends Component {
@@ -86,5 +87,11 @@ class LoginForm extends Component {
         );
     }
 }
+
+LoginForm.propTypes = {
+    login: PropTypes.func,
+    switchButton: PropTypes.element,
+    form: PropTypes.object
+};
 
 export default Form.create()(LoginForm);

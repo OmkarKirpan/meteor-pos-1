@@ -1,8 +1,8 @@
 import "./index.scss";
 
-import { Button, Col, Row, Switch, Table } from "antd";
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
+import { Button, Table } from "antd";
 import React, { Component } from "react";
-import { compose, gql, graphql, withApollo } from "react-apollo";
 
 import { ENTITYSTATUS } from "../../../constants";
 import { GETITEMS } from "../../graphql/queries/item";
@@ -11,24 +11,15 @@ import ItemListPrices from "../ItemListPrices";
 import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
 import { UPDATEITEMSTATUS } from "../../graphql/mutations/item";
-import { cloneDeep } from "lodash";
 import i18n from "meteor/universe:i18n";
 
 @graphql(GETITEMS, {
     props: ({ data }) => {
-        const {
-            items,
-            itemCount,
-            loading,
-            error,
-            subscribeToMore,
-            refetch
-        } = data;
+        const { items, itemCount, loading, subscribeToMore, refetch } = data;
         return {
             items,
             total: itemCount,
             loading,
-            error,
             subscribeToMore,
             refetch
         };
@@ -96,7 +87,6 @@ class ItemList extends Component {
     render() {
         const {
             loading,
-            error,
             items,
             total,
             client,
@@ -254,7 +244,6 @@ class ItemList extends Component {
         ];
 
         const tableProps = {
-            error,
             columns,
             loading,
             expandedRowRender: item => <ItemListPrices item={item} />,
@@ -279,8 +268,15 @@ class ItemList extends Component {
 }
 
 ItemList.propTypes = {
-    current: PropTypes.number.isRequired,
-    pageSize: PropTypes.number.isRequired
+    loading: PropTypes.bool,
+    items: PropTypes.array,
+    total: PropTypes.number,
+    client: PropTypes.instanceOf(ApolloClient),
+    current: PropTypes.number,
+    pageSize: PropTypes.number,
+    changeItemsPage: PropTypes.func,
+    editItemForm: PropTypes.func,
+    updateItemStatus: PropTypes.func
 };
 
 export default ItemList;

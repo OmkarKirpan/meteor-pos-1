@@ -130,7 +130,7 @@ class ItemAdjustmentPage extends Component {
 }
 
 ItemAdjustmentPage.proptypes = {
-    client: PropTypes.instanceOf(ApolloClient).isRequired
+    client: PropTypes.instanceOf(ApolloClient)
 };
 
 export default ItemAdjustmentPage;

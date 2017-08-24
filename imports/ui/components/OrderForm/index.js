@@ -1,18 +1,16 @@
 import "./index.scss";
 
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
 import {
     Button,
-    Checkbox,
     Col,
     DatePicker,
     Form,
-    Icon,
     Input,
     InputNumber,
     Modal,
     Row,
-    Select,
-    Table
+    Select
 } from "antd";
 import {
     CANCELORDER,
@@ -23,7 +21,6 @@ import {
     UPDATEORDER
 } from "../../graphql/mutations/order";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import { ENTITYSTATUS } from "../../../constants";
 import { LOCALE } from "../../configs";
@@ -547,14 +544,6 @@ class OrderForm extends Component {
                             {...rightSideFormProps}
                         >
                             <OrderFormItems {...orderFormItemsProps} />
-                            <Form.Item
-                                label={i18n.__("order-customer")}
-                                hasFeedback
-                            >
-                                {getFieldDecorator("makePayment", {
-                                    rules: []
-                                })(<Checkbox />)}
-                            </Form.Item>
                         </Col>
                     </Row>
                 </Form>
@@ -565,7 +554,20 @@ class OrderForm extends Component {
 }
 
 OrderForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    client: PropTypes.instanceOf(ApolloClient),
+    isNew: PropTypes.bool,
+    closeOrderForm: PropTypes.func,
+    searchOrderCustomers: PropTypes.func,
+    visible: PropTypes.bool,
+    customers: PropTypes.array,
+    items: PropTypes.array,
+    newOrderItemForm: PropTypes.func,
+    editOrderItemForm: PropTypes.func,
+    closeOrderItemForm: PropTypes.func,
+    orderItemForm: PropTypes.object,
+    changeOrderItemForm: PropTypes.func,
+    editingOrder: PropTypes.object
 };
 
 const mapPropsToFields = ({ editingOrder }) => {

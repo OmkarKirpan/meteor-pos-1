@@ -1,18 +1,8 @@
 import "./index.scss";
 
-import {
-    Button,
-    Col,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Row,
-    Select,
-    Table
-} from "antd";
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
+import { Button, Form, Icon, Input, InputNumber, Select, Table } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import { ENTITYSTATUS } from "../../../constants";
 import PropTypes from "prop-types";
@@ -298,6 +288,12 @@ class ItemAdjustmentFormItems extends Component {
     }
 }
 
-ItemAdjustmentFormItems.propTypes = {};
+ItemAdjustmentFormItems.propTypes = {
+    itemAdjustmentForm: PropTypes.object,
+    editDisabled: PropTypes.bool,
+    searchItemAdjustmentItems: PropTypes.func,
+    client: PropTypes.instanceOf(ApolloClient),
+    items: PropTypes.array
+};
 
 export default ItemAdjustmentFormItems;

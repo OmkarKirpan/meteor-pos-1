@@ -2,7 +2,6 @@ import "./index.scss";
 
 import { Button, Form, Icon, Input, InputNumber, Select, Table } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
 import i18n from "meteor/universe:i18n";
@@ -295,13 +294,13 @@ class OrderItemFormPrices extends Component {
                     title: i18n.__("order-item-itemPrice-unit"),
                     dataIndex: "unit",
                     key: "unit",
-                    width: "25%"
+                    width: "20%"
                 },
                 {
                     title: i18n.__("order-item-itemPrice-multiplier"),
                     dataIndex: "multiplier",
                     key: "multiplier",
-                    width: "10%"
+                    width: "15%"
                 },
                 {
                     title: i18n.__("order-item-itemPrice-price"),
@@ -351,7 +350,8 @@ class OrderItemFormPrices extends Component {
 }
 
 OrderItemFormPrices.propTypes = {
-    orderItemForm: PropTypes.object.isRequired
+    orderItemForm: PropTypes.object,
+    editDisabled: PropTypes.bool
 };
 
 export default OrderItemFormPrices;

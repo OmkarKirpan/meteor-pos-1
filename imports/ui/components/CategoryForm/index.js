@@ -1,21 +1,12 @@
 import {
-    Button,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Modal,
-    Select,
-    Table
-} from "antd";
-import {
     CREATECATEGORY,
     UPDATECATEGORY
 } from "../../graphql/mutations/category";
+import { Form, Input, Modal } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
 import i18n from "meteor/universe:i18n";
 
 @graphql(CREATECATEGORY, {
@@ -24,7 +15,6 @@ import i18n from "meteor/universe:i18n";
 @graphql(UPDATECATEGORY, {
     name: "updateCategory"
 })
-@compose(withApollo)
 class CategoryForm extends Component {
     constructor() {
         super();
@@ -56,7 +46,12 @@ class CategoryForm extends Component {
                             ...category
                         }
                     }
-                }).then(() => closeCategoryForm());
+                })
+                    .then(() => closeCategoryForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({ title: i18n.__("category-save-failed") });
+                    });
             }
         });
     }
@@ -116,7 +111,10 @@ class CategoryForm extends Component {
 }
 
 CategoryForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    closeCategoryForm: PropTypes.func,
+    isNew: PropTypes.bool,
+    visible: PropTypes.bool
 };
 
 const mapPropsToFields = ({ editingCategory }) => {

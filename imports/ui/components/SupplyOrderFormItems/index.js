@@ -1,5 +1,6 @@
 import "./index.scss";
 
+import { ApolloClient, compose, graphql, withApollo } from "react-apollo";
 import {
     Button,
     Col,
@@ -12,7 +13,6 @@ import {
     Table
 } from "antd";
 import React, { Component } from "react";
-import { compose, graphql, withApollo } from "react-apollo";
 
 import { ENTITYSTATUS } from "../../../constants";
 import PropTypes from "prop-types";
@@ -419,6 +419,13 @@ class SupplyOrderFormItems extends Component {
     }
 }
 
-SupplyOrderFormItems.propTypes = {};
+SupplyOrderFormItems.propTypes = {
+    supplyOrderForm: PropTypes.func,
+    editDisabled: PropTypes.bool,
+    searchSupplyOrderItems: PropTypes.func,
+    client: PropTypes.instanceOf(ApolloClient),
+    editDisabled: PropTypes.bool,
+    items: PropTypes.array
+};
 
 export default SupplyOrderFormItems;

@@ -1,18 +1,7 @@
 import "./index.scss";
 
-import {
-    Button,
-    Col,
-    Form,
-    Icon,
-    Input,
-    InputNumber,
-    Modal,
-    Row,
-    Select,
-    Table
-} from "antd";
 import { CREATEITEM, UPDATEITEM } from "../../graphql/mutations/item";
+import { Col, Form, Input, InputNumber, Modal, Row, Select } from "antd";
 import React, { Component } from "react";
 import { compose, graphql, withApollo } from "react-apollo";
 
@@ -85,7 +74,12 @@ class ItemForm extends Component {
                     variables: {
                         item: itemData
                     }
-                }).then(() => closeItemForm());
+                })
+                    .then(() => closeItemForm())
+                    .catch(err => {
+                        console.error(err);
+                        Modal.error({ title: i18n.__("item-save-failed") });
+                    });
             }
         });
     }
@@ -390,7 +384,14 @@ class ItemForm extends Component {
 }
 
 ItemForm.propTypes = {
-    visible: PropTypes.bool.isRequired
+    form: PropTypes.object,
+    visible: PropTypes.bool,
+    isNew: PropTypes.bool,
+    categories: PropTypes.array,
+    brands: PropTypes.array,
+    searchItemBrands: PropTypes.func,
+    searchItemCategories: PropTypes.func,
+    closeItemForm: PropTypes.func
 };
 
 const mapPropsToFields = ({ editingItem }) => {
