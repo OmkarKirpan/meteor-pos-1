@@ -420,7 +420,7 @@ class SupplyOrderFormItems extends Component {
 }
 
 SupplyOrderFormItems.propTypes = {
-    supplyOrderForm: PropTypes.func,
+    supplyOrderForm: PropTypes.object,
     editDisabled: PropTypes.bool,
     searchSupplyOrderItems: PropTypes.func,
     client: PropTypes.instanceOf(ApolloClient),
