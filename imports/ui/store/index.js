@@ -1,6 +1,5 @@
 import { applyMiddleware, compose, createStore } from "redux";
 
-import { LANGUAGE } from "../configs";
 import { client } from "../graphql";
 import { createBrowserHistory } from "history";
 import { logger } from "redux-logger";

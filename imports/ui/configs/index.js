@@ -1,8 +1,4 @@
-import i18n from "meteor/universe:i18n";
-
-const LANGUAGE = "en";
-
-const OPEN_PAGES = ["/login"];
+const LANGUAGE = "id-ID";
 
 const MENUS = [
     {
@@ -84,7 +80,7 @@ const MENUS = [
 const LOCALE = {
     DATEPICKER: {
         lang: {
-            today: i18n.__("datepicker-today"),
+            today: "Today",
             backToToday: "Back to today",
             ok: "Ok",
             dateSelect: "Select date",
@@ -107,4 +103,4 @@ const LOCALE = {
     }
 };
 
-export { LANGUAGE, OPEN_PAGES, MENUS, LOCALE };
+export { LANGUAGE, MENUS, LOCALE };

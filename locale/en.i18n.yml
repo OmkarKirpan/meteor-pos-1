@@ -40,7 +40,6 @@ login-username-placeholder: Username
 login-password-placeholder: Password
 login-username-required: Username is required
 login-password-required: Password is required
-login-duplicate-username: Username already exists
 
 # registration
 
@@ -49,7 +48,6 @@ registration-username-placeholder: Username
 registration-password-placeholder: Password
 registration-username-required: Username is required
 registration-password-required: Password is required
-registration-duplicate-username: Username already exists
 
 # customer
 
@@ -70,6 +68,8 @@ customer-name-required: Customer name is required
 customer-address-required: Customer address is required
 customer-phoneNumber-required: Customer phone number is required
 customer-cellphoneNumber-required: Customer cellphone number is required
+
+customer-save-failed: Failed to save customer
 
 customer-search: Search customer
 
@@ -94,6 +94,8 @@ supplier-phoneNumber-required: Supplier phone number is required
 supplier-cellphoneNumber-required: Supplier cellphone number is required
 
 supplier-search: Search supplier
+
+supplier-save-failed: Failed to save supplier
 
 # item
 
@@ -133,6 +135,8 @@ item-itemPrice-multiplier-required: Unit multiplier is required
 
 item-search: Search item
 
+item-save-failed: Failed to save item
+
 # category
 
 category-add: Add Category
@@ -146,6 +150,8 @@ category-name-required: Category name is required
 
 category-search: Search category
 
+category-save-failed: Failed to save category
+
 # brand
 
 brand-add: Add Brand
@@ -158,6 +164,8 @@ brand-name-placeholder: Brand name
 brand-name-required: Brand name is required
 
 brand-search: Search brand
+
+brand-save-failed: Failed to save brand
 
 # order
 
@@ -276,6 +284,8 @@ itemAdjustment-adjustmentItem-quantity-invalid: Invalid quantity
 
 itemAdjustment-date-filter: Date filter
 
+itemAdjustment-save-failed: Failed to save item adjustment
+
 # supply order
 
 supplyOrder-add: Add supply order
@@ -314,3 +324,5 @@ supplyOrder-supplyItem-price-required: Price is required
 supplyOrder-supplyItem-price-invalid: Invalid price
 
 supplyOrder-date-filter: Date filter
+
+supplyOrder-save-failed: Failed to save supply order

@@ -1,0 +1,328 @@
+_locale: id-ID
+
+# misc
+
+create: Simpan
+update: Perbaharui
+cancel: Batalkan
+activate: Aktifkan
+deactivate: Nonaktifkan
+sign-out: Keluar
+sign-in: Masuk
+sign-up: Daftar
+change-password: Perbaharui sandi
+
+change-password-title: Perbaharui sandi
+entityStatus: Status
+entityStatus-active: Aktif
+entityStatus-inactive: Nonaktif
+action: Aksi
+
+change-password-placeholder: Sandi baru
+change-password-required: Sandi diperlukan
+
+no-data: Tidak ada data
+
+login-here: Masuk di sini
+register-here: Daftar di sini
+
+login-failed: Gagal masuk
+registration-success: Pendaftaran berhasil, silahkan masuk
+registration-failed: Pengguna telah terdaftar
+logout-failed: Gagal keluar
+
+datepicker-today: Hari ini
+
+# login
+
+login-title: Toko saya
+login-username-placeholder: Nama pengguna
+login-password-placeholder: Sandi
+login-username-required: Nama pengguna diperlukan
+login-password-required: Sandi diperlukan
+
+# registration
+
+registration-title: Pendaftaran
+registration-username-placeholder: Nama pengguna
+registration-password-placeholder: Sandi
+registration-username-required: Nama pengguna diperlukan
+registration-password-required: Sandi diperlukan
+
+# customer
+
+customer-add: Tambah pelanggan
+customer-update: Perbaharui pelanggan
+
+customer-name: Nama
+customer-address: Alamat
+customer-phoneNumber: No telp
+customer-cellphoneNumber: No handphone
+
+customer-name-placeholder: Nama pelanggan
+customer-address-placeholder: Alamat pelanggan
+customer-phoneNumber-placeholder: No telp pelanggan
+customer-cellphoneNumber-placeholder: No handphone pelanggan
+
+customer-name-required: Nama pelanggan diperlukan
+customer-address-required: Alamat pelanggan diperlukan
+customer-phoneNumber-required: No telp pelanggan diperlukan
+customer-cellphoneNumber-required: No handphone pelanggan diperlukan
+
+customer-search: Cari pelanggan
+
+customer-save-failed: Gagal menyimpan pelanggan
+
+# supplier
+
+supplier-add: Tambah penyuplai
+supplier-update: Perbaharui penyuplai
+
+supplier-name: Nama
+supplier-address: Alamat
+supplier-phoneNumber: No telp
+supplier-cellphoneNumber: No handphone
+
+supplier-name-placeholder: Nama penyuplai
+supplier-address-placeholder: Alamat penyuplai
+supplier-phoneNumber-placeholder: No telp penyuplai
+supplier-cellphoneNumber-placeholder: No handphone penyuplai
+
+supplier-name-required: Nama penyuplai diperlukan
+supplier-address-required: Alamat penyuplai diperlukan
+supplier-phoneNumber-required: No telp penyuplai diperlukan
+supplier-cellphoneNumber-required: No handphone penyuplai diperlukan
+
+supplier-search: Cari penyuplai
+
+supplier-save-failed: Gagal menyimpan penyuplai
+
+# item
+
+item-add: Tambah Barang
+item-update: Perbaharui Barang
+item-add-item-price: Tambah harga barang
+
+item-name: Name
+item-price: Harga dasar
+item-unit: Satuan dasar
+item-stock: Stok
+item-category: Kategori
+item-brand: Merk
+item-itemPrices: Harga barang
+item-itemPrice-unit: Satuan
+item-itemPrice-price: Harga
+item-itemPrice-multiplier: Kelipatan
+
+item-name-placeholder: Barang name
+item-price-placeholder: Harga satuan barang
+item-unit-placeholder: Satuan dasar barang
+item-category-placeholder: Kategori barang
+item-brand-placeholder: Merk barang
+item-itemPrice-unit-placeholder: Satuan
+item-itemPrice-price-placeholder: Harga
+item-itemPrice-multiplier-placeholder: Kelipatan
+
+item-name-required: Nama barang diperlukan
+item-basePrice-required: Harga dasar barang diperlukan
+item-baseUnit-required: Satuan dasar barang diperlukan
+item-category-required: Kategori barang diperlukan
+item-brand-required: Merk barang diperlukan
+item-itemPrice-unit-required: Satuan diperlukan
+item-itemPrice-unit-duplicated: Satuan sudah terdaftar
+item-itemPrice-price-required: Harga diperlukan
+item-itemPrice-multiplier-required: Kelipatan diperlukan
+
+item-search: Cari barang
+
+item-save-failed: Gagal menyimpan barang
+
+# category
+
+category-add: Tambah Kategori
+category-update: Perbaharui Kategori
+
+category-name:  Nama
+
+category-name-placeholder: Nama kategori
+
+category-name-required: Nama kategori diperlukan
+
+category-search: Cari kategori
+
+category-save-failed: Gagal menyimpan kategori
+
+# brand
+
+brand-add: Tambah Merk
+brand-update: Perbaharui Merk
+
+brand-name: Name
+
+brand-name-placeholder: Nama merk
+
+brand-name-required: Nama merk diperlukan
+
+brand-search: Cari merk
+
+brand-save-failed: Gagal menyimpan merk
+
+# order
+
+order-add: Tambah Pesanan
+order-update: Perbaharui Pesanan
+order-items-add: Tambah Barang
+order-cancel: Batalkan Pesanan
+order-save: Simpan Pesanan
+order-finalize: Bereskan Pesanan
+order-complete: Selesaikan Pesanan
+order-save-finalize: Simpan and Bereskan Pesanan
+order-save-complete: Simpan and Selesaikan Pesanan
+order-print: Cetak Pesanan
+order-item-save: Simpan Barang
+order-item-title: Barang Pesanan
+order-item-itemPrices-add: Tambah
+
+order-status-inProgress: Berlangsung
+order-status-cancelled: Batal
+order-status-finalized: Beres
+order-status-completed: Selesai
+
+order-date-filter: Tanggal
+
+order-orderNo: No pesanan
+order-orderDate: Tanggal pesanan
+order-customer: Pelanggan
+order-customer-name: Nama pelanggan
+order-shipmentInfo-address: Alamat pengiriman
+order-shipmentInfo-phoneNumber: No telp
+order-shipmentInfo-cellphoneNumber: No handphone
+order-subTotal: Sub total
+order-discount: Diskon
+order-total: Total
+order-items: Barang pesanan
+order-item: Barang
+order-item-name: Nama barang
+order-item-quantity: Kuantitas
+order-item-subTotal: Sub total
+order-item-discount: Diskon
+order-item-total: Total
+order-item-itemPrices: Detail
+order-item-itemPrice-unit: Satuan
+order-item-itemPrice-multiplier: Kelipatan
+order-item-itemPrice-price: Harga
+order-item-itemPrice-quantity: Kuantitas
+order-item-itemPrice-discount: Diskon
+
+order-customer-placeholder: Pelanggan
+order-shipmentInfo-address-placeholder: Alamat pengiriman
+order-shipmentInfo-phoneNumber-placeholder: No telp
+order-shipmentInfo-cellphoneNumber-placeholder: No handphone
+order-item-placeholder: Barang
+order-item-itemPrice-unit-placeholder: Satuan
+order-item-itemPrice-multiplier-placeholder: Kelipatan
+order-item-itemPrice-price-placeholder: Harga
+order-item-itemPrice-quantity-placeholder: Kuantitas
+order-item-itemPrice-discount-placeholder: Diskon
+order-item-discount-placeholder: Diskon
+
+order-orderDate-required: Tanggal pesanan diperlukan
+order-customer-required: Pelanggan diperlukan
+order-shipmentInfo-address-required: Alamat pengiriman diperlukan
+order-shipmentInfo-phoneNumber-required: No telp diperlukan
+order-shipmentInfo-cellphoneNumber-required: No handphone diperlukan
+order-items-required: Barang pesanan diperlukan
+order-item-required: Barang diperlukan
+order-item-itemPrices-required: Detail barang diperlukan
+order-item-itemPrice-unit-required: Satuan diperlukan
+order-item-itemPrice-multiplier-required: Kelipatan diperlukan
+order-item-itemPrice-price-required: Harga diperlukan
+order-item-itemPrice-quantity-required: Kuantitas diperlukan
+order-item-itemPrice-discount-required: Diskon diperlukan
+order-item-itemPrice-unit-duplicated: Satuan sudah terdaftar
+order-item-itemPrice-quantity-invalid: Kuantitas tidak valid
+order-item-itemPrice-discount-invalid: Diskon tidak valid
+order-item-discount-required: Diskon diperlukan
+order-item-discount-invalid: Diskon tidak valid
+
+order-save-error: Gagal menyimpan pesanan
+order-finalize-error: Gagal membereskan pesanan, pesanan disimpan
+order-complete-error: Gagal menyelesaikan pesanan
+order-save-complete-error: Gagal menyelesaikan pesanan, pesanan disimpan dan dibereskan
+order-cancel-error: Gagal membatalkan pesanan
+order-print-error: Gagal mencetak pesanan
+
+# user
+
+user-username: Nama pengguna
+user-createdAt: Tanggal dibuat
+
+# item adjustment
+
+itemAdjustment-add: Tambah penyesuaian
+itemAdjustment-adjustmentItems-add: Tambah item
+
+itemAdjustment-adjustmentNo: No penyesuaian
+itemAdjustment-adjustmentDate: Tanggal penyesuaian
+itemAdjustment-reason: Alasan
+itemAdjustment-adjustmentItems: Barang yang disesuaikan
+itemAdjustment-adjustmentItem-item: Barang
+itemAdjustment-adjustmentItem-quantity: Kuantitas
+
+itemAdjustment-adjustmentDate-placeholder: Tanggal penyesuaian
+itemAdjustment-reason-placeholder: Alasan
+itemAdjustment-adjustmentItem-item-placeholder: Barang
+itemAdjustment-adjustmentItem-quantity-placeholder: Kuantitas
+
+itemAdjustment-adjustmentDate-required: Tanggal penyesuaian diperlukan
+itemAdjustment-reason-required: Alasan diperlukan
+itemAdjustment-adjustmentItems-required: Barang yang disesuaikan diperlukan
+itemAdjustment-adjustmentItem-item-required: Barang diperlukan
+itemAdjustment-adjustmentItem-item-duplicated: Barang sudah terdaftar
+itemAdjustment-adjustmentItem-quantity-required: Kuantitas diperlukan
+itemAdjustment-adjustmentItem-quantity-invalid: Kuantitas tidak valid
+
+itemAdjustment-date-filter: Tanggal
+
+itemAdjustment-save-failed: Gagal menyimpan penyesuaian barang
+
+# supply order
+
+supplyOrder-add: Tambah pesanan suplai
+supplyOrder-supplyItems-add: Tambah item
+
+supplyOrder-orderNo: No pesanan
+supplyOrder-orderDate: Tanggal pesanan
+supplyOrder-discount: Diskon
+supplyOrder-supplyItems: Barang pesanan
+supplyOrder-supplyItem-item: Barang
+supplyOrder-supplyItem-quantity: Kuantitas
+supplyOrder-supplyItem-price: Harga
+supplyOrder-supplyItem-total: Total
+supplyOrder-supplier: Penyedia
+supplyOrder-subTotal: Sub total
+supplyOrder-total: Total
+
+supplyOrder-orderDate-placeholder: Tanggal pesanan
+supplyOrder-discount-placeholder: Diskon
+supplyOrder-supplyItem-item-placeholder: Barang
+supplyOrder-supplyItem-quantity-placeholder: Kuantitas
+supplyOrder-supplier-placeholder: Penyedia
+supplyOrder-supplyItem-price-placeholder: Harga
+supplyOrder-supplyItem-total-placeholder: Total
+
+supplyOrder-orderDate-required: Tanggal pesanan diperlukan
+supplyOrder-discount-required: Diskon diperlukan
+supplyOrder-discount-invalid: Diskon tidak valid
+supplyOrder-supplyItems-required: Barang pesanan diperlukan
+supplyOrder-supplyItem-item-required: Barang diperlukan
+supplyOrder-supplyItem-item-duplicated: Barang sudah terdaftar
+supplyOrder-supplyItem-quantity-required: Kuantitas diperlukan
+supplyOrder-supplyItem-quantity-invalid: Kuantitas tidak valid
+supplyOrder-supplier-required: Penyedia diperlukan
+supplyOrder-supplyItem-price-required: Harga diperlukan
+supplyOrder-supplyItem-price-invalid: Harga tidak valid
+
+supplyOrder-date-filter: Tanggal
+
+supplyOrder-save-failed: Gagal menyimpan pesanan suplai
