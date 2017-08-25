@@ -8,7 +8,6 @@ import { ENTITYSTATUS } from "../../../constants";
 import { GETITEMS } from "../../graphql/queries/item";
 import { ITEMEVENTSUBSCRIPTION } from "../../graphql/subscriptions/item";
 import ItemListPrices from "../ItemListPrices";
-import NumberFormat from "react-number-format";
 import PropTypes from "prop-types";
 import { UPDATEITEMSTATUS } from "../../graphql/mutations/item";
 import i18n from "meteor/universe:i18n";
