@@ -49,7 +49,9 @@ const SupplyOrderReducer = (state = initialState, { type, payload = {} }) => {
                 supplyOrderForm: {
                     isNew: { $set: payload.isNew },
                     editingSupplyOrder: { $set: editingSupplyOrder },
-                    visible: { $set: true }
+                    visible: { $set: true },
+                    suppliers: { $set: [] },
+                    items: { $set: [] }
                 }
             });
         case SUPPLY_ORDER.SUPPLY_ORDER_FORM_CLOSE:

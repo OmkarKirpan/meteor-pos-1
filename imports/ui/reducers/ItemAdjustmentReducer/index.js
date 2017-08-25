@@ -51,7 +51,8 @@ const ItemAdjustmentReducer = (
                 itemAdjustmentForm: {
                     isNew: { $set: payload.isNew },
                     editingItemAdjustment: { $set: editingItemAdjustment },
-                    visible: { $set: true }
+                    visible: { $set: true },
+                    items: { $set: [] }
                 }
             });
         case ITEM_ADJUSTMENT.ITEM_ADJUSTMENT_FORM_CLOSE:
